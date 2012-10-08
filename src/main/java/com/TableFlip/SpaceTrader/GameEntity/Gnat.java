@@ -11,7 +11,7 @@ import com.TableFlip.SpaceTrader.Model.Ship;
  */
 public class Gnat extends Ship {
     public Gnat(){
-        super();
+        super(15, 15, 12, "Gnat");
         //TODO: equipment slots and stuff
     }
 }
