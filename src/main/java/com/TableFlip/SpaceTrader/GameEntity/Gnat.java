@@ -9,9 +9,13 @@ import com.TableFlip.SpaceTrader.Model.Ship;
  * Time: 6:44 PM
  * To change this template use File | Settings | File Templates.
  */
+
 public class Gnat extends Ship {
+    private final static int MAXFUEL = 15;
+    private final static String NAME = "Gnat";
+
     public Gnat(){
-        super(15, 15, 12, "Gnat");
+        super(MAXFUEL, MAXFUEL, NAME);
         //TODO: equipment slots and stuff
     }
 }
