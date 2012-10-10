@@ -173,8 +173,12 @@ public class CharGen {
         label8.setText("Difficulty");
         _panel.add(label8, new GridConstraints(7, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         _slider1 = new JSlider();
+        _slider1.setMajorTickSpacing(1);
+        _slider1.setMaximum(4);
+        _slider1.setPaintLabels(false);
+        _slider1.setPaintTicks(true);
+        _slider1.setSnapToTicks(true);
         _panel.add(_slider1, new GridConstraints(7, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        _slider1.setLabelTable(_slider1.createStandardLabels(1));
     }
 
     /**

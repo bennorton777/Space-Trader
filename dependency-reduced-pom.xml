@@ -4,7 +4,7 @@
   <groupId>com.TableFlip.SpaceTrader</groupId>
   <artifactId>Space-Trader</artifactId>
   <name>Space-Trader</name>
-  <version>1.0-SNAPSHOT</version>
+  <version>1</version>
   <url>http://maven.apache.org</url>
   <build>
     <plugins>
@@ -75,6 +75,7 @@
           </execution>
         </executions>
         <configuration>
+          <version>1.0-beta-1</version>
           <fork>true</fork>
           <debug>true</debug>
           <failOnError>true</failOnError>

@@ -109,7 +109,7 @@
         <properties>
           <horizontalAlignment value="0"/>
           <horizontalTextPosition value="0"/>
-          <text value="Tell me about yourself"/>
+          <text value="Yo Make a Character Man"/>
         </properties>
       </component>
       <component id="2557" class="javax.swing.JTextField" binding="_textField1" default-binding="true">
