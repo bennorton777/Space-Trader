@@ -4,15 +4,14 @@ import com.TableFlip.SpaceTrader.Model.Enums;
 import com.TableFlip.SpaceTrader.Model.Ship;
 
 import java.util.Map;
-
 /**
- * Created with IntelliJ IDEA.
- * User: ben
- * Date: 9/6/12
- * Time: 3:22 PM
- * To change this template use File | Settings | File Templates.
+ * Largely an information holder class for player stats, equipment, inventory, and ship.
+ * Not a pure information holder, as Player will contain some logic for player actions like buying things from a planet.
  */
 public class Player {
+    /**
+     * Empty constructor.  This class uses the builder pattern, and in this case does not need logic in the constructor.
+     */
     public Player() {
     }
 
@@ -20,6 +19,7 @@ public class Player {
     private String _name;
     private Ship _ship;
     private int _credits;
+
 
     public Map<Enums.Skill, Integer> getStats() {
         return _stats;

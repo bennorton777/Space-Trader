@@ -29,7 +29,12 @@ public class CharGen {
     private int _currentTotal = 20;
     private static JFrame frame;
 
-
+    /**
+     * Gui class that controls the Character Generation Dialog.
+     * Never interacts with Game logic classes except through the GUI arbiter class.
+     * Provides checks to make sure the user enters valid data.
+     * Contains generated GUI code in method $$$setupUI$$$
+     */
     public CharGen() {
         $$$setupUI$$$();
         _submitButton.addActionListener(new ActionListener() {
