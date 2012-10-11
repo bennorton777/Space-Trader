@@ -60,8 +60,8 @@ public class Galaxy {
 
     private static Galaxy _instance;
     private Galaxy(){
-        setUniverseHeight(150);
-        setUniverseWidth(150);
+        setUniverseHeight(100);
+        setUniverseWidth(100);
         _planets =new ArrayList<Planet>();
         for (String planetName : PlanetNames.getInstance().getPlanetNames()){
             _planets.add(new RandomPlanet(planetName));
@@ -98,7 +98,7 @@ public class Galaxy {
         char[][] out = new char[_universeWidth ][_universeHeight];
         String outstring = "";
 
-        for(int i = 0; i < 150; i++) {
+        for(int i = 0; i < _universeWidth; i++) {
             Arrays.fill(out[i], '-');
         }
 
@@ -107,8 +107,8 @@ public class Galaxy {
             out[j.getCoordinates().getxPos()][j.getCoordinates().getyPos()] = 'X';
         }
 
-        for(int i = 0; i < 150; i++) {
-            for(int j = 0; j < 150; j++) {
+        for(int i = 0; i < _universeWidth; i++) {
+            for(int j = 0; j < _universeHeight; j++) {
                 outstring += String.valueOf(out[i][j]);
             }
             outstring += String.valueOf('\n');
