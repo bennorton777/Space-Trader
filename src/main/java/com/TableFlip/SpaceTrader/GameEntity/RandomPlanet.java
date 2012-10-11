@@ -19,7 +19,7 @@ public class RandomPlanet extends Planet {
         setName(name);
         setTechLevel(Enums.TechLevel.values()[random.nextInt(Enums.TechLevel.values().length)]);
         setResources(Enums.Resources.values()[random.nextInt(Enums.Resources.values().length)]);
-        System.out.println("Generating planet named: " + name);
+        //System.out.println("Generating planet named: " + name);
         setLocalPrices(PriceGenerator.getInstance().generatePrices(this).getLocalValues());
     }
 }

@@ -28,7 +28,7 @@ public class Galaxy {
         HashMap<Coordinates, Planet> map = new HashMap<Coordinates, Planet>();
         for (Planet planet : _planets){
             planet.setCoordinates(newRandomLocation(map));
-            System.out.println(planet.getCoordinates());
+            //System.out.println(planet.getCoordinates());
         }
         return map;
     }
@@ -99,29 +99,20 @@ public class Galaxy {
         String outstring = "";
 
         for(int i = 0; i < 150; i++) {
-            //System.out.println(i);
             Arrays.fill(out[i], '-');
         }
-
-        //System.out.println("Filled.");
 
         for (Planet j : planets)
         {
             out[j.getCoordinates().getxPos()][j.getCoordinates().getyPos()] = 'X';
         }
 
-        System.out.println("Xed.");
-
         for(int i = 0; i < 150; i++) {
             for(int j = 0; j < 150; j++) {
-                //System.out.print(out[i][j]);
                 outstring += String.valueOf(out[i][j]);
             }
-            //System.out.println();
             outstring += String.valueOf('\n');
         }
-
-        System.out.println("Done.");
 
         return outstring;
     }
