@@ -81,6 +81,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>ideauidesigner-maven-plugin</artifactId>
+                <version>1.0-beta-1</version>
                 <executions>
                     <execution>
                         <phase>compile</phase>
@@ -90,7 +91,6 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <version>1.0-beta-1</version>
                     <fork>true</fork>
                     <debug>true</debug>
                     <failOnError>true</failOnError>
