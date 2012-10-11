@@ -7,7 +7,7 @@ package com.TableFlip.SpaceTrader.Model;
  * Time: 11:37 AM
  * To change this template use File | Settings | File Templates.
  */
-public class Coordinates {
+public class Coordinates implements Comparable{
     private int _xPos;
     private int _yPos;
     public Coordinates(int x, int y){
@@ -45,7 +45,24 @@ public class Coordinates {
             return false;
         }
     }
+
     public String toString(){
         return "Planet is located at x: "+_xPos+" and y: "+_yPos;
+    }
+
+    // Returns negative if parameter is smaller, positive if larger, 0 if equal;
+    public int compareTo(Object o) {
+        if (!(o instanceof Coordinates)) {
+            return Integer.MAX_VALUE;
+        }
+        else {
+            Coordinates temp = (Coordinates) o;
+            int yDiff = temp.getyPos() - _yPos, xDiff = temp.getxPos() - _xPos;
+
+            if (yDiff != 0)
+                return yDiff;
+            else
+                return xDiff;
+        }
     }
 }

@@ -27,6 +27,7 @@ public class Bootstrapper {
     public static void generateGalaxy(){
         System.out.println("Generating galaxy.");
         Galaxy galaxy=Galaxy.getInstance();
+        System.out.println(galaxy);
         displayGameScreen();
     }
     /**

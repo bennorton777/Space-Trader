@@ -13,31 +13,17 @@ import java.util.*;
  * Time: 11:31 AM
  * To change this template use File | Settings | File Templates.
  */
+
 public class Galaxy {
     List<Planet> _planets;
-
-    public int getUniverseHeight() {
-        return _universeHeight;
-    }
-
-    public void setUniverseHeight(int universeHeight) {
-        _universeHeight = universeHeight;
-    }
-
-    public int getUniverseWidth() {
-        return _universeWidth;
-    }
-
-    public void setUniverseWidth(int universeWidth) {
-        _universeWidth = universeWidth;
-    }
-
     int _universeHeight;
     int _universeWidth;
+
     public Map<Planet, Coordinates> getLocations() {
         return _locations;
     }
-    //Do not call generateLocations if planets have not yet been generated!
+
+    //Do not call gnenerateLocations if planets have not yet been generated!
     public Map<Coordinates, Planet> generateLocations() {
         HashMap<Coordinates, Planet> map = new HashMap<Coordinates, Planet>();
         for (Planet planet : _planets){
@@ -46,7 +32,8 @@ public class Galaxy {
         }
         return map;
     }
-    public Coordinates newRandomLocation(HashMap<Coordinates, Planet> map){
+
+    private Coordinates newRandomLocation(HashMap<Coordinates, Planet> map){
         Random random=new Random();
         int x=random.nextInt(getUniverseWidth());
         int y=random.nextInt(getUniverseHeight());
@@ -87,5 +74,55 @@ public class Galaxy {
 
     public void setPlanets(List<Planet> planets) {
         _planets = planets;
+    }
+
+    public int getUniverseHeight() {
+        return _universeHeight;
+    }
+
+    public void setUniverseHeight(int universeHeight) {
+        _universeHeight = universeHeight;
+    }
+
+    public int getUniverseWidth() {
+        return _universeWidth;
+    }
+
+    public void setUniverseWidth(int universeWidth) {
+        _universeWidth = universeWidth;
+    }
+
+    @Override
+    public String toString() {
+        List<Planet> planets = getPlanets();
+        char[][] out = new char[_universeWidth ][_universeHeight];
+        String outstring = "";
+
+        for(int i = 0; i < 150; i++) {
+            //System.out.println(i);
+            Arrays.fill(out[i], '-');
+        }
+
+        //System.out.println("Filled.");
+
+        for (Planet j : planets)
+        {
+            out[j.getCoordinates().getxPos()][j.getCoordinates().getyPos()] = 'X';
+        }
+
+        System.out.println("Xed.");
+
+        for(int i = 0; i < 150; i++) {
+            for(int j = 0; j < 150; j++) {
+                //System.out.print(out[i][j]);
+                outstring += String.valueOf(out[i][j]);
+            }
+            //System.out.println();
+            outstring += String.valueOf('\n');
+        }
+
+        System.out.println("Done.");
+
+        return outstring;
     }
 }
