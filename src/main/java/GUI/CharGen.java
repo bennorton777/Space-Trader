@@ -162,7 +162,7 @@ public class CharGen {
         final JLabel label7 = new JLabel();
         label7.setHorizontalAlignment(0);
         label7.setHorizontalTextPosition(0);
-        label7.setText("Tell me about yourself");
+        label7.setText("Yo Make a Character Man");
         _panel.add(label7, new GridConstraints(0, 0, 1, 3, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(138, 9), null, 0, false));
         _textField1 = new JTextField();
         _panel.add(_textField1, new GridConstraints(1, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
