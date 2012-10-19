@@ -3,8 +3,8 @@ package com.TableFlip.SpaceTrader.Service;
 /**
  * Information holder.  contains a bunch of planet names
  */
-public class PlanetNames {
-    public String[] getPlanetNames() {
+public class PortNames {
+    public String[] getPortNames() {
         return _planetNames;
     }
 
@@ -13,8 +13,8 @@ public class PlanetNames {
     }
 
     private String[] _planetNames;
-    private static PlanetNames _instance;
-    private PlanetNames(){
+    private static PortNames _instance;
+    private PortNames(){
         String[] planetNames=new String[]{
                 "Acamar",
                 "Adahn",		// The alternate personality for The Nameless One in "Planescape: Torment"
@@ -138,9 +138,9 @@ public class PlanetNames {
         };
         _planetNames=planetNames;
     }
-    public static PlanetNames getInstance(){
+    public static PortNames getInstance(){
         if (_instance==null){
-            _instance=new PlanetNames();
+            _instance=new PortNames();
             return _instance;
         }
         else{

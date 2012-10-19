@@ -49,7 +49,7 @@ public class Coordinates implements Comparable{
     }
 
     public String toString(){
-        return "Ocean is located at x: "+_xPos+" and y: "+_yPos;
+        return "Port is located at x: "+_xPos+" and y: "+_yPos;
     }
 
     /**
