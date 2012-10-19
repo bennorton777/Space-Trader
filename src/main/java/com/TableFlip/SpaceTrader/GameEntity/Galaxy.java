@@ -7,11 +7,7 @@ import com.TableFlip.SpaceTrader.Service.PlanetNames;
 import java.util.*;
 
 /**
- * Created with IntelliJ IDEA.
- * User: ben
- * Date: 9/7/12
- * Time: 11:31 AM
- * To change this template use File | Settings | File Templates.
+ * Hold reference to all planets and their locations.  Instantiating Galaxy triggers planet creation
  */
 
 public class Galaxy {
@@ -33,6 +29,11 @@ public class Galaxy {
         return map;
     }
 
+    /**
+     * Makes new random coordinates that does not conflict with coordinates in the parameter map
+     * @param map
+     * @return
+     */
     private Coordinates newRandomLocation(HashMap<Coordinates, Planet> map){
         Random random=new Random();
         int x=random.nextInt(getUniverseWidth());
@@ -59,6 +60,10 @@ public class Galaxy {
     }
 
     private static Galaxy _instance;
+
+    /**
+     * Sets default values for galaxy
+     */
     private Galaxy(){
         setUniverseHeight(100);
         setUniverseWidth(100);
@@ -92,6 +97,10 @@ public class Galaxy {
         _universeWidth = universeWidth;
     }
 
+    /**
+     * Generates a beautiful ascii representation of the galaxy.  Too cool for school
+     * @return String ascii awesomeness
+     */
     @Override
     public String toString() {
         List<Planet> planets = getPlanets();

@@ -1,11 +1,7 @@
 package com.TableFlip.SpaceTrader.Model;
 
 /**
- * Created with IntelliJ IDEA.
- * User: ben
- * Date: 9/6/12
- * Time: 2:42 PM
- * To change this template use File | Settings | File Templates.
+ * Contains an inventory, how to fly, etc.
  */
 public class Ship {
     private int _fuelRemaining;
@@ -19,6 +15,9 @@ public class Ship {
         _name = name;
     }
 
+    /**
+     * Most important method in ship!  Currently does nothing.  Stay tuned!
+     */
     public void fly(){
         //TODO
     }

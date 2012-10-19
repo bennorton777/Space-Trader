@@ -8,11 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * Created with IntelliJ IDEA.
- * User: ben
- * Date: 10/10/12
- * Time: 8:44 AM
- * To change this template use File | Settings | File Templates.
+ * Main Game screen!
  */
 public class GameScreen {
     private JTextPane playerInfo;

@@ -7,11 +7,7 @@ import com.TableFlip.SpaceTrader.Service.PriceGenerator;
 import java.util.Random;
 
 /**
- * Created with IntelliJ IDEA.
- * User: ben
- * Date: 9/7/12
- * Time: 11:35 AM
- * To change this template use File | Settings | File Templates.
+ * Planet subclass that sets its values randomly
  */
 public class RandomPlanet extends Planet {
     public RandomPlanet(String name){

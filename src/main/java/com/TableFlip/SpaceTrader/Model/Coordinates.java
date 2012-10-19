@@ -1,11 +1,7 @@
 package com.TableFlip.SpaceTrader.Model;
 
 /**
- * Created with IntelliJ IDEA.
- * User: ben
- * Date: 9/7/12
- * Time: 11:37 AM
- * To change this template use File | Settings | File Templates.
+ * Information Holder Class, contains coordinates of a planet
  */
 public class Coordinates implements Comparable{
     private int _xPos;
@@ -33,6 +29,12 @@ public class Coordinates implements Comparable{
     public int hashCode(){
         return 1000*_xPos+_yPos;
     }
+
+    /**
+     * Equals method needed for collision detection
+     * @param other
+     * @return
+     */
     public boolean equals(Object other){
         try {
             Coordinates otherCoord=(Coordinates) other;
@@ -50,7 +52,11 @@ public class Coordinates implements Comparable{
         return "Planet is located at x: "+_xPos+" and y: "+_yPos;
     }
 
-    // Returns negative if parameter is smaller, positive if larger, 0 if equal;
+    /**
+     * Compare to method needed for collision detection
+     * @param o
+     * @return
+     */
     public int compareTo(Object o) {
         if (!(o instanceof Coordinates)) {
             return Integer.MAX_VALUE;

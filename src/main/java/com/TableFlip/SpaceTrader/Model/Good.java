@@ -4,11 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created with IntelliJ IDEA.
- * User: ben
- * Date: 9/6/12
- * Time: 2:36 PM
- * To change this template use File | Settings | File Templates.
+ * Information Holder for Good.
+ * Contains preference for modifiers
+ * Contains minimal logic to calculate bias.
  */
 public class Good {
     private String _name;
@@ -17,12 +15,24 @@ public class Good {
     private Map<Enums.Resources, Integer> _resourcesModifiers;
     private Enums.TechLevel techCutOff;
 
+    /**
+     * Basic constructor for a good
+     * @param name
+     * @param baseCost
+     */
     public Good(String name, int baseCost){
         _name=name;
         _baseCost=baseCost;
         _techModifiers=new HashMap<Enums.TechLevel, Integer>();
         _resourcesModifiers=new HashMap<Enums.Resources, Integer>();
     }
+
+    /**
+     * Calculates bias for this good based on a given resource level and tech level
+     * @param resources
+     * @param techLevel
+     * @return int bias
+     */
     public int getBias(Enums.Resources resources, Enums.TechLevel techLevel){
         int resource=0;
         int tech=0;
@@ -69,6 +79,11 @@ public class Good {
         _resourcesModifiers.put(resource, modifier);
         return this;
     }
+
+    /**
+     * Shortcut for setting a lot of biases
+     * @return Good
+     */
     public Good expensiveWhenLowTech(){
         _techModifiers.put(Enums.TechLevel.PREAGRICULTURE, 3);
         _techModifiers.put(Enums.TechLevel.AGRICULTURE,2);
@@ -79,6 +94,11 @@ public class Good {
         _techModifiers.put(Enums.TechLevel.HITECH,-3);
         return this;
     }
+
+    /**
+     * Shortcut for setting a lot of biases.
+     * @return Good
+     */
     public Good expensiveWhenHighTech(){
         _techModifiers.put(Enums.TechLevel.PREAGRICULTURE, -3);
         _techModifiers.put(Enums.TechLevel.AGRICULTURE,-2);

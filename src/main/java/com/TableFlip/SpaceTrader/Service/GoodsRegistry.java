@@ -6,15 +6,15 @@ import com.TableFlip.SpaceTrader.Model.Good;
 import java.util.ArrayList;
 
 /**
- * Created with IntelliJ IDEA.
- * User: ben
- * Date: 9/6/12
- * Time: 2:46 PM
- * To change this template use File | Settings | File Templates.
+ * Registry containing all of the goods
  */
 public class GoodsRegistry {
     private ArrayList<Good> _goods;
     private static GoodsRegistry _instance;
+
+    /**
+     * Here's where setting biases of goods happens!
+     */
     private GoodsRegistry(){
         _goods=new ArrayList<Good>();
         _goods.add(new Good("Water", 30)

@@ -1,11 +1,7 @@
 package com.TableFlip.SpaceTrader.Service;
 
 /**
- * Created with IntelliJ IDEA.
- * User: ben
- * Date: 9/7/12
- * Time: 10:58 AM
- * To change this template use File | Settings | File Templates.
+ * Information holder.  contains a bunch of planet names
  */
 public class PlanetNames {
     public String[] getPlanetNames() {

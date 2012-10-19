@@ -8,11 +8,7 @@ import java.util.Map;
 import java.util.Random;
 
 /**
- * Created with IntelliJ IDEA.
- * User: ben
- * Date: 9/7/12
- * Time: 11:44 AM
- * To change this template use File | Settings | File Templates.
+ * This class generates prices for planets
  */
 public class PriceGenerator {
     private static PriceGenerator _instance;
@@ -31,6 +27,11 @@ public class PriceGenerator {
         }
     }
 
+    /**
+     * The bulk of this class's logic is contained here.  Generate me some prices!
+     * @param planet
+     * @return
+     */
     public RandomPlanet generatePrices(RandomPlanet planet){
         Map<Good, Integer> values=new HashMap<Good, Integer>();
         for (Good good : _goodsRegistry.getGoods()){
@@ -40,10 +41,16 @@ public class PriceGenerator {
             int biasAdjust=modifiedBias*good.getBaseCost()/100;
             values.put(good, good.getBaseCost()+biasAdjust);
         }
-        values=filterGoods(values);
+        values=filterGoods(values); //Filter Goods
         planet.setLocalPrices(values);
         return planet;
     }
+
+    /**
+     * Just a placeholder for now, but can eventually be used to filter out Goods
+     * @param candidateValues
+     * @return
+     */
     private Map<Good, Integer> filterGoods(Map<Good, Integer> candidateValues){
         for (Good good : candidateValues.keySet()){
             //System.out.println(good.getName());
