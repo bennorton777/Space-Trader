@@ -1,8 +1,7 @@
 package com.TableFlip.SpaceTrader.Bootstrap;
 
-import GUI.CharGen;
 import GUI.GuiArbiter;
-import com.TableFlip.SpaceTrader.GameEntity.Galaxy;
+import com.TableFlip.SpaceTrader.GameEntity.Ocean;
 import com.TableFlip.SpaceTrader.Service.GoodsRegistry;
 
 /**
@@ -25,9 +24,9 @@ public class Bootstrapper {
      * This phase launches galaxy generation.
      */
     public static void generateGalaxy(){
-        System.out.println("Generating galaxy.");
-        Galaxy galaxy=Galaxy.getInstance();
-        System.out.println(galaxy);
+        System.out.println("Generating ocean.");
+        Ocean ocean = Ocean.getInstance();
+        System.out.println(ocean);
         displayGameScreen();
     }
     /**

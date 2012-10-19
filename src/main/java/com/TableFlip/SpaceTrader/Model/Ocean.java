@@ -11,7 +11,7 @@ import java.util.Map;
  * Time: 2:44 PM
  * To change this template use File | Settings | File Templates.
  */
-public class Planet{
+public class Ocean {
     GoodsRegistry _goodsRegistry=GoodsRegistry.getInstance();
     Map<Good, Integer> _localValues;
     Enums.Resources _resources;
@@ -43,7 +43,7 @@ public class Planet{
     }
 
     Enums.TechLevel _techLevel;
-    public Planet(){
+    public Ocean(){
        //Do nothing
     }
 

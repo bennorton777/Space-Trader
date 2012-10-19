@@ -7,7 +7,7 @@ public class Ship {
     private int _fuelRemaining;
     private int _fuelMax;
     private String _name;
-    private Planet _currentPlanet;
+    private Ocean _currentOcean;
 
     public Ship(int fuelRemaining, int fuelMax, String name) {
         _fuelRemaining = fuelRemaining;
@@ -46,12 +46,12 @@ public class Ship {
         _name = name;
     }
 
-    public Planet getCurrentPlanet() {
-        return _currentPlanet;
+    public Ocean getCurrentPlanet() {
+        return _currentOcean;
     }
 
-    public void setCurrentPlanet(Planet currentPlanet) {
-        _currentPlanet = currentPlanet;
+    public void setCurrentPlanet(Ocean currentOcean) {
+        _currentOcean = currentOcean;
     }
 
     public String toString() {

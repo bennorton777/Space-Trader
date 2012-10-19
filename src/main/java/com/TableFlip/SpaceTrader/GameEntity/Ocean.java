@@ -1,30 +1,29 @@
 package com.TableFlip.SpaceTrader.GameEntity;
 
 import com.TableFlip.SpaceTrader.Model.Coordinates;
-import com.TableFlip.SpaceTrader.Model.Planet;
 import com.TableFlip.SpaceTrader.Service.PlanetNames;
 
 import java.util.*;
 
 /**
- * Hold reference to all planets and their locations.  Instantiating Galaxy triggers planet creation
+ * Hold reference to all planets and their locations.  Instantiating Ocean triggers planet creation
  */
 
-public class Galaxy {
-    List<Planet> _planets;
+public class Ocean {
+    List<com.TableFlip.SpaceTrader.Model.Ocean> _oceans;
     int _universeHeight;
     int _universeWidth;
 
-    public Map<Planet, Coordinates> getLocations() {
+    public Map<com.TableFlip.SpaceTrader.Model.Ocean, Coordinates> getLocations() {
         return _locations;
     }
 
     //Do not call gnenerateLocations if planets have not yet been generated!
-    public Map<Coordinates, Planet> generateLocations() {
-        HashMap<Coordinates, Planet> map = new HashMap<Coordinates, Planet>();
-        for (Planet planet : _planets){
-            planet.setCoordinates(newRandomLocation(map));
-            //System.out.println(planet.getCoordinates());
+    public Map<Coordinates, com.TableFlip.SpaceTrader.Model.Ocean> generateLocations() {
+        HashMap<Coordinates, com.TableFlip.SpaceTrader.Model.Ocean> map = new HashMap<Coordinates, com.TableFlip.SpaceTrader.Model.Ocean>();
+        for (com.TableFlip.SpaceTrader.Model.Ocean ocean : _oceans){
+            ocean.setCoordinates(newRandomLocation(map));
+            //System.out.println(ocean.getCoordinates());
         }
         return map;
     }
@@ -34,7 +33,7 @@ public class Galaxy {
      * @param map
      * @return
      */
-    private Coordinates newRandomLocation(HashMap<Coordinates, Planet> map){
+    private Coordinates newRandomLocation(HashMap<Coordinates, com.TableFlip.SpaceTrader.Model.Ocean> map){
         Random random=new Random();
         int x=random.nextInt(getUniverseWidth());
         int y=random.nextInt(getUniverseHeight());
@@ -45,12 +44,12 @@ public class Galaxy {
         return candidate;
     }
 
-    Map<Planet, Coordinates> _locations;
+    Map<com.TableFlip.SpaceTrader.Model.Ocean, Coordinates> _locations;
 
-    public static Galaxy getInstance() {
+    public static Ocean getInstance() {
         if (_instance==null){
-            System.out.println("New Galaxy!");
-            _instance=new Galaxy();
+            System.out.println("New Ocean!");
+            _instance=new Ocean();
             return _instance;
         }
         else{
@@ -59,26 +58,26 @@ public class Galaxy {
 
     }
 
-    private static Galaxy _instance;
+    private static Ocean _instance;
 
     /**
      * Sets default values for galaxy
      */
-    private Galaxy(){
+    private Ocean(){
         setUniverseHeight(100);
         setUniverseWidth(100);
-        _planets =new ArrayList<Planet>();
+        _oceans =new ArrayList<com.TableFlip.SpaceTrader.Model.Ocean>();
         for (String planetName : PlanetNames.getInstance().getPlanetNames()){
-            _planets.add(new RandomPlanet(planetName));
+            _oceans.add(new RandomOcean(planetName));
         }
         generateLocations();
     }
-    public List<Planet> getPlanets() {
-        return _planets;
+    public List<com.TableFlip.SpaceTrader.Model.Ocean> getPlanets() {
+        return _oceans;
     }
 
-    public void setPlanets(List<Planet> planets) {
-        _planets = planets;
+    public void setPlanets(List<com.TableFlip.SpaceTrader.Model.Ocean> oceans) {
+        _oceans = oceans;
     }
 
     public int getUniverseHeight() {
@@ -103,7 +102,7 @@ public class Galaxy {
      */
     @Override
     public String toString() {
-        List<Planet> planets = getPlanets();
+        List<com.TableFlip.SpaceTrader.Model.Ocean> oceans = getPlanets();
         char[][] out = new char[_universeWidth ][_universeHeight];
         String outstring = "";
 
@@ -111,7 +110,7 @@ public class Galaxy {
             Arrays.fill(out[i], '-');
         }
 
-        for (Planet j : planets)
+        for (com.TableFlip.SpaceTrader.Model.Ocean j : oceans)
         {
             out[j.getCoordinates().getxPos()][j.getCoordinates().getyPos()] = 'X';
         }

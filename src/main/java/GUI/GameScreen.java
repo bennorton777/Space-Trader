@@ -81,10 +81,10 @@ public class GameScreen {
         CellConstraints cc = new CellConstraints();
         _panel.add(shipStatusLabel, cc.xy(1, 3));
         currentPlanetLabel = new JLabel();
-        currentPlanetLabel.setText("Current Planet");
+        currentPlanetLabel.setText("Current Ocean");
         _panel.add(currentPlanetLabel, cc.xy(3, 3));
         targetPlanetLabel = new JLabel();
-        targetPlanetLabel.setText("Target Planet");
+        targetPlanetLabel.setText("Target Ocean");
         _panel.add(targetPlanetLabel, cc.xy(5, 3));
         shipStatusPane = new JTextPane();
         shipStatusPane.setEditable(false);
@@ -106,10 +106,10 @@ public class GameScreen {
         toMarketplaceButton.setText("Marketplace");
         _panel.add(toMarketplaceButton, cc.xy(3, 7));
         toGalaxyMapButton = new JButton();
-        toGalaxyMapButton.setText("Galaxy Map");
+        toGalaxyMapButton.setText("Ocean Map");
         _panel.add(toGalaxyMapButton, cc.xy(5, 7));
         toTargetPlanetButton = new JButton();
-        toTargetPlanetButton.setText("Warp to Target Planet");
+        toTargetPlanetButton.setText("Warp to Target Ocean");
         _panel.add(toTargetPlanetButton, cc.xy(5, 9));
         shipStatusLabel.setLabelFor(shipStatusPane);
         currentPlanetLabel.setLabelFor(currentPlanetPane);

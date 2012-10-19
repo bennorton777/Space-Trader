@@ -1,6 +1,6 @@
 package com.TableFlip.SpaceTrader.Service;
 
-import com.TableFlip.SpaceTrader.GameEntity.RandomPlanet;
+import com.TableFlip.SpaceTrader.GameEntity.RandomOcean;
 import com.TableFlip.SpaceTrader.Model.Good;
 
 import java.util.HashMap;
@@ -29,21 +29,21 @@ public class PriceGenerator {
 
     /**
      * The bulk of this class's logic is contained here.  Generate me some prices!
-     * @param planet
+     * @param ocean
      * @return
      */
-    public RandomPlanet generatePrices(RandomPlanet planet){
+    public RandomOcean generatePrices(RandomOcean ocean){
         Map<Good, Integer> values=new HashMap<Good, Integer>();
         for (Good good : _goodsRegistry.getGoods()){
-            int bias = good.getBias(planet.getResources(), planet.getTechLevel());
+            int bias = good.getBias(ocean.getResources(), ocean.getTechLevel());
             Random random=new Random();
             int modifiedBias=random.nextInt(10)*bias;
             int biasAdjust=modifiedBias*good.getBaseCost()/100;
             values.put(good, good.getBaseCost()+biasAdjust);
         }
         values=filterGoods(values); //Filter Goods
-        planet.setLocalPrices(values);
-        return planet;
+        ocean.setLocalPrices(values);
+        return ocean;
     }
 
     /**
