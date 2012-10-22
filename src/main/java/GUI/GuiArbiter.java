@@ -44,7 +44,10 @@ public class GuiArbiter {
         System.out.println("Created character with name: "+_player.getName()+" and stats as follows:  fighter->"+_player.getStats().get(Enums.Skill.FIGHTER)+" pilot->"+_player.getStats().get(Enums.Skill.PILOT)+" trader->"+_player.getStats().get(Enums.Skill.TRADER)+" engineer->"+_player.getStats().get(Enums.Skill.ENGINEER)+".  This player has "+_player.getCredits()+" credits and ship: " + _player.getShip().toString());
         com.TableFlip.SpaceTrader.Bootstrap.Bootstrapper.generateGalaxy();
     }
-    public static void GameScreen(){
-        GameScreen.main(new String[0]);
+    public static void GameScreen(String name, int coins){
+        String[] args=new String[2];
+        args[0]=name;
+        args[1]=Integer.toString(coins);
+        GameScreen.main(args);
     }
 }

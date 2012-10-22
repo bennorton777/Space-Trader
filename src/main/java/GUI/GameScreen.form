@@ -31,24 +31,24 @@
           <text value="Ship Status "/>
         </properties>
       </component>
-      <component id="bfd70" class="javax.swing.JLabel" binding="currentPlanetLabel">
+      <component id="bfd70" class="javax.swing.JLabel" binding="currentPortLabel">
         <constraints>
           <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
           <forms/>
         </constraints>
         <properties>
           <labelFor value="73e62"/>
-          <text value="Current Planet"/>
+          <text value="Current Port"/>
         </properties>
       </component>
-      <component id="365d4" class="javax.swing.JLabel" binding="targetPlanetLabel">
+      <component id="365d4" class="javax.swing.JLabel" binding="targetPortLabel">
         <constraints>
           <grid row="2" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
           <forms/>
         </constraints>
         <properties>
           <labelFor value="94930"/>
-          <text value="Target Planet"/>
+          <text value="Target Port"/>
         </properties>
       </component>
       <component id="76f10" class="javax.swing.JTextPane" binding="shipStatusPane">
@@ -62,7 +62,7 @@
           <editable value="false"/>
         </properties>
       </component>
-      <component id="73e62" class="javax.swing.JTextPane" binding="currentPlanetPane">
+      <component id="73e62" class="javax.swing.JTextPane" binding="currentPortPane">
         <constraints>
           <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="50"/>
@@ -73,7 +73,7 @@
           <editable value="false"/>
         </properties>
       </component>
-      <component id="94930" class="javax.swing.JTextPane" binding="targetPlanetPane">
+      <component id="94930" class="javax.swing.JTextPane" binding="targetPortPane">
         <constraints>
           <grid row="4" column="4" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="50"/>
@@ -93,7 +93,7 @@
         </constraints>
         <properties>
           <editable value="false"/>
-          <text value="Name: Pilot: Fighter: Trader: Engineer:  You have: credits."/>
+          <text value="Name: Pilot: Fighter: Trader: Engineer:  You have: coins."/>
         </properties>
       </component>
       <component id="73b91" class="javax.swing.JButton" binding="toShipyardButton">
@@ -114,22 +114,22 @@
           <text value="Marketplace"/>
         </properties>
       </component>
-      <component id="44933" class="javax.swing.JButton" binding="toGalaxyMapButton">
+      <component id="44933" class="javax.swing.JButton" binding="toOceanMapButton">
         <constraints>
           <grid row="6" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
           <forms/>
         </constraints>
         <properties>
-          <text value="Galaxy Map"/>
+          <text value="Ocean Map"/>
         </properties>
       </component>
-      <component id="92a08" class="javax.swing.JButton" binding="toTargetPlanetButton">
+      <component id="92a08" class="javax.swing.JButton" binding="toTargetPortButton">
         <constraints>
           <grid row="8" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
           <forms/>
         </constraints>
         <properties>
-          <text value="Warp to Target Planet"/>
+          <text value="Warp to Target Port"/>
         </properties>
       </component>
     </children>
