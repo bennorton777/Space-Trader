@@ -2,6 +2,7 @@ package com.TableFlip.SpaceTrader.Bootstrap;
 
 import GUI.GuiArbiter;
 import com.TableFlip.SpaceTrader.GameEntity.Ocean;
+import com.TableFlip.SpaceTrader.GameEntity.Player;
 import com.TableFlip.SpaceTrader.Service.GoodsRegistry;
 
 /**
@@ -35,6 +36,7 @@ public class Bootstrapper {
      */
     public static void displayGameScreen(){
         System.out.println("Displaying Game Screen");
-        GuiArbiter.GameScreen();
+        //TODO Make this come from Player
+        GuiArbiter.GameScreen("Pirate Butts", 1000);
     }
 }

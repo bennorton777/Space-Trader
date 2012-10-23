@@ -2,7 +2,7 @@ package com.TableFlip.SpaceTrader.GameEntity;
 
 import com.TableFlip.SpaceTrader.Model.Enums;
 import com.TableFlip.SpaceTrader.Model.Port;
-import com.TableFlip.SpaceTrader.Service.PriceGenerator;
+import com.TableFlip.SpaceTrader.Service.MarketGenerator;
 
 import java.util.Random;
 
@@ -16,6 +16,6 @@ public class RandomPort extends Port {
         setTechLevel(Enums.TechLevel.values()[random.nextInt(Enums.TechLevel.values().length)]);
         setResources(Enums.Resources.values()[random.nextInt(Enums.Resources.values().length)]);
         //System.out.println("Generating planet named: " + name);
-        setLocalPrices(PriceGenerator.getInstance().generatePrices(this).getLocalValues());
+        setLocalMarket(MarketGenerator.getInstance().generateMarket(this).getLocalMarket());     //.getLocalMarket
     }
 }

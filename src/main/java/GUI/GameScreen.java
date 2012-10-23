@@ -13,21 +13,27 @@ import java.awt.event.ActionListener;
 public class GameScreen {
     private JTextPane playerInfo;
     private JLabel shipStatusLabel;
-    private JLabel currentPlanetLabel;
-    private JLabel targetPlanetLabel;
+    private JLabel currentPortLabel;
+    private JLabel targetPortLabel;
     private JTextPane shipStatusPane;
-    private JTextPane currentPlanetPane;
-    private JTextPane targetPlanetPane;
+    private JTextPane currentPortPane;
+    private JTextPane targetPortPane;
     private JButton toShipyardButton;
     private JButton toMarketplaceButton;
-    private JButton toGalaxyMapButton;
-    private JButton toTargetPlanetButton;
+    private JButton toOceanMapButton;
+    private JButton toTargetPortButton;
 
     private JPanel _panel;
     private static JFrame frame;
 
+    private String _name;
+    private String _coins;
 
-    public GameScreen() {
+
+    public GameScreen(String name, String coins) {
+        _name = name;
+        _coins = coins;
+        updatePlayerInfoPane();
         toShipyardButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
@@ -35,25 +41,34 @@ public class GameScreen {
         });
         toMarketplaceButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
+                 //TODO
             }
         });
-        toGalaxyMapButton.addActionListener(new ActionListener() {
+        toOceanMapButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
             }
         });
 
-        toTargetPlanetButton.addActionListener(new ActionListener() {
+        toTargetPortButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
             }
         });
     }
 
+    public void updatePlayerInfoPane(){
+        playerInfo.setText("Name: " + _name + "You have: " + _coins + "coins");
+    }
+
+    public void updateCredits(String coins){
+        _coins = coins;
+        updatePlayerInfoPane();
+    }
+
     public static void main(String[] args) {
         frame = new JFrame("Main Screen");
-        frame.setContentPane(new GameScreen()._panel);
+        frame.setContentPane(new GameScreen(args[0], args[1])._panel);
         frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
@@ -80,21 +95,21 @@ public class GameScreen {
         shipStatusLabel.setText("Ship Status ");
         CellConstraints cc = new CellConstraints();
         _panel.add(shipStatusLabel, cc.xy(1, 3));
-        currentPlanetLabel = new JLabel();
-        currentPlanetLabel.setText("Current Port");
-        _panel.add(currentPlanetLabel, cc.xy(3, 3));
-        targetPlanetLabel = new JLabel();
-        targetPlanetLabel.setText("Target Port");
-        _panel.add(targetPlanetLabel, cc.xy(5, 3));
+        currentPortLabel = new JLabel();
+        currentPortLabel.setText("Current Port");
+        _panel.add(currentPortLabel, cc.xy(3, 3));
+        targetPortLabel = new JLabel();
+        targetPortLabel.setText("Target Port");
+        _panel.add(targetPortLabel, cc.xy(5, 3));
         shipStatusPane = new JTextPane();
         shipStatusPane.setEditable(false);
         _panel.add(shipStatusPane, cc.xy(1, 5, CellConstraints.FILL, CellConstraints.FILL));
-        currentPlanetPane = new JTextPane();
-        currentPlanetPane.setEditable(false);
-        _panel.add(currentPlanetPane, cc.xy(3, 5, CellConstraints.FILL, CellConstraints.FILL));
-        targetPlanetPane = new JTextPane();
-        targetPlanetPane.setEditable(false);
-        _panel.add(targetPlanetPane, cc.xy(5, 5, CellConstraints.FILL, CellConstraints.FILL));
+        currentPortPane = new JTextPane();
+        currentPortPane.setEditable(false);
+        _panel.add(currentPortPane, cc.xy(3, 5, CellConstraints.FILL, CellConstraints.FILL));
+        targetPortPane = new JTextPane();
+        targetPortPane.setEditable(false);
+        _panel.add(targetPortPane, cc.xy(5, 5, CellConstraints.FILL, CellConstraints.FILL));
         playerInfo = new JTextPane();
         playerInfo.setEditable(false);
         playerInfo.setText("Name: Pilot: Fighter: Trader: Engineer:  You have: credits.");
@@ -105,15 +120,15 @@ public class GameScreen {
         toMarketplaceButton = new JButton();
         toMarketplaceButton.setText("Marketplace");
         _panel.add(toMarketplaceButton, cc.xy(3, 7));
-        toGalaxyMapButton = new JButton();
-        toGalaxyMapButton.setText("Port Map");
-        _panel.add(toGalaxyMapButton, cc.xy(5, 7));
-        toTargetPlanetButton = new JButton();
-        toTargetPlanetButton.setText("Warp to Target Port");
-        _panel.add(toTargetPlanetButton, cc.xy(5, 9));
+        toOceanMapButton = new JButton();
+        toOceanMapButton.setText("Port Map");
+        _panel.add(toOceanMapButton, cc.xy(5, 7));
+        toTargetPortButton = new JButton();
+        toTargetPortButton.setText("Warp to Target Port");
+        _panel.add(toTargetPortButton, cc.xy(5, 9));
         shipStatusLabel.setLabelFor(shipStatusPane);
-        currentPlanetLabel.setLabelFor(currentPlanetPane);
-        targetPlanetLabel.setLabelFor(targetPlanetPane);
+        currentPortLabel.setLabelFor(currentPortPane);
+        targetPortLabel.setLabelFor(targetPortPane);
     }
 
     /**
