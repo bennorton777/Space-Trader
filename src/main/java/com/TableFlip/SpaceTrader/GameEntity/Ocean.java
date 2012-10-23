@@ -1,7 +1,9 @@
 package com.TableFlip.SpaceTrader.GameEntity;
 
 import com.TableFlip.SpaceTrader.Model.Coordinates;
+import com.TableFlip.SpaceTrader.Model.Island;
 import com.TableFlip.SpaceTrader.Model.Port;
+import com.TableFlip.SpaceTrader.Model.RandomCoordinates;
 import com.TableFlip.SpaceTrader.Service.PortNames;
 
 import java.util.*;
@@ -11,41 +13,21 @@ import java.util.*;
  */
 
 public class Ocean {
-    List<Port> _ports;
+    List<Island> _islands;
     int _oceanHeight;
     int _oceanWidth;
-
-    public Map<Port, Coordinates> getLocations() {
-        return _locations;
-    }
-
-    //Do not call gnenerateLocations if planets have not yet been generated!
-    public Map<Coordinates, Port> generateLocations() {
-        HashMap<Coordinates, Port> map = new HashMap<Coordinates, Port>();
-        for (Port port : _ports){
-            port.setCoordinates(newRandomLocation(map));
-            //System.out.println(port.getCoordinates());
-        }
-        return map;
-    }
+    private static Ocean _instance;
+    private static final int _MAXNUMPORTS = 7;
 
     /**
-     * Makes new random coordinates that does not conflict with coordinates in the parameter map
-     * @param map
-     * @return
+     * Sets default values for galaxy
      */
-    private Coordinates newRandomLocation(HashMap<Coordinates, Port> map){
-        Random random=new Random();
-        int x=random.nextInt(getOceanWidth());
-        int y=random.nextInt(getOceanHeight());
-        Coordinates candidate=new Coordinates(x, y);
-        if (map.containsKey(candidate)){
-            candidate=newRandomLocation(map);
-        }
-        return candidate;
+    private Ocean(){
+        setOceanHeight(100);
+        setOceanWidth(100);
+        _islands =new ArrayList<Island>();
+        generateIslands();
     }
-
-    Map<Port, Coordinates> _locations;
 
     public static Ocean getInstance() {
         if (_instance==null){
@@ -59,26 +41,68 @@ public class Ocean {
 
     }
 
-    private static Ocean _instance;
+    public void generateIslands() {
+        ArrayList<String> names = new ArrayList<String>();
+        Random gen = new Random();
 
-    /**
-     * Sets default values for galaxy
-     */
-    private Ocean(){
-        setOceanHeight(100);
-        setOceanWidth(100);
-        _ports =new ArrayList<Port>();
-        for (String portName : PortNames.getInstance().getPortNames()){
-            _ports.add(new RandomPort(portName));
+        for (String n : PortNames.getInstance().getPortNames())
+        {
+            names.add(n);
         }
-        generateLocations();
-    }
-    public List<Port> getPorts() {
-        return _ports;
+
+        while (names.size() != 0)
+        {
+            int size;
+            if (_MAXNUMPORTS > names.size())
+                size = gen.nextInt(names.size()) + 1;
+            else
+                size = gen.nextInt(_MAXNUMPORTS) + 1;
+
+            Coordinates pos = newIslandLocation(size);
+
+            String[] tempNames = new String[size];
+
+            for (int i = 0; i < size; i ++)
+            {
+                tempNames[i] = names.remove(gen.nextInt(names.size()));
+            }
+
+            Island temp = new Island(tempNames,  pos);
+
+            _islands.add(temp);
+        }
     }
 
-    public void setPlanets(List<Port> ports) {
-        _ports = ports;
+    private Coordinates newIslandLocation(int radius) {
+        boolean failed;
+
+        do{
+            failed = false;
+
+            // Generate new test point.
+            Coordinates trial = new RandomCoordinates(_oceanWidth - radius*2, _oceanHeight - radius*2);
+            trial.setxPos(trial.getxPos() + radius);
+            trial.setyPos(trial.getyPos() + radius);
+
+            for (Island isl : _islands)
+            {
+                int span = radius + (isl.getSize()/2);
+
+                if (Math.abs(isl.getLocation().getxPos() - trial.getxPos()) < span && Math.abs(isl.getLocation().getyPos() - trial.getyPos()) < span)
+                {
+                    failed = true;
+                    break;
+                }
+            }
+        } while (failed);
+    }
+
+    public List<Island> getIslands() {
+        return _islands;
+    }
+
+    public void setPlanets(List<Island> ports) {
+        _islands = ports;
     }
 
     public int getOceanHeight() {
@@ -103,7 +127,7 @@ public class Ocean {
      */
     @Override
     public String toString() {
-        List<Port> ports = getPorts();
+        List<Port> ports = getIslands();
         char[][] out = new char[_oceanWidth][_oceanHeight];
         String outstring = "";
 

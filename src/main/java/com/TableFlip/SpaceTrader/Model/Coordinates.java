@@ -6,6 +6,11 @@ package com.TableFlip.SpaceTrader.Model;
 public class Coordinates implements Comparable{
     private int _xPos;
     private int _yPos;
+
+    public Coordinates() {
+
+    }
+
     public Coordinates(int x, int y){
         _xPos=x;
         _yPos=y;
