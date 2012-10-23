@@ -11,8 +11,11 @@ import java.util.Map;
 public class Good {
     private String _name;
     private int _baseCost;
-    private Map<Enums.TechLevel, Integer> _techModifiers;
-    private Map<Enums.Resources, Integer> _resourcesModifiers;
+    private int _baseQuantity;
+    private Map<Enums.TechLevel, Integer> _techPriceModifiers;
+    private Map<Enums.Resources, Integer> _resourcesPriceModifiers;
+    private Map<Enums.TechLevel, Integer> _techQuantityModifiers;
+    private Map<Enums.Resources, Integer> _resourcesQuantityModifiers;
     private Enums.TechLevel techCutOff;
 
     /**
@@ -20,30 +23,52 @@ public class Good {
      * @param name
      * @param baseCost
      */
-    public Good(String name, int baseCost){
+    public Good(String name, int baseCost, int baseQuantity){
         _name=name;
         _baseCost=baseCost;
-        _techModifiers=new HashMap<Enums.TechLevel, Integer>();
-        _resourcesModifiers=new HashMap<Enums.Resources, Integer>();
+        _baseQuantity=baseQuantity;
+        _techPriceModifiers =new HashMap<Enums.TechLevel, Integer>();
+        _resourcesPriceModifiers =new HashMap<Enums.Resources, Integer>();
+        _techQuantityModifiers =new HashMap<Enums.TechLevel, Integer>();
+        _resourcesQuantityModifiers =new HashMap<Enums.Resources, Integer>();
     }
 
     /**
-     * Calculates bias for this good based on a given resource level and tech level
+     * Calculates price bias for this good based on a given resource level and tech level
      * @param resources
      * @param techLevel
      * @return int bias
      */
-    public int getBias(Enums.Resources resources, Enums.TechLevel techLevel){
+    public int getPriceBias(Enums.Resources resources, Enums.TechLevel techLevel){
         int resource=0;
         int tech=0;
-        if (_resourcesModifiers.get(resources)!=null){
-            resource=_resourcesModifiers.get(resources);
+        if (_resourcesPriceModifiers.get(resources)!=null){
+            resource= _resourcesPriceModifiers.get(resources);
         }
-        if (_techModifiers.get(techLevel)!=null){
-            tech=_techModifiers.get(techLevel);
+        if (_techPriceModifiers.get(techLevel)!=null){
+            tech= _techPriceModifiers.get(techLevel);
         }
         return tech+resource;
     }
+
+    /**
+     * Calculates quantity bias for this good based on a given resource level and tech level
+     * @param resources
+     * @param techLevel
+     * @return int bias
+     */
+    public int getQuantityBias(Enums.Resources resources, Enums.TechLevel techLevel){
+        int resource=0;
+        int tech=0;
+        if (_resourcesQuantityModifiers.get(resources)!=null){
+            resource= _resourcesQuantityModifiers.get(resources);
+        }
+        if (_techQuantityModifiers.get(techLevel)!=null){
+            tech= _techQuantityModifiers.get(techLevel);
+        }
+        return tech+resource;
+    }
+
     public int getBaseCost() {
         return _baseCost;
     }
@@ -51,6 +76,14 @@ public class Good {
     public Good setBaseCost(int baseCost) {
         _baseCost = baseCost;
         return this;
+    }
+
+    public int getBaseQuantity() {
+        return _baseQuantity;
+    }
+
+    public void setBaseQuantity(int _baseQuantity) {
+        this._baseQuantity = _baseQuantity;
     }
 
     public String getName() {
@@ -62,51 +95,99 @@ public class Good {
         return this;
     }
 
-    public Map<Enums.TechLevel, Integer> getTechModifiers() {
-        return _techModifiers;
+    public Map<Enums.TechLevel, Integer> getTechPriceModifiers() {
+        return _techPriceModifiers;
     }
 
-    public Good addTechModifier(Enums.TechLevel techLevel, int modifier) {
-        _techModifiers.put(techLevel, modifier);
+    public Good addTechPriceModifier(Enums.TechLevel techLevel, int modifier) {
+        _techPriceModifiers.put(techLevel, modifier);
         return this;
     }
 
-    public Map<Enums.Resources, Integer> getResourcesModifiers() {
-        return _resourcesModifiers;
+    public Map<Enums.Resources, Integer> getResourcesPriceModifiers() {
+        return _resourcesPriceModifiers;
     }
 
-    public Good addResourcesModifiers(Enums.Resources resource, int modifier) {
-        _resourcesModifiers.put(resource, modifier);
+    public Good addResourcesPriceModifiers(Enums.Resources resource, int modifier) {
+        _resourcesPriceModifiers.put(resource, modifier);
+        return this;
+    }
+
+    public Map<Enums.TechLevel, Integer> getTechQuantityModifiers() {
+        return _techQuantityModifiers;
+    }
+
+    public Good addTechQuantityModifier(Enums.TechLevel techLevel, int modifier) {
+        _techQuantityModifiers.put(techLevel, modifier);
+        return this;
+    }
+
+    public Map<Enums.Resources, Integer> getResourcesQuantityModifiers() {
+        return _resourcesQuantityModifiers;
+    }
+
+    public Good addResourcesQuantityModifiers(Enums.Resources resource, int modifier) {
+        _resourcesQuantityModifiers.put(resource, modifier);
         return this;
     }
 
     /**
-     * Shortcut for setting a lot of biases
+     * Shortcut for setting a lot of price biases
      * @return Good
      */
     public Good expensiveWhenLowTech(){
-        _techModifiers.put(Enums.TechLevel.PREAGRICULTURE, 3);
-        _techModifiers.put(Enums.TechLevel.AGRICULTURE,2);
-        _techModifiers.put(Enums.TechLevel.MEDIEVAL,1);
-        _techModifiers.put(Enums.TechLevel.RENAISSANCE,0);
-        _techModifiers.put(Enums.TechLevel.INDUSTRIAL,-1);
-        _techModifiers.put(Enums.TechLevel.POSTINDUSTRIAL,-2);
-        _techModifiers.put(Enums.TechLevel.HITECH,-3);
+        _techPriceModifiers.put(Enums.TechLevel.PREAGRICULTURE, 3);
+        _techPriceModifiers.put(Enums.TechLevel.AGRICULTURE, 2);
+        _techPriceModifiers.put(Enums.TechLevel.MEDIEVAL, 1);
+        _techPriceModifiers.put(Enums.TechLevel.RENAISSANCE, 0);
+        _techPriceModifiers.put(Enums.TechLevel.INDUSTRIAL, -1);
+        _techPriceModifiers.put(Enums.TechLevel.POSTINDUSTRIAL, -2);
+        _techPriceModifiers.put(Enums.TechLevel.HITECH, -3);
         return this;
     }
 
     /**
-     * Shortcut for setting a lot of biases.
+     * Shortcut for setting a lot of price biases.
      * @return Good
      */
     public Good expensiveWhenHighTech(){
-        _techModifiers.put(Enums.TechLevel.PREAGRICULTURE, -3);
-        _techModifiers.put(Enums.TechLevel.AGRICULTURE,-2);
-        _techModifiers.put(Enums.TechLevel.MEDIEVAL,-1);
-        _techModifiers.put(Enums.TechLevel.RENAISSANCE,0);
-        _techModifiers.put(Enums.TechLevel.INDUSTRIAL,1);
-        _techModifiers.put(Enums.TechLevel.POSTINDUSTRIAL,2);
-        _techModifiers.put(Enums.TechLevel.HITECH,3);
+        _techPriceModifiers.put(Enums.TechLevel.PREAGRICULTURE, -3);
+        _techPriceModifiers.put(Enums.TechLevel.AGRICULTURE, -2);
+        _techPriceModifiers.put(Enums.TechLevel.MEDIEVAL, -1);
+        _techPriceModifiers.put(Enums.TechLevel.RENAISSANCE, 0);
+        _techPriceModifiers.put(Enums.TechLevel.INDUSTRIAL, 1);
+        _techPriceModifiers.put(Enums.TechLevel.POSTINDUSTRIAL, 2);
+        _techPriceModifiers.put(Enums.TechLevel.HITECH, 3);
+        return this;
+    }
+
+    /**
+     * Shortcut for setting a lot of quantity biases
+     * @return Good
+     */
+    public Good plentifulWhenLowTech(){
+        _techQuantityModifiers.put(Enums.TechLevel.PREAGRICULTURE, 3);
+        _techQuantityModifiers.put(Enums.TechLevel.AGRICULTURE, 2);
+        _techQuantityModifiers.put(Enums.TechLevel.MEDIEVAL, 1);
+        _techQuantityModifiers.put(Enums.TechLevel.RENAISSANCE, 0);
+        _techQuantityModifiers.put(Enums.TechLevel.INDUSTRIAL, -1);
+        _techQuantityModifiers.put(Enums.TechLevel.POSTINDUSTRIAL, -2);
+        _techQuantityModifiers.put(Enums.TechLevel.HITECH, -3);
+        return this;
+    }
+
+    /**
+     * Shortcut for setting a lot of quantity biases.
+     * @return Good
+     */
+    public Good plentifulWhenHighTech(){
+        _techQuantityModifiers.put(Enums.TechLevel.PREAGRICULTURE, -3);
+        _techQuantityModifiers.put(Enums.TechLevel.AGRICULTURE, -2);
+        _techQuantityModifiers.put(Enums.TechLevel.MEDIEVAL, -1);
+        _techQuantityModifiers.put(Enums.TechLevel.RENAISSANCE, 0);
+        _techQuantityModifiers.put(Enums.TechLevel.INDUSTRIAL, 1);
+        _techQuantityModifiers.put(Enums.TechLevel.POSTINDUSTRIAL, 2);
+        _techQuantityModifiers.put(Enums.TechLevel.HITECH, 3);
         return this;
     }
 

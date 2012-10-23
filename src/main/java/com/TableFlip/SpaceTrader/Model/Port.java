@@ -2,6 +2,7 @@ package com.TableFlip.SpaceTrader.Model;
 
 import com.TableFlip.SpaceTrader.Service.GoodsRegistry;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -13,7 +14,7 @@ import java.util.Map;
  */
 public class Port {
     GoodsRegistry _goodsRegistry=GoodsRegistry.getInstance();
-    Map<Good, Integer> _localValues;
+    Map<Good, HashMap<String, Integer>> _localMarket;
     Enums.Resources _resources;
     private String _name;
     private Coordinates _coordinates;
@@ -34,12 +35,12 @@ public class Port {
         _techLevel = techLevel;
     }
 
-    public Map<Good, Integer> getLocalValues() {
-        return _localValues;
+    public Map<Good, HashMap<String, Integer>> getLocalMarket() {
+        return _localMarket;
     }
 
-    public void setLocalPrices(Map<Good, Integer> localValues) {
-        _localValues = localValues;
+    public void setLocalMarket(Map<Good, HashMap<String, Integer>> localMarket) {
+        _localMarket = localMarket;
     }
 
     Enums.TechLevel _techLevel;

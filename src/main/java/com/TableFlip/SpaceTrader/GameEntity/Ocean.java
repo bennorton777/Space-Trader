@@ -1,6 +1,7 @@
 package com.TableFlip.SpaceTrader.GameEntity;
 
 import com.TableFlip.SpaceTrader.Model.Coordinates;
+import com.TableFlip.SpaceTrader.Model.Good;
 import com.TableFlip.SpaceTrader.Model.Port;
 import com.TableFlip.SpaceTrader.Service.PortNames;
 
@@ -72,6 +73,8 @@ public class Ocean {
             _ports.add(new RandomPort(portName));
         }
         generateLocations();
+
+
     }
     public List<Port> getPorts() {
         return _ports;
