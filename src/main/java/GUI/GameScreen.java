@@ -41,7 +41,9 @@ public class GameScreen {
         });
         toMarketplaceButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                 //TODO
+
+                //System.out.print("Displaying Marketplace Screen");
+                //GuiArbiter.MarketplaceScreen();
             }
         });
         toOceanMapButton.addActionListener(new ActionListener() {
@@ -58,7 +60,7 @@ public class GameScreen {
     }
 
     public void updatePlayerInfoPane(){
-        playerInfo.setText("Name: " + _name + "You have: " + _coins + "coins");
+        playerInfo.setText("Name: " + _name + " You have: " + _coins + " coins");
     }
 
     public void updateCredits(String coins){
