@@ -50,4 +50,9 @@ public class GuiArbiter {
         args[1]=Integer.toString(coins);
         GameScreen.main(args);
     }
+
+    public static void MarketplaceScreen(){
+        String[] args=new String[0];
+        MarketplaceScreen.main(args);
+    }
 }
