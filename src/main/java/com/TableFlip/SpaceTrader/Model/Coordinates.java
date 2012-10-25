@@ -54,7 +54,7 @@ public class Coordinates implements Comparable{
     }
 
     public String toString(){
-        return "Port is located at x: "+_xPos+" and y: "+_yPos;
+        return ("(" + _xPos+",  "+_yPos) + ")";
     }
 
     /**

@@ -14,6 +14,7 @@ import java.util.*;
 
 public class Ocean {
     List<Island> _islands;
+    ArrayList<Coordinates> _candidates;
     int _oceanHeight;
     int _oceanWidth;
     private static Ocean _instance;
@@ -23,9 +24,13 @@ public class Ocean {
      * Sets default values for galaxy
      */
     private Ocean(){
+        System.out.println("Starting Constructor.");
+
         setOceanHeight(100);
         setOceanWidth(100);
-        _islands =new ArrayList<Island>();
+
+        _islands = new ArrayList<Island>();
+        System.out.println("Making Islands.");
         generateIslands();
     }
 
@@ -50,23 +55,33 @@ public class Ocean {
             names.add(n);
         }
 
+        makeCandidates();
+
         while (names.size() != 0)
         {
             int size;
             if (_MAXNUMPORTS > names.size())
-                size = gen.nextInt(names.size()) + 1;
+            {
+                if (names.size() == 1)
+                    break;
+                else
+                    size = gen.nextInt(names.size()) + 1;
+            }
             else
-                size = gen.nextInt(_MAXNUMPORTS) + 1;
+                size = gen.nextInt(_MAXNUMPORTS - 1) + 2;
 
             Coordinates pos = newIslandLocation(size);
+
+            //System.out.print("New Island with position: " + pos + "and ports: ");
 
             String[] tempNames = new String[size];
 
             for (int i = 0; i < size; i ++)
             {
                 tempNames[i] = names.remove(gen.nextInt(names.size()));
+                //System.out.print(" " + tempNames[i]);
             }
-
+            //System.out.println();
             Island temp = new Island(tempNames,  pos);
 
             _islands.add(temp);
@@ -74,27 +89,8 @@ public class Ocean {
     }
 
     private Coordinates newIslandLocation(int radius) {
-        boolean failed;
-
-        do{
-            failed = false;
-
-            // Generate new test point.
-            Coordinates trial = new RandomCoordinates(_oceanWidth - radius*2, _oceanHeight - radius*2);
-            trial.setxPos(trial.getxPos() + radius);
-            trial.setyPos(trial.getyPos() + radius);
-
-            for (Island isl : _islands)
-            {
-                int span = radius + (isl.getSize()/2);
-
-                if (Math.abs(isl.getLocation().getxPos() - trial.getxPos()) < span && Math.abs(isl.getLocation().getyPos() - trial.getyPos()) < span)
-                {
-                    failed = true;
-                    break;
-                }
-            }
-        } while (failed);
+        Random gen = new Random();
+        return _candidates.remove(gen.nextInt(_candidates.size()));
     }
 
     public List<Island> getIslands() {
@@ -121,23 +117,50 @@ public class Ocean {
         _oceanWidth = oceanWidth;
     }
 
+    private void makeCandidates()
+    {
+        if (_oceanHeight == 0 || _oceanWidth == 0 || _islands.size() != 0)
+        {
+            return;
+        }
+
+        _candidates = new ArrayList<Coordinates>();
+
+        int increment = _MAXNUMPORTS % 2 == 1 ? _MAXNUMPORTS + 1 : _MAXNUMPORTS + 2;
+
+        for (int x = 1; x < _oceanWidth / increment; x++)
+        {
+            for (int y = 1; y < _oceanHeight / increment; y++)
+            {
+                _candidates.add(new Coordinates(x*increment, y*increment));
+            }
+        }
+    }
+
     /**
      * Generates a beautiful ascii representation of the galaxy.  Too cool for school
      * @return String ascii awesomeness
      */
     @Override
     public String toString() {
-        List<Port> ports = getIslands();
+        List<Island> islands = getIslands();
+        ArrayList<Port> ports = new ArrayList<Port>();
         char[][] out = new char[_oceanWidth][_oceanHeight];
         String outstring = "";
+        char marker = 'A';
 
         for(int i = 0; i < _oceanWidth; i++) {
             Arrays.fill(out[i], '-');
         }
 
-        for (Port j : ports)
+        for (Island is : islands)
         {
-            out[j.getCoordinates().getxPos()][j.getCoordinates().getyPos()] = 'X';
+            for (Port j : is.getPorts())
+            {
+                out[j.getCoordinates().getxPos()][j.getCoordinates().getyPos()] = marker;
+            }
+
+            marker++;
         }
 
         for(int i = 0; i < _oceanWidth; i++) {
