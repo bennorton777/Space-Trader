@@ -137,12 +137,23 @@ public class Ocean {
         }
     }
 
+    @Override
+    public String toString() {
+        String stuff = "Ocean with Islands:";
+
+        for (Island i : _islands)
+        {
+            stuff += "\n" + i.toString();
+        }
+
+        return stuff;
+    }
+
     /**
      * Generates a beautiful ascii representation of the galaxy.  Too cool for school
      * @return String ascii awesomeness
      */
-    @Override
-    public String toString() {
+    public String ASCIIMap() {
         List<Island> islands = getIslands();
         ArrayList<Port> ports = new ArrayList<Port>();
         char[][] out = new char[_oceanWidth][_oceanHeight];

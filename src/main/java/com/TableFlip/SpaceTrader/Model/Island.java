@@ -87,4 +87,16 @@ public class Island
             _candidatePorts.add(new Coordinates(c.getxPos() + _location.getxPos(), c.getyPos() + _location.getyPos()));
         }
     }
+
+    @Override
+    public String toString() {
+        String done = "Island at location " + _location + " with ports:";
+
+        for (Port p : _ports)
+        {
+            done += "\n\t" + p.toString();
+        }
+
+        return done;
+    }
 }

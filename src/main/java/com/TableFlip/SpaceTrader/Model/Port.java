@@ -63,4 +63,9 @@ public class Port {
     public void setCoordinates(Coordinates coordinates) {
         _coordinates = coordinates;
     }
+
+    @Override
+    public String toString() {
+        return ("Port " + _name + ". Tech Level: " + _techLevel + " Resource: " + _resources + " at location " + _coordinates);
+    }
 }
