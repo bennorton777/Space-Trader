@@ -34,10 +34,10 @@ public class MarketGenerator {
      * @return
      */
     public RandomPort generateMarket(RandomPort port){
-        Map<Good, HashMap<String, Integer>> goodValues =
-                new HashMap<Good, HashMap<String, Integer>>();
+        Map<Good, HashMap<Enums.MarketValues, Integer>> goodValues =
+                new HashMap<Good, HashMap<Enums.MarketValues, Integer>>();
         for (Good good : _goodsRegistry.getGoods()){
-            goodValues.put(good, new HashMap<String, Integer>());
+            goodValues.put(good, new HashMap<Enums.MarketValues, Integer>());
             int priceBias = good.getPriceBias(port.getResources(), port.getTechLevel());
             Random random=new Random();
             int modifiedPriceBias=random.nextInt(5)*priceBias;
@@ -56,8 +56,8 @@ public class MarketGenerator {
                 finalQuantity = 0; //add check so that we don't end up with negative quantities
             }
 
-            goodValues.get(good).put("Price", finalPrice);
-            goodValues.get(good).put("Quantity", finalQuantity);
+            goodValues.get(good).put(Enums.MarketValues.PRICE, finalPrice);
+            goodValues.get(good).put(Enums.MarketValues.QUANTITY, finalQuantity);
         }
         goodValues=filterGoods(goodValues, port); //Filter Goods
         port.setLocalMarket(goodValues);
@@ -69,7 +69,7 @@ public class MarketGenerator {
      * @param candidateValues
      * @return
      */
-    private Map<Good, HashMap<String, Integer>> filterGoods(Map<Good, HashMap<String, Integer>> candidateValues, RandomPort port){ //}, RandomPort port){
+    private Map<Good, HashMap<Enums.MarketValues, Integer>> filterGoods(Map<Good, HashMap<Enums.MarketValues, Integer>> candidateValues, RandomPort port){ //}, RandomPort port){
         Set<Good> keys = new HashSet<Good>();
         for (Good good : candidateValues.keySet()){
             if (filterIfPreAgriculture(port, good) ||

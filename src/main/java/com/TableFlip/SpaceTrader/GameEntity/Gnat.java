@@ -9,9 +9,11 @@ import com.TableFlip.SpaceTrader.Model.Ship;
 public class Gnat extends Ship {
     private final static int MAXFUEL = 15;
     private final static String NAME = "Gnat";
+    private final static int BASECARGOSPACE = 10;
 
     public Gnat(){
         super(MAXFUEL, MAXFUEL, NAME);
+        this.setCargoSpace(BASECARGOSPACE);
         //TODO: equipment slots and stuff
     }
 }

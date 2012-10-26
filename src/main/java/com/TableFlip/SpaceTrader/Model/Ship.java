@@ -1,5 +1,7 @@
 package com.TableFlip.SpaceTrader.Model;
 
+import java.util.HashMap;
+
 /**
  * Contains an inventory, how to fly, etc.
  */
@@ -9,10 +11,31 @@ public class Ship {
     private String _name;
     private Port _currentPort;
 
+    public HashMap<Good, Integer> getCargo() {
+        return _cargo;
+    }
+
+    public void setCargo(HashMap<Good, Integer> cargo) {
+        _cargo = cargo;
+    }
+
+    private HashMap<Good, Integer> _cargo;
+
+    public int getCargoSpace() {
+        return _cargoSpace;
+    }
+
+    public void setCargoSpace(int _cargoSpace) {
+        this._cargoSpace = _cargoSpace;
+    }
+
+    private int _cargoSpace;
+
     public Ship(int fuelRemaining, int fuelMax, String name) {
         _fuelRemaining = fuelRemaining;
         _fuelMax = fuelMax;
         _name = name;
+        _cargo=new HashMap<Good, Integer>();
     }
 
     /**
@@ -46,11 +69,11 @@ public class Ship {
         _name = name;
     }
 
-    public Port getCurrentPlanet() {
+    public Port getCurrentPort() {
         return _currentPort;
     }
 
-    public void setCurrentPlanet(Port currentPort) {
+    public void setCurrentPort(Port currentPort) {
         _currentPort = currentPort;
     }
 

@@ -97,8 +97,8 @@ public class Ocean {
         return _islands;
     }
 
-    public void setPlanets(List<Island> ports) {
-        _islands = ports;
+    public void setIslands(List<Island> islands) {
+        _islands = islands;
     }
 
     public int getOceanHeight() {

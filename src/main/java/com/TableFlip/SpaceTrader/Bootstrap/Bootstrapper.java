@@ -16,7 +16,7 @@ public class Bootstrapper {
      * @param args
      */
     public static void main(String[] args){
-        GoodsRegistry goods= GoodsRegistry.getInstance();
+        GoodsRegistry.getInstance();
         GuiArbiter.charGen();
     }
 
@@ -24,7 +24,7 @@ public class Bootstrapper {
      * Second major phase of game boot (Following Character generation.)
      * This phase launches galaxy generation.
      */
-    public static void generateGalaxy(){
+    public static void generateOcean(){
         System.out.println("Generating ocean.");
         Ocean ocean = Ocean.getInstance();
         System.out.println(ocean);
@@ -38,6 +38,6 @@ public class Bootstrapper {
     public static void displayGameScreen(){
         System.out.println("Displaying Game Screen");
         //TODO Make this come from Player
-        GuiArbiter.GameScreen("Pirate Butts", 1000);
+        GuiArbiter.GameScreen(Player.getInstance().getName(), Player.getInstance().getCredits());
     }
 }

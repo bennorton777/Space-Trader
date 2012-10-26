@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public class Port {
     GoodsRegistry _goodsRegistry=GoodsRegistry.getInstance();
-    Map<Good, HashMap<String, Integer>> _localMarket;
+    Map<Good, HashMap<Enums.MarketValues, Integer>> _localMarket;
     Enums.Resources _resources;
     private String _name;
     private Coordinates _coordinates;
@@ -26,7 +26,12 @@ public class Port {
     public void setResources(Enums.Resources resources) {
         _resources = resources;
     }
-
+    public int price(Good good){
+        return getLocalMarket().get(good).get(Enums.MarketValues.PRICE);
+    }
+    public int supply(Good good){
+        return getLocalMarket().get(good).get(Enums.MarketValues.QUANTITY);
+    }
     public Enums.TechLevel getTechLevel() {
         return _techLevel;
     }
@@ -35,11 +40,11 @@ public class Port {
         _techLevel = techLevel;
     }
 
-    public Map<Good, HashMap<String, Integer>> getLocalMarket() {
+    public Map<Good, HashMap<Enums.MarketValues, Integer>> getLocalMarket() {
         return _localMarket;
     }
 
-    public void setLocalMarket(Map<Good, HashMap<String, Integer>> localMarket) {
+    public void setLocalMarket(Map<Good, HashMap<Enums.MarketValues, Integer>> localMarket) {
         _localMarket = localMarket;
     }
 
