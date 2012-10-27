@@ -42,8 +42,8 @@ public class GameScreen {
         toMarketplaceButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
-                //System.out.print("Displaying Marketplace Screen");
-                //GuiArbiter.MarketplaceScreen();
+                System.out.print("Displaying Marketplace Screen");
+                GUI.GuiArbiter.MarketplaceScreen();
             }
         });
         toOceanMapButton.addActionListener(new ActionListener() {

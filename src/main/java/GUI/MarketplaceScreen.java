@@ -10,22 +10,48 @@ import javax.swing.*;
  * To change this template use File | Settings | File Templates.
  */
 public class MarketplaceScreen {
-    private JPanel panel1;
     private JLabel MarketplaceLabel;
     private JLabel playerInfoLabel;
     private JList goodsList;
     private JLabel goods;
-    private JTable inventoryTable;
     private JLabel inventoryLabel;
     private JLabel marketLabel;
-    private JTable table1;
     private JButton sellButton;
     private JButton buyButton;
     private JTextPane currentPortInfoPane;
     private JButton returnToMainButton;
+    private JList invQuantityList;
+    private JList sellPriceList;
+    private JList sellSpinnerList;
+    private JList marketQuantityList;
+    private JList buyPriceList;
+    private JList buySpinnerList;
 
-    private static JPanel _panel;
+    String[] _goodsArray;
+    int[] _invQuantityArray;
+    int[] _sellPriceArray;
+    int[] _marketQuantityArray;
+    int[] _buyPriceArray;
+
+    private JPanel _panel;
     private static JFrame frame;
+
+
+    public MarketplaceScreen(){
+
+    }
+
+    public MarketplaceScreen(String[] goodsArray, int[] invQuantityArray, int[] sellPriceArray, int[] marketQuantityArray, int[] buyPriceArray){
+        _goodsArray = goodsArray;
+        _invQuantityArray = invQuantityArray;
+        _sellPriceArray = sellPriceArray;
+        _marketQuantityArray = marketQuantityArray;
+        _buyPriceArray = buyPriceArray;
+
+
+    }
+
+
 
 
     public static void main(String[] args) {
@@ -35,4 +61,5 @@ public class MarketplaceScreen {
         frame.pack();
         frame.setVisible(true);
     }
+
 }
