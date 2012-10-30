@@ -24,8 +24,8 @@ public class Ocean {
      * Sets default values for galaxy
      */
     private Ocean(){
-        setOceanHeight(100);
-        setOceanWidth(100);
+        setOceanHeight(80);
+        setOceanWidth(80);
 
         _islands = new ArrayList<Island>();
         generateIslands();
