@@ -48,7 +48,7 @@ public class GameScreen {
         });
         toOceanMapButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
+                GuiArbiter.SelectPortScreen();
             }
         });
 
@@ -66,6 +66,10 @@ public class GameScreen {
     public void updateCredits(String coins) {
         _coins = coins;
         updatePlayerInfoPane();
+    }
+
+    public static void close() {
+        frame.dispose();
     }
 
     public static void main(String[] args) {

@@ -89,6 +89,19 @@ public class Player {
             _ship.setCurrentPort(port);
         }
     }
+    public Port getTargetPort(){
+        if (_ship==null){
+            return null;
+        }
+        else{
+            return _ship.getTargetPort();
+        }
+    }
+    public void setTargetPort(Port port){
+        if (_ship!=null){
+            _ship.setTargetPort(port);
+        }
+    }
     public Map<Enums.Skill, Integer> getStats() {
         return _stats;
     }

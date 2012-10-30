@@ -205,6 +205,35 @@ public class MarketplaceScreen {
         _panel.add(buySpinnerList, cc.xy(13, 7, CellConstraints.DEFAULT, CellConstraints.FILL));
         invQuantityList = new JList();
         _panel.add(invQuantityList, cc.xy(3, 7, CellConstraints.DEFAULT, CellConstraints.FILL));
+        MarketplaceLabel = new JLabel();
+        MarketplaceLabel.setText("MARKETPLACE");
+        _panel.add(MarketplaceLabel, cc.xy(1, 1));
+        playerInfoLabel = new JLabel();
+        playerInfoLabel.setText("You have: coins");
+        _panel.add(playerInfoLabel, cc.xy(1, 3));
+        goods = new JLabel();
+        goods.setText("Goods");
+        _panel.add(goods, cc.xy(1, 5));
+        goodsList = new JList();
+        _panel.add(goodsList, cc.xy(1, 7, CellConstraints.DEFAULT, CellConstraints.FILL));
+        inventoryLabel = new JLabel();
+        inventoryLabel.setText("Inventory");
+        _panel.add(inventoryLabel, cc.xy(3, 5));
+        marketLabel = new JLabel();
+        marketLabel.setText("Market");
+        _panel.add(marketLabel, cc.xy(5, 5));
+        sellButton = new JButton();
+        sellButton.setText("Sell");
+        _panel.add(sellButton, cc.xy(3, 9));
+        buyButton = new JButton();
+        buyButton.setText("Buy");
+        _panel.add(buyButton, cc.xy(5, 9));
+        currentPortInfoPane = new JTextPane();
+        currentPortInfoPane.setText("");
+        _panel.add(currentPortInfoPane, cc.xy(1, 11, CellConstraints.FILL, CellConstraints.FILL));
+        returnToMainButton = new JButton();
+        returnToMainButton.setText("Return to Main Screen");
+        _panel.add(returnToMainButton, cc.xy(3, 13));
     }
 
     /**
