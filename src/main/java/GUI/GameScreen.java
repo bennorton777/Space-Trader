@@ -48,7 +48,7 @@ public class GameScreen {
         });
         toOceanMapButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
+                GuiArbiter.SelectPortScreen();
             }
         });
 
@@ -59,13 +59,17 @@ public class GameScreen {
         });
     }
 
-    public void updatePlayerInfoPane(){
+    public void updatePlayerInfoPane() {
         playerInfo.setText("Name: " + _name + " You have: " + _coins + " coins");
     }
 
-    public void updateCredits(String coins){
+    public void updateCredits(String coins) {
         _coins = coins;
         updatePlayerInfoPane();
+    }
+
+    public static void close() {
+        frame.dispose();
     }
 
     public static void main(String[] args) {
@@ -114,7 +118,7 @@ public class GameScreen {
         _panel.add(targetPortPane, cc.xy(5, 5, CellConstraints.FILL, CellConstraints.FILL));
         playerInfo = new JTextPane();
         playerInfo.setEditable(false);
-        playerInfo.setText("Name: Pilot: Fighter: Trader: Engineer:  You have: credits.");
+        playerInfo.setText("Name: Pilot: Fighter: Trader: Engineer:  You have: coins.");
         _panel.add(playerInfo, cc.xyw(1, 1, 5, CellConstraints.FILL, CellConstraints.TOP));
         toShipyardButton = new JButton();
         toShipyardButton.setText("Shipyard");
@@ -123,7 +127,7 @@ public class GameScreen {
         toMarketplaceButton.setText("Marketplace");
         _panel.add(toMarketplaceButton, cc.xy(3, 7));
         toOceanMapButton = new JButton();
-        toOceanMapButton.setText("Port Map");
+        toOceanMapButton.setText("Ocean Map");
         _panel.add(toOceanMapButton, cc.xy(5, 7));
         toTargetPortButton = new JButton();
         toTargetPortButton.setText("Warp to Target Port");

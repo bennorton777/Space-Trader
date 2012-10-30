@@ -1,10 +1,16 @@
 package GUI;
 
 import com.TableFlip.SpaceTrader.GameEntity.Gnat;
+import com.TableFlip.SpaceTrader.GameEntity.Ocean;
 import com.TableFlip.SpaceTrader.GameEntity.Player;
+import com.TableFlip.SpaceTrader.GameEntity.RandomPort;
 import com.TableFlip.SpaceTrader.Model.Enums;
+import com.TableFlip.SpaceTrader.Model.Island;
+import com.TableFlip.SpaceTrader.Model.Port;
 
 import java.util.HashMap;
+import java.util.Random;
+import java.util.*;
 
 /**
  * Arbiter class that interprets between GUI and game logic.
@@ -43,6 +49,18 @@ public class GuiArbiter {
                 .setStats(stats);
         System.out.println("Created character with name: "+_player.getName()+" and stats as follows:  fighter->"+_player.getStats().get(Enums.Skill.FIGHTER)+" pilot->"+_player.getStats().get(Enums.Skill.PILOT)+" trader->"+_player.getStats().get(Enums.Skill.TRADER)+" engineer->"+_player.getStats().get(Enums.Skill.ENGINEER)+".  This player has "+_player.getCredits()+" credits and ship: " + _player.getShip().toString());
         com.TableFlip.SpaceTrader.Bootstrap.Bootstrapper.generateOcean();
+
+
+        //Code to pick a random port on a random island to assign it to the player
+        Ocean ocean = Ocean.getInstance();
+        List<Island> islands = ocean.getIslands();
+        Random random = new Random();
+        int pickIsland = random.nextInt(islands.size());
+        Island island = islands.get(pickIsland);
+        int pickPort = random.nextInt(island.getPorts().size());
+        Port port = island.getPorts().get(pickPort);
+
+        _player.setCurrentPort(port);
     }
     public static void GameScreen(String name, int coins){
         String[] args=new String[2];
@@ -54,5 +72,10 @@ public class GuiArbiter {
     public static void MarketplaceScreen(){
         String[] args=new String[0];
         MarketplaceScreen.main(args);
+    }
+
+    public static void SelectPortScreen(){
+        SelectPortScreen.main(new String[1]);
+        GameScreen.close();
     }
 }

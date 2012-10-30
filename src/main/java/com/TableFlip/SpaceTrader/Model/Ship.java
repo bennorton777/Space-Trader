@@ -11,6 +11,8 @@ public class Ship {
     private String _name;
     private Port _currentPort;
 
+    private Port _targetPort;
+
     public HashMap<Good, Integer> getCargo() {
         return _cargo;
     }
@@ -75,6 +77,14 @@ public class Ship {
 
     public void setCurrentPort(Port currentPort) {
         _currentPort = currentPort;
+    }
+
+    public Port getTargetPort() {
+        return _targetPort;
+    }
+
+    public void setTargetPort(Port targetPort) {
+        _targetPort = targetPort;
     }
 
     public String toString() {
