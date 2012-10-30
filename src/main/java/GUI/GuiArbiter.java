@@ -76,33 +76,6 @@ public class GuiArbiter {
         MarketplaceScreen.main(args);
     }
 
-    private static String[] _goods;
-    private static GoodsRegistry _goodsRegistry;
-
-    public static String[] createGoodsList(){
-        _goodsRegistry = com.TableFlip.SpaceTrader.Service.GoodsRegistry.getInstance();
-        _goodsRegistry.getGoods();
-        String[] goods = new String[10];
-        for(int i = 0; i < 10; i++){
-            goods[i] = _goodsRegistry.getGoods().get(i).getName();
-            System.out.print(goods[i]);
-        }
-        return goods;
-    }
-
-    public static String[] getGoodsList(){
-        if (_goods == null){
-            _goods = createGoodsList();
-            System.out.print("goods list is null");
-        }
-        if (_goods.length == 0){
-            _goods = createGoodsList();
-            System.out.print("goods list is empty");
-        }
-        return _goods;
-    }
-
-
     public static void SelectPortScreen(){
         SelectPortScreen.main(new String[1]);
         GameScreen.close();

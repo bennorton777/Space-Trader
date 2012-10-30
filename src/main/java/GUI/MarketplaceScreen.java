@@ -31,30 +31,33 @@ public class MarketplaceScreen {
     private JLabel marketLabel;
     private JButton sellButton;
     private JButton buyButton;
-    private JTextPane currentPortInfoPane;
     private JButton returnToMainButton;
     private JList invQuantityList;
     private JList sellPriceList;
-    private JList sellSpinnerList;
     private JList marketQuantityList;
     private JList buyPriceList;
-    private JList buySpinnerList;
 
-    String[] _goodsArray;
-    int[] _invQuantityArray;
-    int[] _sellPriceArray;
-    int[] _marketQuantityArray;
-    int[] _buyPriceArray;
+    private JSpinner[] sellSpinners;
+    private JSpinner[] buySpinners;
 
     private JPanel _panel;
+    private JPanel buySpinnerPanel;
+    private JPanel sellSpinnerPanel;
+    private JLabel currentPortLabel;
+    private JLabel targetPortLabel;
     private static JFrame frame;
 
 
     private static Player _player;
 
+    private static Port _port;
+    private static Port _targetPort;
+
     public MarketplaceScreen() {
         _goodsRegistry = GoodsRegistry.getInstance();
         _player = Player.getInstance();
+        _port = _player.getCurrentPort();
+        _targetPort = _player.getTargetPort();
 
         returnToMainButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
@@ -63,54 +66,101 @@ public class MarketplaceScreen {
             }
         });
 
-        updateGoodsLists();
-        //updateMarketPrices();
-        //updateMarketQuantities();
-    }
-
-
-    public MarketplaceScreen(String[] goodsArray, int[] invQuantityArray, int[] sellPriceArray, int[] marketQuantityArray, int[] buyPriceArray) {
-        _goodsArray = goodsArray;
-        _invQuantityArray = invQuantityArray;
-        _sellPriceArray = sellPriceArray;
-        _marketQuantityArray = marketQuantityArray;
-        _buyPriceArray = buyPriceArray;
-
-
-
+        updatePlayerInfoLabel();
         updateGoodsLists();
         updateMarketPrices();
         updateMarketQuantities();
+        updateBuySpinners();
+        updateSellSpinners();
+        updateTargetPortInfo();
+        updateCurrentPortInfo();
     }
 
+    public void updatePlayerInfoLabel(){
+        playerInfoLabel.setText("You have: " + _player.getCredits() + " coins.");
+    }
 
     public void updateGoodsLists(){
-        goodsList.setListData(GuiArbiter.getGoodsList());
+        goodsList.setListData(getGoodsList());
     }
 
     public void updateMarketPrices(){
-        sellPriceList.setListData(getMarketPrices());
+        buyPriceList.setListData(getMarketPrices());
     }
 
     public void updateMarketQuantities(){
         marketQuantityList.setListData(getMarketQuantities());
     }
 
+    public void updateBuySpinners(){
+        buySpinners = new JSpinner[_goodsRegistry.getGoods().size()];
+        for(int i = 0; i < _goodsRegistry.getGoods().size(); i++){
+            JSpinner jsp = new JSpinner();
+            buySpinners[i] = jsp;
+            buySpinnerPanel.add(jsp);
+        }
+    }
+
+    public void updateSellSpinners(){
+        sellSpinners = new JSpinner[_goodsRegistry.getGoods().size()];
+        for(int i = 0; i < _goodsRegistry.getGoods().size(); i++){
+            JSpinner jsp = new JSpinner();
+            sellSpinners[i] = jsp;
+            sellSpinnerPanel.add(jsp);
+        }
+    }
+
+    public void updateCurrentPortInfo() {
+        currentPortLabel.setText("<html>Current Port Details<br /><br />" +
+                "Name: " + _port.getName() + "<br />" +
+                "Tech Level: " + _port.getTechLevel() + "<br />" +
+                "Resource: " + _port.getResources() + "<br />" +
+                "Coordinates: " + _port.getCoordinates() + "<br /></html>");
+    }
+
+    public void updateTargetPortInfo() {
+        if (_targetPort != null) {
+            targetPortLabel.setText("<html>Target Port Details<br /><br />" +
+                    "Name: " + _targetPort.getName() + "<br />" +
+                    "Tech Level: " + _targetPort.getTechLevel() + "<br />" +
+                    "Resource: " + _targetPort.getResources() + "<br />" +
+                    "Coordinates: " + _targetPort.getCoordinates() + "<br /></html>");
+        } else {
+            targetPortLabel.setText("<html>Target Port Details<br /><br />" +
+                    "Name: ---<br />" +
+                    "Tech Level: ---<br />" +
+                    "Resource: ---<br />" +
+                    "Coordinates: ---<br /></html>");
+        }
+    }
+
+
     private static GoodsRegistry _goodsRegistry;
-    private static String[] goodsArray;
     private static String[] marketPriceArray;
     private static String[] marketQuantityArray;
+
+
+    public static String[] getGoodsList(){
+        Port _port = _player.getCurrentPort();
+        Map<Good, HashMap<Enums.MarketValues, Integer>> _localMarket = _port.getLocalMarket();
+        String[] goodsArray = new String[_goodsRegistry.getGoods().size()];
+        for(int i = 0; i < _goodsRegistry.getGoods().size(); i++){
+            Good good = _goodsRegistry.getGoods().get(i);
+            if (_localMarket.get(good) != null){
+                goodsArray[i] = good.getName();
+            }
+        }
+        return goodsArray;
+    }
 
     public String[] getMarketPrices(){
         Port _port = _player.getCurrentPort();
         Map<Good, HashMap<Enums.MarketValues, Integer>> _localMarket = _port.getLocalMarket();
+        marketPriceArray = new String[_goodsRegistry.getGoods().size()];
         for (int i = 0; i < _goodsRegistry.getGoods().size(); i++){
             Good good = _goodsRegistry.getGoods().get(i);
-            Integer _price = _localMarket.get(good).get(Enums.MarketValues.PRICE);
-            if (_price == null){
-
-            }
-            else{
+            if (_localMarket.get(good) != null){
+                Integer _price = _localMarket.get(good).get(Enums.MarketValues.PRICE);
                 marketPriceArray[i] = _price.toString();
             }
         }
@@ -120,13 +170,11 @@ public class MarketplaceScreen {
     public String[] getMarketQuantities(){
         Port _port = _player.getCurrentPort();
         Map<Good, HashMap<Enums.MarketValues, Integer>> _localMarket = _port.getLocalMarket();
+        marketQuantityArray = new String[_goodsRegistry.getGoods().size()];
         for (int i = 0; i < _goodsRegistry.getGoods().size(); i++){
             Good good = _goodsRegistry.getGoods().get(i);
-            Integer _quantity = _localMarket.get(good).get(Enums.MarketValues.QUANTITY);
-            if (_quantity == null){
-
-            }
-            else{
+            if (_localMarket.get(good) != null){
+                Integer _quantity = _localMarket.get(good).get(Enums.MarketValues.QUANTITY);
                 marketQuantityArray[i] = _quantity.toString();
             }
         }
@@ -184,9 +232,6 @@ public class MarketplaceScreen {
         buyButton = new JButton();
         buyButton.setText("Buy");
         _panel.add(buyButton, cc.xy(9, 9));
-        currentPortInfoPane = new JTextPane();
-        currentPortInfoPane.setText("");
-        _panel.add(currentPortInfoPane, cc.xy(1, 11, CellConstraints.FILL, CellConstraints.FILL));
         final JTextPane textPane1 = new JTextPane();
         textPane1.setText("");
         _panel.add(textPane1, cc.xy(9, 11, CellConstraints.FILL, CellConstraints.FILL));
@@ -197,12 +242,8 @@ public class MarketplaceScreen {
         _panel.add(sellPriceList, cc.xy(5, 7, CellConstraints.DEFAULT, CellConstraints.FILL));
         marketQuantityList = new JList();
         _panel.add(marketQuantityList, cc.xy(9, 7, CellConstraints.DEFAULT, CellConstraints.FILL));
-        sellSpinnerList = new JList();
-        _panel.add(sellSpinnerList, cc.xy(7, 7, CellConstraints.DEFAULT, CellConstraints.FILL));
         buyPriceList = new JList();
         _panel.add(buyPriceList, cc.xy(11, 7, CellConstraints.DEFAULT, CellConstraints.FILL));
-        buySpinnerList = new JList();
-        _panel.add(buySpinnerList, cc.xy(13, 7, CellConstraints.DEFAULT, CellConstraints.FILL));
         invQuantityList = new JList();
         _panel.add(invQuantityList, cc.xy(3, 7, CellConstraints.DEFAULT, CellConstraints.FILL));
         MarketplaceLabel = new JLabel();
@@ -228,9 +269,6 @@ public class MarketplaceScreen {
         buyButton = new JButton();
         buyButton.setText("Buy");
         _panel.add(buyButton, cc.xy(5, 9));
-        currentPortInfoPane = new JTextPane();
-        currentPortInfoPane.setText("");
-        _panel.add(currentPortInfoPane, cc.xy(1, 11, CellConstraints.FILL, CellConstraints.FILL));
         returnToMainButton = new JButton();
         returnToMainButton.setText("Return to Main Screen");
         _panel.add(returnToMainButton, cc.xy(3, 13));
