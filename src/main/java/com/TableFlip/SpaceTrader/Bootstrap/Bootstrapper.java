@@ -27,7 +27,7 @@ public class Bootstrapper {
     public static void generateOcean(){
         System.out.println("Generating ocean.");
         Ocean ocean = Ocean.getInstance();
-        System.out.println(ocean);
+        //System.out.println(ocean);
         System.out.println(ocean.ASCIIMap());
         displayGameScreen();
     }
