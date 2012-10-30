@@ -1,6 +1,7 @@
 package com.TableFlip.SpaceTrader.Model;
 
 import java.util.HashMap;
+import java.util.Random;
 
 /**
  * Contains an inventory, how to fly, etc.
@@ -45,6 +46,39 @@ public class Ship {
      */
     public void fly(){
         //TODO
+        Random randomGenerator = new Random();
+        System.out.println("Generating a random event!");
+        //do I use enum to generate an event
+        //what are the random events?
+        //pirates and police
+        //depending on number it generates a pirate or police
+        //need to get current port and future port to determine distance between the two
+        int randomInt = randomGenerator.nextInt(11);
+
+        if(randomInt == 0)
+            System.out.print("You are safe!");
+        if(randomInt == 1)
+            System.out.print("You have come up against a police officer!");
+        if(randomInt == 2)
+            System.out.print("You have come up against a pirate and you can beat it!");
+        if(randomInt == 3)
+            System.out.print("You have come up against  2 pirates and you may not escape!");
+        if(randomInt == 4)
+            System.out.print("You have come up against many pirates and you can escape if you use your skills properly!");
+        if(randomInt == 5)
+            System.out.print("You have come up against a police officer and a pirate!");
+        if(randomInt == 6)
+            System.out.print("You have come up against a police officer who is going to arrest you!");
+        if(randomInt == 7)
+            System.out.print("Hurry, a gang of pirates is coming to steal your goods");
+        if(randomInt == 8)
+            System.out.print("You have no threats of pirates or police officers!");
+        if(randomInt == 9)
+            System.out.print("I hope you have enough skills to defeat the threats posed to you at this port!");
+        else
+            System.out.print("You have come up against a pirate!");
+
+
     }
 
     public int getFuelRemaining() {
