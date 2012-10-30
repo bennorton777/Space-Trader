@@ -24,13 +24,10 @@ public class Ocean {
      * Sets default values for galaxy
      */
     private Ocean(){
-        System.out.println("Starting Constructor.");
-
         setOceanHeight(100);
         setOceanWidth(100);
 
         _islands = new ArrayList<Island>();
-        System.out.println("Making Islands.");
         generateIslands();
     }
 
@@ -135,7 +132,6 @@ public class Ocean {
             for (int y = 1; y < _oceanHeight / increment; y++)
             {
                 _candidates.add(new Coordinates(x*increment, y*increment));
-                System.out.println("Candidate: " + _candidates.get(_candidates.size() - 1));
             }
         }
     }

@@ -1,5 +1,7 @@
 package com.TableFlip.SpaceTrader.Model;
 
+import com.TableFlip.SpaceTrader.Service.ShipPrototype;
+
 import java.util.HashMap;
 import java.util.Random;
 
@@ -7,10 +9,28 @@ import java.util.Random;
  * Contains an inventory, how to fly, etc.
  */
 public class Ship {
-    private int _fuelRemaining;
-    private int _fuelMax;
+    private int _suppliesRemaining;
+    private int _suppliesMax;
     private String _name;
     private Port _currentPort;
+    private HashMap<Good, Integer> _cargo;
+    private int _cargoSpace;
+    private int _weaponSlots;
+    private int _armorSlots;
+    private int _crewSlots;
+    private int _toolSlots;
+
+    public Ship(String name, int suppliesMax, int cargoSpace, int weaponSlots, int armorSlots, int crewSlots, int toolSlots) {
+        _suppliesRemaining = suppliesMax;
+        _suppliesMax = suppliesMax;
+        _name = name;
+        _cargo=new HashMap<Good, Integer>();
+        _cargoSpace = cargoSpace;
+        _weaponSlots = weaponSlots;
+        _armorSlots = armorSlots;
+        _crewSlots = crewSlots;
+        _toolSlots = toolSlots;
+    }
 
     private Port _targetPort;
 
@@ -18,34 +38,28 @@ public class Ship {
         return _cargo;
     }
 
-    public void setCargo(HashMap<Good, Integer> cargo) {
+    public Ship setCargo(HashMap<Good, Integer> cargo) {
         _cargo = cargo;
+        return this;
     }
-
-    private HashMap<Good, Integer> _cargo;
 
     public int getCargoSpace() {
         return _cargoSpace;
     }
 
-    public void setCargoSpace(int _cargoSpace) {
+    public Ship setCargoSpace(int _cargoSpace) {
         this._cargoSpace = _cargoSpace;
+        return this;
     }
 
-    private int _cargoSpace;
-
-    public Ship(int fuelRemaining, int fuelMax, String name) {
-        _fuelRemaining = fuelRemaining;
-        _fuelMax = fuelMax;
-        _name = name;
-        _cargo=new HashMap<Good, Integer>();
-    }
+    public int getSuppliesRemaining() {
+        return _suppliesRemaining;
+	}
 
     /**
      * Most important method in ship!  Currently does nothing.  Stay tuned!
      */
     public void fly(){
-        //TODO
         Random randomGenerator = new Random();
         System.out.println("Generating a random event!");
         //do I use enum to generate an event
@@ -81,36 +95,72 @@ public class Ship {
 
     }
 
-    public int getFuelRemaining() {
-        return _fuelRemaining;
+    public Ship setSuppliesRemaining(int SuppliesRemaining) {
+        _suppliesRemaining = SuppliesRemaining;
+        return this;
     }
 
-    public void setFuelRemaining(int fuelRemaining) {
-        _fuelRemaining = fuelRemaining;
+    public int getSuppliesMax() {
+        return _suppliesMax;
     }
 
-    public int getFuelMax() {
-        return _fuelMax;
-    }
-
-    public void setFuelMax(int fuelMax) {
-        _fuelMax = fuelMax;
+    public Ship setSuppliesMax(int SuppliesMax) {
+        _suppliesMax = SuppliesMax;
+        return this;
     }
 
     public String getName() {
         return _name;
     }
 
-    public void setName(String name) {
+    public Ship setName(String name) {
         _name = name;
+        return this;
     }
 
     public Port getCurrentPort() {
         return _currentPort;
     }
 
-    public void setCurrentPort(Port currentPort) {
+    public Ship setCurrentPort(Port currentPort) {
         _currentPort = currentPort;
+        return this;
+    }
+
+    public int getWeaponSlots() {
+        return _weaponSlots;
+    }
+
+    public Ship setWeaponSlots(int weaponSlots) {
+        _weaponSlots = weaponSlots;
+        return this;
+    }
+
+    public int getArmorSlots() {
+        return _armorSlots;
+    }
+
+    public Ship setArmorSlots(int armorSlots) {
+        _armorSlots = armorSlots;
+        return this;
+    }
+
+    public int getCrewSlots() {
+        return _crewSlots;
+    }
+
+    public Ship setCrewSlots(int crewSlots) {
+        _crewSlots = crewSlots;
+        return this;
+    }
+
+    public int getToolSlots() {
+        return _toolSlots;
+    }
+
+    public Ship setToolSlots(int toolSlots) {
+        _toolSlots = toolSlots;
+        return this;
     }
 
     public Port getTargetPort() {
@@ -122,6 +172,6 @@ public class Ship {
     }
 
     public String toString() {
-        return _name + ": Range " + _fuelMax + " Fuel " + _fuelRemaining + "/" + _fuelMax;
+        return _name + ": Range " + _suppliesMax + " Fuel " + _suppliesRemaining + "/" + _suppliesMax;
     }
 }
