@@ -1,11 +1,19 @@
 package GUI;
 
+import com.TableFlip.SpaceTrader.GameEntity.Player;
+import com.TableFlip.SpaceTrader.Model.Enums;
+import com.TableFlip.SpaceTrader.Model.Good;
+import com.TableFlip.SpaceTrader.Model.Port;
+import com.TableFlip.SpaceTrader.Service.GoodsRegistry;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -42,7 +50,11 @@ public class MarketplaceScreen {
     private static JFrame frame;
 
 
+    private static Player _player;
+
     public MarketplaceScreen() {
+        _goodsRegistry = GoodsRegistry.getInstance();
+        _player = Player.getInstance();
 
         returnToMainButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
@@ -52,7 +64,10 @@ public class MarketplaceScreen {
         });
 
         updateGoodsLists();
+        //updateMarketPrices();
+        //updateMarketQuantities();
     }
+
 
     public MarketplaceScreen(String[] goodsArray, int[] invQuantityArray, int[] sellPriceArray, int[] marketQuantityArray, int[] buyPriceArray) {
         _goodsArray = goodsArray;
@@ -64,11 +79,58 @@ public class MarketplaceScreen {
 
 
         updateGoodsLists();
+        updateMarketPrices();
+        updateMarketQuantities();
     }
 
 
     public void updateGoodsLists(){
-        goodsList.setListData( GuiArbiter.getGoodsList() );
+        goodsList.setListData(GuiArbiter.getGoodsList());
+    }
+
+    public void updateMarketPrices(){
+        sellPriceList.setListData(getMarketPrices());
+    }
+
+    public void updateMarketQuantities(){
+        marketQuantityList.setListData(getMarketQuantities());
+    }
+
+    private static GoodsRegistry _goodsRegistry;
+    private static String[] goodsArray;
+    private static String[] marketPriceArray;
+    private static String[] marketQuantityArray;
+
+    public String[] getMarketPrices(){
+        Port _port = _player.getCurrentPort();
+        Map<Good, HashMap<Enums.MarketValues, Integer>> _localMarket = _port.getLocalMarket();
+        for (int i = 0; i < _goodsRegistry.getGoods().size(); i++){
+            Good good = _goodsRegistry.getGoods().get(i);
+            Integer _price = _localMarket.get(good).get(Enums.MarketValues.PRICE);
+            if (_price == null){
+
+            }
+            else{
+                marketPriceArray[i] = _price.toString();
+            }
+        }
+        return marketPriceArray;
+    }
+
+    public String[] getMarketQuantities(){
+        Port _port = _player.getCurrentPort();
+        Map<Good, HashMap<Enums.MarketValues, Integer>> _localMarket = _port.getLocalMarket();
+        for (int i = 0; i < _goodsRegistry.getGoods().size(); i++){
+            Good good = _goodsRegistry.getGoods().get(i);
+            Integer _quantity = _localMarket.get(good).get(Enums.MarketValues.QUANTITY);
+            if (_quantity == null){
+
+            }
+            else{
+                marketQuantityArray[i] = _quantity.toString();
+            }
+        }
+        return marketQuantityArray;
     }
 
 
