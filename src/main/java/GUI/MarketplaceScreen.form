@@ -147,7 +147,7 @@
           <model/>
         </properties>
       </component>
-      <grid id="fb60d" binding="buySpinnerPanel" layout-manager="GridBagLayout">
+      <grid id="fb60d" binding="buySpinnerPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
         <constraints>
           <grid row="8" column="12" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
           <forms defaultalign-horz="false" defaultalign-vert="false"/>
@@ -219,7 +219,7 @@
           <text value="Price"/>
         </properties>
       </component>
-      <grid id="bbb3b" binding="sellSpinnerPanel" layout-manager="GridBagLayout">
+      <grid id="bbb3b" binding="sellSpinnerPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
         <constraints>
           <grid row="8" column="6" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
           <forms defaultalign-horz="false" defaultalign-vert="false"/>

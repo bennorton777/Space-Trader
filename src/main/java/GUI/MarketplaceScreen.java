@@ -9,6 +9,7 @@ import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -94,19 +95,31 @@ public class MarketplaceScreen {
 
     public void updateBuySpinners(){
         buySpinners = new JSpinner[_goodsRegistry.getGoods().size()];
+        buySpinnerPanel.setLayout(new BoxLayout(buySpinnerPanel, BoxLayout.Y_AXIS));
+        Map<Good, HashMap<Enums.MarketValues, Integer>> _localMarket = _port.getLocalMarket();
         for(int i = 0; i < _goodsRegistry.getGoods().size(); i++){
-            JSpinner jsp = new JSpinner();
-            buySpinners[i] = jsp;
-            buySpinnerPanel.add(jsp);
+            Good good = _goodsRegistry.getGoods().get(i);
+            if (_localMarket.get(good) != null){
+                JSpinner jsp = new JSpinner();
+                buySpinners[i] = jsp;
+                //jsp.setAlignmentX(Component.CENTER_ALIGNMENT);
+                buySpinnerPanel.add(jsp);
+            }
         }
     }
 
     public void updateSellSpinners(){
         sellSpinners = new JSpinner[_goodsRegistry.getGoods().size()];
+        sellSpinnerPanel.setLayout(new BoxLayout(sellSpinnerPanel,BoxLayout.Y_AXIS));
+        Map<Good, HashMap<Enums.MarketValues, Integer>> _localMarket = _port.getLocalMarket();
         for(int i = 0; i < _goodsRegistry.getGoods().size(); i++){
-            JSpinner jsp = new JSpinner();
-            sellSpinners[i] = jsp;
-            sellSpinnerPanel.add(jsp);
+            Good good = _goodsRegistry.getGoods().get(i);
+            if (_localMarket.get(good) != null){
+                JSpinner jsp = new JSpinner();
+                sellSpinners[i] = jsp;
+                sellSpinnerPanel.add(jsp);
+
+            }
         }
     }
 
