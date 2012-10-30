@@ -40,4 +40,5 @@ public class Bootstrapper {
         //TODO Make this come from Player
         GuiArbiter.GameScreen(Player.getInstance().getName(), Player.getInstance().getCredits());
     }
+
 }
