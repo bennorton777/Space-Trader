@@ -72,25 +72,27 @@ public class Ocean {
 
             Coordinates pos = newIslandLocation(size);
 
-            //System.out.print("New Island with position: " + pos + "and ports: ");
-
             String[] tempNames = new String[size];
 
             for (int i = 0; i < size; i ++)
             {
                 tempNames[i] = names.remove(gen.nextInt(names.size()));
-                //System.out.print(" " + tempNames[i]);
             }
-            //System.out.println();
             Island temp = new Island(tempNames,  pos);
 
             _islands.add(temp);
         }
     }
 
-    private Coordinates newIslandLocation(int radius) {
+    private Coordinates newIslandLocation(int numPorts) {
         Random gen = new Random();
-        return _candidates.remove(gen.nextInt(_candidates.size()));
+        Coordinates base = _candidates.remove(gen.nextInt(_candidates.size()));
+        switch (numPorts) {
+            case 1:case 2: base.setxPos(base.getxPos() + gen.nextInt(4) - 2); base.setyPos(base.getyPos() + gen.nextInt(4) - 2); break;
+            case 3:case 4: base.setxPos(base.getxPos() + gen.nextInt(2) - 1); base.setyPos(base.getyPos() + gen.nextInt(2) - 1); break;
+            default: break;
+        }
+        return base;
     }
 
     public List<Island> getIslands() {
@@ -133,6 +135,7 @@ public class Ocean {
             for (int y = 1; y < _oceanHeight / increment; y++)
             {
                 _candidates.add(new Coordinates(x*increment, y*increment));
+                System.out.println("Candidate: " + _candidates.get(_candidates.size() - 1));
             }
         }
     }
