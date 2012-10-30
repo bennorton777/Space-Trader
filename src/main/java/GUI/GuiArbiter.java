@@ -1,6 +1,5 @@
 package GUI;
 
-import com.TableFlip.SpaceTrader.GameEntity.Gnat;
 import com.TableFlip.SpaceTrader.GameEntity.Ocean;
 import com.TableFlip.SpaceTrader.GameEntity.Player;
 import com.TableFlip.SpaceTrader.GameEntity.RandomPort;
