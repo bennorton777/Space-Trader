@@ -3,6 +3,7 @@ package GUI;
 import com.TableFlip.SpaceTrader.GameEntity.Gnat;
 import com.TableFlip.SpaceTrader.GameEntity.Player;
 import com.TableFlip.SpaceTrader.Model.Enums;
+import com.TableFlip.SpaceTrader.Service.ShipFactory;
 
 import java.util.HashMap;
 
@@ -39,7 +40,7 @@ public class GuiArbiter {
         _player=Player.getInstance()
                 .setName(name)
                 .setCredits(1000)
-                .setShip(new Gnat())
+                .setShip(ShipFactory.makeShip("Sloop"))
                 .setStats(stats);
         System.out.println("Created character with name: "+_player.getName()+" and stats as follows:  fighter->"+_player.getStats().get(Enums.Skill.FIGHTER)+" pilot->"+_player.getStats().get(Enums.Skill.PILOT)+" trader->"+_player.getStats().get(Enums.Skill.TRADER)+" engineer->"+_player.getStats().get(Enums.Skill.ENGINEER)+".  This player has "+_player.getCredits()+" credits and ship: " + _player.getShip().toString());
         com.TableFlip.SpaceTrader.Bootstrap.Bootstrapper.generateOcean();
