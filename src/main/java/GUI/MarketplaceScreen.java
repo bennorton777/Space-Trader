@@ -69,12 +69,28 @@ public class MarketplaceScreen {
 
         updatePlayerInfoLabel();
         updateGoodsLists();
+
+        updateCargoPrices();
+        updateCargoQuantities();
         updateMarketPrices();
         updateMarketQuantities();
         updateBuySpinners();
         updateSellSpinners();
         updateTargetPortInfo();
         updateCurrentPortInfo();
+
+        /**buyButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                for(int i = 0; i < sellSpinners.length; i++){
+                    JSpinner spinner = sellSpinners[i];
+                    spinner.getValue();
+                    _player.buy(_goodsRegistry.getGoods().get(i), (Integer) spinner.getValue());
+                }
+                updateMarketQuantities();
+                updateCargoQuantities();
+                updatePlayerInfoLabel();
+            }
+        });*/
     }
 
     public void updatePlayerInfoLabel(){
@@ -91,6 +107,26 @@ public class MarketplaceScreen {
 
     public void updateMarketQuantities(){
         marketQuantityList.setListData(getMarketQuantities());
+    }
+
+    public void updateCargoPrices(){
+        sellPriceList.setListData(getMarketPrices());
+    }
+
+    public void updateCargoQuantities(){
+        invQuantityList.setListData(getCargoQuantities());
+    }
+
+    public String[] getCargoQuantities(){
+        Map<Good, HashMap<Enums.MarketValues, Integer>> _localMarket = _port.getLocalMarket();
+        String[] _cargoQuantityArray = new String[_goodsRegistry.getGoods().size()];
+        for(int i = 0; i < _goodsRegistry.getGoods().size(); i++){
+            Good good = _goodsRegistry.getGoods().get(i);
+            if (_localMarket.get(good) != null){
+                _cargoQuantityArray[i] = _player.getShip().getCargo().get( good ).toString();
+            }
+        }
+        return _cargoQuantityArray;
     }
 
     public void updateBuySpinners(){

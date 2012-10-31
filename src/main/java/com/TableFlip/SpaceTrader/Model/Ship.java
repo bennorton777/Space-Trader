@@ -1,5 +1,6 @@
 package com.TableFlip.SpaceTrader.Model;
 
+import com.TableFlip.SpaceTrader.Service.GoodsRegistry;
 import com.TableFlip.SpaceTrader.Service.ShipPrototype;
 
 import java.util.HashMap;
@@ -20,6 +21,8 @@ public class Ship {
     private int _crewSlots;
     private int _toolSlots;
 
+    private static GoodsRegistry _goodsRegistry;
+
     public Ship(String name, int suppliesMax, int cargoSpace, int weaponSlots, int armorSlots, int crewSlots, int toolSlots) {
         _suppliesRemaining = suppliesMax;
         _suppliesMax = suppliesMax;
@@ -30,6 +33,12 @@ public class Ship {
         _armorSlots = armorSlots;
         _crewSlots = crewSlots;
         _toolSlots = toolSlots;
+
+        _goodsRegistry = GoodsRegistry.getInstance();
+
+        for(Good g : _goodsRegistry.getGoods()){
+            _cargo.put(g, 0);
+        }
     }
 
     private Port _targetPort;
