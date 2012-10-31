@@ -42,7 +42,9 @@ public class Player {
         }
         //okay, do the buying thing!
         //import goods to ship
-        _ship.getCargo().put(good, amount+currentAmountInCargoHold);
+        _ship.getCargo().put(good, amount+_ship.getCargo().get(good));
+        //remove Cargo Space according to purchase
+        _ship.setCargoSpace( currentAmountInCargoHold - amount);
         //charge player
         _credits-=cost;
         //take goods from planet
@@ -66,6 +68,8 @@ public class Player {
         getCurrentPort().getLocalMarket().get(good).put(Enums.MarketValues.QUANTITY, currentAmountInPlanet+amount);
         //take good from player
         _ship.getCargo().put(good, supply-amount);
+        //add Cargo Space according to selling transaction
+        _ship.setCargoSpace( _ship.getCargoSpace() + amount);
         //charge planet
         _credits+=cost;
         return true;
