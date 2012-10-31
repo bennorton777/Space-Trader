@@ -1,13 +1,10 @@
 package GUI;
 
-import com.TableFlip.SpaceTrader.GameEntity.Gnat;
 import com.TableFlip.SpaceTrader.GameEntity.Ocean;
 import com.TableFlip.SpaceTrader.GameEntity.Player;
-import com.TableFlip.SpaceTrader.GameEntity.RandomPort;
+import com.TableFlip.SpaceTrader.Model.Coordinates;
 import com.TableFlip.SpaceTrader.Model.Enums;
 import com.TableFlip.SpaceTrader.Service.ShipFactory;
-import com.TableFlip.SpaceTrader.Model.Good;
-import com.TableFlip.SpaceTrader.Service.GoodsRegistry;
 import com.TableFlip.SpaceTrader.Model.Island;
 import com.TableFlip.SpaceTrader.Model.Port;
 
@@ -29,7 +26,6 @@ public class GuiArbiter {
     public static void charGen(){
         CharGen.main(new String[3]);
     }
-    private static Player _player;
 
     /**
      * new character game logic abstraction.  The GUI classes do not need to know how to make the Game Logic create a new character.
@@ -45,7 +41,7 @@ public class GuiArbiter {
         stats.put(Enums.Skill.FIGHTER, fighterSkill);
         stats.put(Enums.Skill.TRADER, traderSkill);
         stats.put(Enums.Skill.ENGINEER, engineerSkill);
-        _player=Player.getInstance()
+        Player _player=Player.getInstance()
                 .setName(name)
                 .setCredits(1000)
                 .setShip(ShipFactory.makeShip("Sloop"))
@@ -80,5 +76,25 @@ public class GuiArbiter {
     public static void SelectPortScreen(){
         SelectPortScreen.main(new String[1]);
         GameScreen.close();
+    }
+
+    public static List<Coordinates> getPortCoordinates(){
+        ArrayList<Coordinates> coords =new ArrayList<Coordinates>();
+        for (Island i : Ocean.getInstance().getIslands()){
+            for (Port p : i.getPorts()){
+                coords.add(p.getCoordinates());
+            }
+        }
+        return coords;
+    }
+
+    public static Port getCurrentPort(){
+        Player player = Player.getInstance();
+        return player.getCurrentPort();
+    }
+
+    public static Port getTargetPort(){
+        Player player = Player.getInstance();
+        return player.getTargetPort();
     }
 }
