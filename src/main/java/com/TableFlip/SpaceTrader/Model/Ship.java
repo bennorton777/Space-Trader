@@ -36,6 +36,7 @@ public class Ship {
 
         _goodsRegistry = GoodsRegistry.getInstance();
 
+
         for(Good g : _goodsRegistry.getGoods()){
             _cargo.put(g, 0);
         }

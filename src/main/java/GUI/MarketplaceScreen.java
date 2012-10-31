@@ -9,10 +9,13 @@ import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,8 +41,8 @@ public class MarketplaceScreen {
     private JList marketQuantityList;
     private JList buyPriceList;
 
-    private JSpinner[] sellSpinners;
-    private JSpinner[] buySpinners;
+    private ArrayList<JSpinner> sellSpinners;
+    private ArrayList<JSpinner> buySpinners;
 
     private JPanel _panel;
     private JPanel buySpinnerPanel;
@@ -54,11 +57,14 @@ public class MarketplaceScreen {
     private static Port _port;
     private static Port _targetPort;
 
+    private static ArrayList<Good> goodsArrayList;
+
     public MarketplaceScreen() {
         _goodsRegistry = GoodsRegistry.getInstance();
         _player = Player.getInstance();
         _port = _player.getCurrentPort();
         _targetPort = _player.getTargetPort();
+        goodsArrayList = new ArrayList<Good>();
 
         returnToMainButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
@@ -79,22 +85,31 @@ public class MarketplaceScreen {
         updateTargetPortInfo();
         updateCurrentPortInfo();
 
-        /**buyButton.addActionListener(new ActionListener() {
+        buyButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                for(int i = 0; i < sellSpinners.length; i++){
-                    JSpinner spinner = sellSpinners[i];
-                    spinner.getValue();
-                    _player.buy(_goodsRegistry.getGoods().get(i), (Integer) spinner.getValue());
+                for(int i = 0; i < buySpinners.size(); i++){
+                    JSpinner spinner = buySpinners.get(i);
+//                    System.out.println("The spinner in the buySpinners at index" + i + " is value: " + spinner.getValue().toString());
+                    if ((Integer) spinner.getValue() > 0){
+                        updateMarketQuantities();
+                        updateCargoQuantities();
+                        updatePlayerInfoLabel();
+                        System.out.println("After: ");
+                        _player.buy(goodsArrayList.get(i), (Integer) spinner.getValue());
+                        System.out.println("The good associated with the spinner is: " + goodsArrayList.get(i).getName());
+                        System.out.println("The quantity associated with the spinner is: " + spinner.getValue().toString());
+                        System.out.println("We are in the for loop!");
+                        updateMarketQuantities();
+                        updateCargoQuantities();
+                        updatePlayerInfoLabel();
+                    }
                 }
-                updateMarketQuantities();
-                updateCargoQuantities();
-                updatePlayerInfoLabel();
             }
-        });*/
+        });
     }
 
     public void updatePlayerInfoLabel(){
-        playerInfoLabel.setText("You have: " + _player.getCredits() + " coins.");
+        playerInfoLabel.setText("You have: " + _player.getCredits() + " coins");
     }
 
     public void updateGoodsLists(){
@@ -119,40 +134,60 @@ public class MarketplaceScreen {
 
     public String[] getCargoQuantities(){
         Map<Good, HashMap<Enums.MarketValues, Integer>> _localMarket = _port.getLocalMarket();
-        String[] _cargoQuantityArray = new String[_goodsRegistry.getGoods().size()];
+        ArrayList<String> _cargoQuantityArray = new ArrayList<String>();
         for(int i = 0; i < _goodsRegistry.getGoods().size(); i++){
             Good good = _goodsRegistry.getGoods().get(i);
             if (_localMarket.get(good) != null){
-                _cargoQuantityArray[i] = _player.getShip().getCargo().get( good ).toString();
+                _cargoQuantityArray.add(_player.getShip().getCargo().get(good).toString());
             }
         }
-        return _cargoQuantityArray;
+        String[] string = _cargoQuantityArray.toArray(new String[0]);
+        System.out.println(Arrays.toString(string));
+        return string;
     }
 
     public void updateBuySpinners(){
-        buySpinners = new JSpinner[_goodsRegistry.getGoods().size()];
+        buySpinners = new ArrayList<JSpinner>();
         buySpinnerPanel.setLayout(new BoxLayout(buySpinnerPanel, BoxLayout.Y_AXIS));
         Map<Good, HashMap<Enums.MarketValues, Integer>> _localMarket = _port.getLocalMarket();
         for(int i = 0; i < _goodsRegistry.getGoods().size(); i++){
             Good good = _goodsRegistry.getGoods().get(i);
             if (_localMarket.get(good) != null){
-                JSpinner jsp = new JSpinner();
-                buySpinners[i] = jsp;
+                SpinnerModel model = new SpinnerNumberModel(0, 0, (int) _localMarket.get(good).get(Enums.MarketValues.QUANTITY), 1);
+                JSpinner jsp = new JSpinner(model);
+                jsp.addChangeListener(new ChangeListener() {
+                    public void stateChanged(ChangeEvent e) {
+                        JSpinner spinner = (JSpinner)e.getSource();
+                        System.out.println("The buying spinner value is " + spinner.getValue());
+                        spinner.setValue((Integer) spinner.getValue());
+                    }
+                });
+                jsp.setValue(0);
                 //jsp.setAlignmentX(Component.CENTER_ALIGNMENT);
+                buySpinners.add(jsp);
                 buySpinnerPanel.add(jsp);
             }
         }
     }
 
     public void updateSellSpinners(){
-        sellSpinners = new JSpinner[_goodsRegistry.getGoods().size()];
+        sellSpinners = new ArrayList<JSpinner>();
         sellSpinnerPanel.setLayout(new BoxLayout(sellSpinnerPanel,BoxLayout.Y_AXIS));
         Map<Good, HashMap<Enums.MarketValues, Integer>> _localMarket = _port.getLocalMarket();
         for(int i = 0; i < _goodsRegistry.getGoods().size(); i++){
             Good good = _goodsRegistry.getGoods().get(i);
             if (_localMarket.get(good) != null){
-                JSpinner jsp = new JSpinner();
-                sellSpinners[i] = jsp;
+                SpinnerModel model = new SpinnerNumberModel(0, 0, (int) _player.getShip().getCargo().get(good), 1);
+                JSpinner jsp = new JSpinner(model);
+                jsp.addChangeListener(new ChangeListener() {
+                    public void stateChanged(ChangeEvent e) {
+                        JSpinner spinner = (JSpinner)e.getSource();
+                        System.out.println("Makario says: " + spinner.getValue());
+                        spinner.setValue((Integer) spinner.getValue());
+                    }
+                });
+                jsp.setValue(0);
+                sellSpinners.add(jsp);
                 sellSpinnerPanel.add(jsp);
 
             }
@@ -185,8 +220,6 @@ public class MarketplaceScreen {
 
 
     private static GoodsRegistry _goodsRegistry;
-    private static String[] marketPriceArray;
-    private static String[] marketQuantityArray;
 
 
     public static String[] getGoodsList(){
@@ -197,6 +230,7 @@ public class MarketplaceScreen {
             Good good = _goodsRegistry.getGoods().get(i);
             if (_localMarket.get(good) != null){
                 goodsArray[i] = good.getName();
+                goodsArrayList.add(good);
             }
         }
         return goodsArray;
@@ -205,7 +239,7 @@ public class MarketplaceScreen {
     public String[] getMarketPrices(){
         Port _port = _player.getCurrentPort();
         Map<Good, HashMap<Enums.MarketValues, Integer>> _localMarket = _port.getLocalMarket();
-        marketPriceArray = new String[_goodsRegistry.getGoods().size()];
+        String[] marketPriceArray = new String[_goodsRegistry.getGoods().size()];
         for (int i = 0; i < _goodsRegistry.getGoods().size(); i++){
             Good good = _goodsRegistry.getGoods().get(i);
             if (_localMarket.get(good) != null){
@@ -219,15 +253,15 @@ public class MarketplaceScreen {
     public String[] getMarketQuantities(){
         Port _port = _player.getCurrentPort();
         Map<Good, HashMap<Enums.MarketValues, Integer>> _localMarket = _port.getLocalMarket();
-        marketQuantityArray = new String[_goodsRegistry.getGoods().size()];
+        ArrayList<String> marketQuantityArray = new ArrayList<String>();
         for (int i = 0; i < _goodsRegistry.getGoods().size(); i++){
             Good good = _goodsRegistry.getGoods().get(i);
             if (_localMarket.get(good) != null){
                 Integer _quantity = _localMarket.get(good).get(Enums.MarketValues.QUANTITY);
-                marketQuantityArray[i] = _quantity.toString();
+                marketQuantityArray.add(_quantity.toString());
             }
         }
-        return marketQuantityArray;
+        return marketQuantityArray.toArray(new String[0]);
     }
 
 

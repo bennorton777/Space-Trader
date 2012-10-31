@@ -42,7 +42,7 @@ public class Player {
         }
         //okay, do the buying thing!
         //import goods to ship
-        _ship.getCargo().put(good, amount+currentAmountInCargoHold);
+        _ship.getCargo().put(good, amount+_ship.getCargo().get(good));
         //charge player
         _credits-=cost;
         //take goods from planet
