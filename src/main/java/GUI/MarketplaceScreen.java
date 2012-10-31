@@ -140,7 +140,7 @@ public class MarketplaceScreen {
      * updating GUI panels is made flexible if its innerlogic is to be transferred over to GUIArbiter
      */
     public void updatePlayerInfoLabel(){
-        playerInfoLabel.setText("You have: " + _player.getCredits() + " coins");
+        playerInfoLabel.setText("You have: " + _player.getCredits() + " coins and " + _player.getShip().getCargoSpace() + " cargo spaces left.");
     }
 
     public void updateGoodsLists(){
