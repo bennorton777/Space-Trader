@@ -21,10 +21,16 @@ import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
- * User: DelRosario
+ * User: Dannielle
  * Date: 10/23/12
  * Time: 6:26 PM
- * To change this template use File | Settings | File Templates.
+ *
+ * MarketplaceScreen
+ * The GUI that handles the Marketplace. Currently organizes a lot of the goods found in the target port
+ * (via the GoodsRegistry) into a format readable for the GUI.
+ * Displays the Player's goods, its respective quantities and selling prices, and the target port's
+ * own market quantities and buying prices. GUI for the player to buy and sell.
+ * Also displays the current port.
  */
 public class MarketplaceScreen {
     private JLabel MarketplaceLabel;
@@ -40,10 +46,6 @@ public class MarketplaceScreen {
     private JList sellPriceList;
     private JList marketQuantityList;
     private JList buyPriceList;
-
-    private ArrayList<JSpinner> sellSpinners;
-    private ArrayList<JSpinner> buySpinners;
-
     private JPanel _panel;
     private JPanel buySpinnerPanel;
     private JPanel sellSpinnerPanel;
@@ -51,14 +53,20 @@ public class MarketplaceScreen {
     private JLabel targetPortLabel;
     private static JFrame frame;
 
-
     private static Player _player;
-
+    private static GoodsRegistry _goodsRegistry;
     private static Port _port;
     private static Port _targetPort;
 
     private static ArrayList<Good> goodsArrayList;
+    private ArrayList<JSpinner> sellSpinners;
+    private ArrayList<JSpinner> buySpinners;
 
+    /**
+     * Empty constructor. The Marketplace can access all that it needs to know through the Player singleton or the
+     * GoodsRegistry singleton.
+     * Contains button listeners and calls methods to populate the JLists and JPanels.
+     */
     public MarketplaceScreen() {
         _goodsRegistry = GoodsRegistry.getInstance();
         _player = Player.getInstance();
@@ -73,9 +81,9 @@ public class MarketplaceScreen {
             }
         });
 
+        //All of the GUI JPanels and Lists to populate!
         updatePlayerInfoLabel();
         updateGoodsLists();
-
         updateCargoPrices();
         updateCargoQuantities();
         updateMarketPrices();
@@ -85,29 +93,52 @@ public class MarketplaceScreen {
         updateTargetPortInfo();
         updateCurrentPortInfo();
 
+        //Button Listeners
+        //Goes through the ArrayList that holds the spinners, iterates through them.
         buyButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 for(int i = 0; i < buySpinners.size(); i++){
                     JSpinner spinner = buySpinners.get(i);
-//                    System.out.println("The spinner in the buySpinners at index" + i + " is value: " + spinner.getValue().toString());
+                    //if the spinner is greater than 0, then it is relevant for us to buy!
+                    //we use its index to choose the corresponding Good in the goodsArrayList
                     if ((Integer) spinner.getValue() > 0){
-                        updateMarketQuantities();
-                        updateCargoQuantities();
-                        updatePlayerInfoLabel();
-                        System.out.println("After: ");
                         _player.buy(goodsArrayList.get(i), (Integer) spinner.getValue());
-                        System.out.println("The good associated with the spinner is: " + goodsArrayList.get(i).getName());
-                        System.out.println("The quantity associated with the spinner is: " + spinner.getValue().toString());
-                        System.out.println("We are in the for loop!");
-                        updateMarketQuantities();
-                        updateCargoQuantities();
-                        updatePlayerInfoLabel();
                     }
                 }
+            //update GUI panels only after all of the purchases have been made
+            updateMarketQuantities();
+            updateCargoQuantities();
+            updatePlayerInfoLabel();
+            updateBuySpinners();
+            updateSellSpinners();
+            }
+        });
+
+        //Goes through the ArrayList that holds the spinners, iterates through them.
+        sellButton.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                for(int i = 0; i < sellSpinners.size(); i++){
+                    JSpinner spinner = sellSpinners.get(i);
+                    //if the spinner is greater than 0, then it is relevant for us to sell!
+                    //we use its index to choose the corresponding Good in the goodsArrayList
+                    if ((Integer) spinner.getValue() > 0){
+                        _player.sell(goodsArrayList.get(i), (Integer) spinner.getValue());
+
+                    }
+                }
+                //update GUI panels only after all of the transactions have been made
+                updateMarketQuantities();
+                updateCargoQuantities();
+                updatePlayerInfoLabel();
+                updateBuySpinners();
+                updateSellSpinners();
             }
         });
     }
 
+    /**
+     * updating GUI panels is made flexible if its innerlogic is to be transferred over to GUIArbiter
+     */
     public void updatePlayerInfoLabel(){
         playerInfoLabel.setText("You have: " + _player.getCredits() + " coins");
     }
@@ -132,57 +163,80 @@ public class MarketplaceScreen {
         invQuantityList.setListData(getCargoQuantities());
     }
 
+    /**
+     * getCargoQuantities
+     * gets the quantities of ONLY the goods in the ship's cargo that are ALSO found in the target port
+     * and stores it into an ArrayList _cargoQuantityArray
+     *
+     * @return the String[] version of _cargoQuantityArray so that its respective JList can read it
+     */
     public String[] getCargoQuantities(){
         Map<Good, HashMap<Enums.MarketValues, Integer>> _localMarket = _port.getLocalMarket();
         ArrayList<String> _cargoQuantityArray = new ArrayList<String>();
         for(int i = 0; i < _goodsRegistry.getGoods().size(); i++){
             Good good = _goodsRegistry.getGoods().get(i);
+            // if a good in the goodsRegistry is also found in the _localMarket and is not null,
+            // then add the name of the good to our ArrayList _cargoQuantityArray
             if (_localMarket.get(good) != null){
                 _cargoQuantityArray.add(_player.getShip().getCargo().get(good).toString());
             }
         }
-        String[] string = _cargoQuantityArray.toArray(new String[0]);
-        System.out.println(Arrays.toString(string));
-        return string;
+        // returns a String[] for JList to read
+        return _cargoQuantityArray.toArray(new String[0]);
     }
 
+    /**
+     * Creates the appropriate JSpinners in the appropriate amount.
+     * Clears the panel and resets/re-adds them for each transaction.
+     * Stores the spinners in an ArrayList.
+     */
     public void updateBuySpinners(){
         buySpinners = new ArrayList<JSpinner>();
+        // resets the panel from previous transactions
+        buySpinnerPanel.removeAll();
+        // aligns all spinners vertically on top of each other
         buySpinnerPanel.setLayout(new BoxLayout(buySpinnerPanel, BoxLayout.Y_AXIS));
         Map<Good, HashMap<Enums.MarketValues, Integer>> _localMarket = _port.getLocalMarket();
         for(int i = 0; i < _goodsRegistry.getGoods().size(); i++){
             Good good = _goodsRegistry.getGoods().get(i);
             if (_localMarket.get(good) != null){
+                // spinner has initial value 0, minimum 0, maximum is the amount of the good in the _localMarket, goes up by 1
                 SpinnerModel model = new SpinnerNumberModel(0, 0, (int) _localMarket.get(good).get(Enums.MarketValues.QUANTITY), 1);
                 JSpinner jsp = new JSpinner(model);
                 jsp.addChangeListener(new ChangeListener() {
                     public void stateChanged(ChangeEvent e) {
                         JSpinner spinner = (JSpinner)e.getSource();
-                        System.out.println("The buying spinner value is " + spinner.getValue());
                         spinner.setValue((Integer) spinner.getValue());
                     }
                 });
                 jsp.setValue(0);
-                //jsp.setAlignmentX(Component.CENTER_ALIGNMENT);
                 buySpinners.add(jsp);
                 buySpinnerPanel.add(jsp);
             }
         }
     }
 
+    /**
+     * Creates the appropriate JSpinners in the appropriate amount.
+     * Clears the panel and resets/re-adds them for each transaction.
+     * Stores the spinners in an ArrayList.
+     */
     public void updateSellSpinners(){
         sellSpinners = new ArrayList<JSpinner>();
+        // resets the panel from previous transactions
+        sellSpinnerPanel.removeAll();
+        // aligns all spinners vertically on top of each other
         sellSpinnerPanel.setLayout(new BoxLayout(sellSpinnerPanel,BoxLayout.Y_AXIS));
         Map<Good, HashMap<Enums.MarketValues, Integer>> _localMarket = _port.getLocalMarket();
         for(int i = 0; i < _goodsRegistry.getGoods().size(); i++){
             Good good = _goodsRegistry.getGoods().get(i);
             if (_localMarket.get(good) != null){
+                // spinner has initial value 0, minimum 0, maximum is the amount of the good in the _localMarket, goes up by 1
                 SpinnerModel model = new SpinnerNumberModel(0, 0, (int) _player.getShip().getCargo().get(good), 1);
                 JSpinner jsp = new JSpinner(model);
                 jsp.addChangeListener(new ChangeListener() {
                     public void stateChanged(ChangeEvent e) {
                         JSpinner spinner = (JSpinner)e.getSource();
-                        System.out.println("Makario says: " + spinner.getValue());
                         spinner.setValue((Integer) spinner.getValue());
                     }
                 });
@@ -194,6 +248,9 @@ public class MarketplaceScreen {
         }
     }
 
+    /**
+     * Displays and formats the current port
+     */
     public void updateCurrentPortInfo() {
         currentPortLabel.setText("<html>Current Port Details<br /><br />" +
                 "Name: " + _port.getName() + "<br />" +
@@ -202,6 +259,9 @@ public class MarketplaceScreen {
                 "Coordinates: " + _port.getCoordinates() + "<br /></html>");
     }
 
+    /**
+     * Displays and formats the target port (to be removed)
+     */
     public void updateTargetPortInfo() {
         if (_targetPort != null) {
             targetPortLabel.setText("<html>Target Port Details<br /><br />" +
@@ -218,10 +278,10 @@ public class MarketplaceScreen {
         }
     }
 
-
-    private static GoodsRegistry _goodsRegistry;
-
-
+    /**
+     * gets an ArrayList of ONLY goods that have a non-null quantity at the current port
+     * @return a String[] of the names of goods of non-null quantity
+     */
     public static String[] getGoodsList(){
         Port _port = _player.getCurrentPort();
         Map<Good, HashMap<Enums.MarketValues, Integer>> _localMarket = _port.getLocalMarket();
@@ -236,6 +296,10 @@ public class MarketplaceScreen {
         return goodsArray;
     }
 
+    /**
+     * gets a String[] of the market prices found in the localMarket
+     * @return a String[] of prices for buying/selling a good at this particular port in the order of _goodsRegistry
+     */
     public String[] getMarketPrices(){
         Port _port = _player.getCurrentPort();
         Map<Good, HashMap<Enums.MarketValues, Integer>> _localMarket = _port.getLocalMarket();
@@ -250,6 +314,10 @@ public class MarketplaceScreen {
         return marketPriceArray;
     }
 
+    /**
+     * gets a String[] of the market quantities found in the localMarket
+     * @return a String[] of quantities of goods at this particular port in the order of the _goodsRegistry
+     */
     public String[] getMarketQuantities(){
         Port _port = _player.getCurrentPort();
         Map<Good, HashMap<Enums.MarketValues, Integer>> _localMarket = _port.getLocalMarket();
@@ -266,7 +334,7 @@ public class MarketplaceScreen {
 
 
     public static void main(String[] args) {
-        frame = new JFrame("Main Screen");
+        frame = new JFrame("Marketplace");
         frame.setContentPane(new MarketplaceScreen()._panel);
         frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         frame.pack();
