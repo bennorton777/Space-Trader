@@ -1,5 +1,6 @@
 package com.TableFlip.SpaceTrader.GameEntity;
 
+import com.TableFlip.SpaceTrader.DataStructure.SparseArray.SparseArray;
 import com.TableFlip.SpaceTrader.Model.Coordinates;
 import com.TableFlip.SpaceTrader.Model.Island;
 import com.TableFlip.SpaceTrader.Model.Port;
@@ -19,16 +20,26 @@ public class Ocean {
     int _oceanWidth;
     private static Ocean _instance;
     private static final int _MAXNUMPORTS = 7;
+    private static final int _OCEANHEIGHT = 100;
+    private static final int _OCEANWIDTH = 100;
+
+    private static SparseArray<Port> _portSparseArray;
 
     /**
      * Sets default values for galaxy
      */
     private Ocean(){
-        setOceanHeight(80);
-        setOceanWidth(80);
-
+        setOceanHeight(_OCEANHEIGHT);
+        setOceanWidth(_OCEANWIDTH);
+        _portSparseArray = new SparseArray<Port>(_OCEANWIDTH, _OCEANHEIGHT);
         _islands = new ArrayList<Island>();
         generateIslands();
+
+        for (Island island : _islands){
+            for(Port port : island.getPorts()){
+                _portSparseArray.putAt(port.getCoordinates().getyPos(), port.getCoordinates().getxPos(), port);
+            }
+        }
     }
 
     public static Ocean getInstance() {
@@ -181,5 +192,13 @@ public class Ocean {
         }
 
         return outstring;
+    }
+
+    public SparseArray<Port> getPortSparseArray() {
+        return _portSparseArray;
+    }
+
+    public void setPortSparseArray(SparseArray<Port> portSparseArray) {
+        _portSparseArray = portSparseArray;
     }
 }

@@ -45,11 +45,26 @@ public class SparseArray<T> implements ISparseArray2D<T>{
 
             Node<T> myNode = rn.getAcrossNode();
             int myNodeColIndex = myNode.getCol();
-            while (myNodeColIndex<c){
-                myNode = myNode.getXNext();
-                myNodeColIndex = myNode.getCol();
-            }
-            return myNode;
+            //either fix getAcrossNode or have a while loop for greater and a while loop for less than
+            //The problem is in getting the across node, which appears to just not be set correctly when placing
+            //items in the sparse array.  That's a pain to fix so right now I'm just going to add a stupid hack.
+            //This works for this project since I know that what I'm looking for will be in the sparse array.
+            //Otherwise, this is bad.
+           // if (myNodeColIndex<c){
+                while (myNodeColIndex<c){
+                    myNode = myNode.getXNext();
+                    myNodeColIndex = myNode.getCol();
+                }
+                return myNode;
+           // }
+           // else if (myNodeColIndex>c){
+           //     while(myNodeColIndex>c){
+           //         myNode = myNode.getXPrev();
+           //         myNodeColIndex = myNode.getCol();
+           //     }
+           //     return myNode;
+           // }
+           // return myNode;
         }
     }
 
@@ -144,14 +159,8 @@ public class SparseArray<T> implements ISparseArray2D<T>{
         }
     }
 
-    /**
-     * Grabs the node above the row index so you can add a node at the row index
-     * and hook it up to the previous one.
-     * @param row the index
-     * @param cn the ColNode to use to search down the array in that column.
-     * @return the Node before the one we're wanting to add. If there is no
-     * previous, return null.
-     */
+
+
     public Node<T> getYPrevNode(int row, ColNode<T> cn){
         Node<T> countNode = cn.getDownNode();
         int countNodeR = countNode.getRow();
@@ -166,7 +175,7 @@ public class SparseArray<T> implements ISparseArray2D<T>{
             }
 
             if (countNodeR>row)
-                countNode = countNode.getXPrev();
+                countNode = countNode.getYPrev();
             return countNode;
         }
 
@@ -184,19 +193,19 @@ public class SparseArray<T> implements ISparseArray2D<T>{
      */
     public Node<T> getXPrevNode(int col, RowNode<T> rn){
         Node<T> countNode = rn.getAcrossNode();
-        int countNodeR = countNode.getRow();
+        //int countNodeR = countNode.getRow();
         int countNodeC = countNode.getCol();
 
         if (countNodeC<col && countNode.getXNext()==null)
             return countNode;
 
         else if (countNodeC<col){
-            while (countNodeR<col&&countNode.getXNext()!=null){
+            while (countNodeC<col&&countNode.getXNext()!=null){
                 countNode = countNode.getXNext();
-                countNodeR = countNode.getRow();
+                countNodeC = countNode.getCol();
             }
 
-            if (countNodeR>col)
+            if (countNodeC>col)
                 countNode = countNode.getXPrev();
             return countNode;
         }
@@ -228,7 +237,7 @@ public class SparseArray<T> implements ISparseArray2D<T>{
         RowNode<T> rn = findRowNodeAt(row);
         ColNode<T> cn = findColNodeAt(col);
 
-        if (rn.getAcrossNode()==null && cn.getDownNode()==null) {
+        if (rn.getAcrossNode()==null && cn.getDownNode()==null) {  //1
             Node<T> myNode = new Node<T>(null, null, null, null, value, row, col);
             rn.setAcrossNode(myNode);
             cn.setDownNode(myNode);
@@ -236,7 +245,7 @@ public class SparseArray<T> implements ISparseArray2D<T>{
         else if(rn.getAcrossNode()==null) {
 
             Node<T> YP = getYPrevNode(row, cn);
-            if (YP==null){
+            if (YP==null){  //2
                 Node<T> YN = cn.getDownNode();
                 Node<T> myNode = new Node<T>(null, YN, null, null, value,
                         row, col);
@@ -245,7 +254,7 @@ public class SparseArray<T> implements ISparseArray2D<T>{
                 cn.setDownNode(myNode);
 
             }
-            else {
+            else { //3
                 Node<T> myNode = new Node<T>(YP, YP.getYNext(), null, null,
                         value, row, col);
                 if (YP.getYNext()!=null)
@@ -257,7 +266,7 @@ public class SparseArray<T> implements ISparseArray2D<T>{
         }
         else if (cn.getDownNode()==null){
             Node<T> XP = getXPrevNode(col, rn);
-            if (XP==null){
+            if (XP==null){  //4
                 Node<T> XN = rn.getAcrossNode();
                 Node<T> myNode = new Node<T>(null, null, null, XN,
                         value, row, col);
@@ -266,7 +275,7 @@ public class SparseArray<T> implements ISparseArray2D<T>{
                 rn.setAcrossNode(myNode);
 
             }
-            else {
+            else {  //5
                 Node<T> myNode = new Node<T>(null, null, XP, XP.getXNext(),
                         value, row, col);
                 if (XP.getXNext()!=null)
@@ -279,7 +288,7 @@ public class SparseArray<T> implements ISparseArray2D<T>{
         else {
             Node<T> YP = getYPrevNode(row, cn);
             Node<T> XP = getXPrevNode(col, rn);
-            if (YP==null && XP==null){
+            if (YP==null && XP==null){  //6
                 Node<T> YN = cn.getDownNode();
                 Node<T> XN = rn.getAcrossNode();
                 Node<T> myNode = new Node<T>(null, YN, null, XN, value,
@@ -289,7 +298,7 @@ public class SparseArray<T> implements ISparseArray2D<T>{
                 rn.setAcrossNode(myNode);
                 cn.setDownNode(myNode);
             }
-            else if (YP==null){
+            else if (YP==null){  // 7
                 Node<T> YN = cn.getDownNode();
                 Node<T> myNode = new Node<T>(null, YN, XP, XP.getXNext(), value,
                         row, col);
@@ -297,11 +306,11 @@ public class SparseArray<T> implements ISparseArray2D<T>{
                 if (XP.getXNext()!=null)
                     XP.getXNext().setXPrev(myNode);//doesn't work if getXNext = null
                 XP.setXNext(myNode);
-                rn.setAcrossNode(myNode);
+                //rn.setAcrossNode(myNode);
                 cn.setDownNode(myNode);
 
             }
-            else if (XP==null){
+            else if (XP==null){  // 8
                 Node<T> XN = rn.getAcrossNode();
                 Node<T> myNode = new Node<T>(YP, YP.getYNext(), null, XN,
                         value, row, col);
@@ -309,11 +318,11 @@ public class SparseArray<T> implements ISparseArray2D<T>{
                 if (YP.getYNext()!=null)
                     YP.getYNext().setYPrev(myNode);
                 YP.setYNext(myNode);
-                cn.setDownNode(myNode);
+                //cn.setDownNode(myNode);
                 rn.setAcrossNode(myNode);
 
             }
-            else{
+            else{  // 9
                 Node<T> myNode = new Node<T>(YP, YP.getYNext(), XP, XP.getXNext(),
                         value, row, col);
                 if (YP.getYNext()!=null)
@@ -435,7 +444,7 @@ public class SparseArray<T> implements ISparseArray2D<T>{
             while(curr!=null){
                 RowList.add(curr.getData());
                 curr=curr.getXNext();
-                System.out.println(RowList);
+                // System.out.println(RowList);
             }
 
             return (List<T>) RowList;
@@ -472,11 +481,109 @@ public class SparseArray<T> implements ISparseArray2D<T>{
             while(curr!=null){
                 ColList.add(curr.getData());
                 curr=curr.getYNext();
-                System.out.println(ColList);
+                //System.out.println(ColList);
             }
 
             return (List<T>) ColList;
         }
     }
+
+    /**
+     * @param N the Node we start on.
+     * @return the Node above or down and to the left (of previous column) in the sparse array.
+     */
+    public T moveUp(Node<T> N){
+        Node<T> node = N.getYPrev();
+        if (node == null){
+            int column = N.getCol()-1;
+            List<T> colList = getColumnFor(column);  //cannot cast getColumnFor List into ColumnList.
+            while (colList.size() == 0){
+                column--;
+                if (column < 0){ //if it gets past the first column
+                    column = 99;
+                }
+                colList = getColumnFor(column);
+            }
+            return colList.get(colList.size()-1);
+        }
+
+        return node.getData();
+    }
+
+    /**
+     * @param N the Node we start on.
+     * @return the Node down or up and to the right (of next column) in the sparse array.
+     */
+    public T moveDown(Node<T> N){
+        Node<T> node = N.getYNext();
+        if (node == null){
+            int column = N.getCol()+1;
+            List<T> colList = getColumnFor(column);  //cannot cast getColumnFor List into ColumnList.
+            while (colList.size() == 0){
+                column++;
+                if (column > 99){ //if it gets past the last column
+                    column = 0;
+                }
+                colList = getColumnFor(column);
+            }
+            return colList.get(0);
+        }
+
+        return node.getData();
+    }
+
+    /**
+     * @param N the Node we start on.
+     * @return the Node right or down and to the right (of next row) in the sparse array.
+     */
+    public T moveRight(Node<T> N){
+        Node<T> node = N.getXNext();
+        if (node == null){
+            int row = N.getRow()+1;
+            List<T> rowList = getRowFor(row);  //cannot cast getColumnFor List into ColumnList.
+            while (rowList.size() == 0){
+                row++;
+                if (row > 99){ //if it gets past the last row
+                    row = 0;
+                }
+                rowList = getRowFor(row);
+            }
+            return rowList.get(0);
+        }
+
+        return node.getData();
+    }
+
+    /**
+     * @param N the Node we start on.
+     * @return the Node left or up and to the left (of previous row) in the sparse array.
+     */
+    public T moveLeft(Node<T> N){
+        Node<T> node = N.getXPrev();
+        if (node == null){
+            int row = N.getRow()-1;
+            List<T> rowList = getRowFor(row);  //cannot cast getColumnFor List into ColumnList.
+            while (rowList.size() == 0){
+                row--;
+                if (row < 0){ //if it gets past the last row
+                    row = 99;
+                }
+                rowList = getRowFor(row);
+            }
+            return rowList.get(rowList.size()-1);
+        }
+
+        return node.getData();
+    }
+
+   /* public static void main(String[] args){
+        SparseArray<Integer> sa = new SparseArray<Integer>(10, 10);
+        sa.putAt(6, 2, 1);
+        sa.putAt(6, 9, 2);
+        sa.putAt(3, 5, 3);
+        sa.putAt(9, 5, 4);
+        sa.putAt(6, 5, 5);
+    }*/
+
 }
 

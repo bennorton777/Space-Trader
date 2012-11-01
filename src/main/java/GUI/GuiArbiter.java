@@ -1,5 +1,7 @@
 package GUI;
 
+import com.TableFlip.SpaceTrader.DataStructure.SparseArray.Node;
+import com.TableFlip.SpaceTrader.DataStructure.SparseArray.SparseArray;
 import com.TableFlip.SpaceTrader.GameEntity.Ocean;
 import com.TableFlip.SpaceTrader.GameEntity.Player;
 import com.TableFlip.SpaceTrader.Model.Coordinates;
@@ -23,6 +25,7 @@ public class GuiArbiter {
      * Interpreter method to make new Character GUI things happen.
      * Game logic does not need to know how this is done.
      */
+
     public static void charGen(){
         CharGen.main(new String[3]);
     }
@@ -50,6 +53,7 @@ public class GuiArbiter {
         com.TableFlip.SpaceTrader.Bootstrap.Bootstrapper.generateOcean();
 
 
+
         //Code to pick a random port on a random island to assign it to the player
         Ocean ocean = Ocean.getInstance();
         List<Island> islands = ocean.getIslands();
@@ -60,7 +64,31 @@ public class GuiArbiter {
         Port port = island.getPorts().get(pickPort);
 
         _player.setCurrentPort(port);
+
+        Node<Port> targetNode = ocean.getPortSparseArray().findNodeAt(_player.getCurrentPort().getCoordinates().getyPos(), _player.getCurrentPort().getCoordinates().getxPos());
+
+        //This is all stuff to pick the closest port to choose as the initial target port.
+        Port upCandidatePort = ocean.getPortSparseArray().moveUp(targetNode);
+        Port downCandidatePort = ocean.getPortSparseArray().moveDown(targetNode);
+        Port rightCandidatePort = ocean.getPortSparseArray().moveRight(targetNode);
+        Port leftCandidatePort = ocean.getPortSparseArray().moveLeft(targetNode);
+
+        double upDist = Math.sqrt( Math.pow((port.getCoordinates().getxPos()-upCandidatePort.getCoordinates().getxPos()),2) +
+                Math.pow((port.getCoordinates().getyPos()-upCandidatePort.getCoordinates().getyPos()),2) );
+        double downDist = Math.sqrt( Math.pow((port.getCoordinates().getxPos()-downCandidatePort.getCoordinates().getxPos()),2) +
+                Math.pow((port.getCoordinates().getyPos()-downCandidatePort.getCoordinates().getyPos()),2) );
+        double rightDist = Math.sqrt( Math.pow((port.getCoordinates().getxPos()-rightCandidatePort.getCoordinates().getxPos()),2) +
+                Math.pow((port.getCoordinates().getyPos()-rightCandidatePort.getCoordinates().getyPos()),2) );
+        double leftDist = Math.sqrt( Math.pow((port.getCoordinates().getxPos()-leftCandidatePort.getCoordinates().getxPos()),2) +
+                Math.pow((port.getCoordinates().getyPos()-leftCandidatePort.getCoordinates().getyPos()),2) );
+
+        if ((upDist < downDist) || (upDist < rightDist) || (upDist < leftDist)){ _player.setTargetPort(upCandidatePort);}
+        if ((downDist < upDist) || (downDist < rightDist) || (downDist < leftDist)){ _player.setTargetPort(downCandidatePort);}
+        if ((rightDist < downDist) || (rightDist < upDist) || (rightDist < leftDist)){ _player.setTargetPort(rightCandidatePort);}
+        if ((leftDist < downDist) || (leftDist < rightDist) || (leftDist < upDist)){ _player.setTargetPort(leftCandidatePort);}
+        // _player.setTargetPort(ocean.getPortSparseArray().moveUp(targetNode));
     }
+
     public static void GameScreen(String name, int coins){
         String[] args=new String[2];
         args[0]=name;
@@ -79,7 +107,7 @@ public class GuiArbiter {
     }
 
     public static List<Coordinates> getPortCoordinates(){
-        ArrayList<Coordinates> coords =new ArrayList<Coordinates>();
+        List<Coordinates> coords =new ArrayList<Coordinates>();
         for (Island i : Ocean.getInstance().getIslands()){
             for (Port p : i.getPorts()){
                 coords.add(p.getCoordinates());
@@ -97,4 +125,34 @@ public class GuiArbiter {
         Player player = Player.getInstance();
         return player.getTargetPort();
     }
+
+    public static void up(){
+        Ocean ocean = Ocean.getInstance();
+        Player player = Player.getInstance();
+        Node<Port> targetNode = ocean.getPortSparseArray().findNodeAt(player.getTargetPort().getCoordinates().getyPos(), player.getTargetPort().getCoordinates().getxPos());
+        player.setTargetPort(ocean.getPortSparseArray().moveUp(targetNode));
+    }
+
+    public static void down(){
+        Ocean ocean = Ocean.getInstance();
+        Player player = Player.getInstance();
+        Node<Port> targetNode = ocean.getPortSparseArray().findNodeAt(player.getTargetPort().getCoordinates().getyPos(), player.getTargetPort().getCoordinates().getxPos());
+        player.setTargetPort(ocean.getPortSparseArray().moveDown(targetNode));
+    }
+
+    public static void right(){
+        Ocean ocean = Ocean.getInstance();
+        Player player = Player.getInstance();
+        Node<Port> targetNode = ocean.getPortSparseArray().findNodeAt(player.getTargetPort().getCoordinates().getyPos(), player.getTargetPort().getCoordinates().getxPos());
+        player.setTargetPort(ocean.getPortSparseArray().moveRight(targetNode));
+    }
+
+    public static void left(){
+        Ocean ocean = Ocean.getInstance();
+        Player player = Player.getInstance();
+        Node<Port> targetNode = ocean.getPortSparseArray().findNodeAt(player.getTargetPort().getCoordinates().getyPos(), player.getTargetPort().getCoordinates().getxPos());
+        player.setTargetPort(ocean.getPortSparseArray().moveLeft(targetNode));
+    }
+
+
 }

@@ -1,5 +1,6 @@
 package GUI;
 
+import com.TableFlip.SpaceTrader.Bootstrap.Bootstrapper;
 import com.TableFlip.SpaceTrader.GameEntity.Player;
 import com.TableFlip.SpaceTrader.Model.Enums;
 import com.TableFlip.SpaceTrader.Model.Good;
@@ -24,7 +25,7 @@ import java.util.Map;
  * User: Dannielle
  * Date: 10/23/12
  * Time: 6:26 PM
- *
+ * <p/>
  * MarketplaceScreen
  * The GUI that handles the Marketplace. Currently organizes a lot of the goods found in the target port
  * (via the GoodsRegistry) into a format readable for the GUI.
@@ -75,9 +76,9 @@ public class MarketplaceScreen {
         goodsArrayList = new ArrayList<Good>();
 
         returnToMainButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e){
+            public void actionPerformed(ActionEvent e) {
                 frame.dispose();
-                com.TableFlip.SpaceTrader.Bootstrap.Bootstrapper.displayGameScreen();
+                Bootstrapper.displayGameScreen();
             }
         });
 
@@ -97,31 +98,31 @@ public class MarketplaceScreen {
         //Goes through the ArrayList that holds the spinners, iterates through them.
         buyButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                for(int i = 0; i < buySpinners.size(); i++){
+                for (int i = 0; i < buySpinners.size(); i++) {
                     JSpinner spinner = buySpinners.get(i);
                     //if the spinner is greater than 0, then it is relevant for us to buy!
                     //we use its index to choose the corresponding Good in the goodsArrayList
-                    if ((Integer) spinner.getValue() > 0){
+                    if ((Integer) spinner.getValue() > 0) {
                         _player.buy(goodsArrayList.get(i), (Integer) spinner.getValue());
                     }
                 }
-            //update GUI panels only after all of the purchases have been made
-            updateMarketQuantities();
-            updateCargoQuantities();
-            updatePlayerInfoLabel();
-            updateBuySpinners();
-            updateSellSpinners();
+                //update GUI panels only after all of the purchases have been made
+                updateMarketQuantities();
+                updateCargoQuantities();
+                updatePlayerInfoLabel();
+                updateBuySpinners();
+                updateSellSpinners();
             }
         });
 
         //Goes through the ArrayList that holds the spinners, iterates through them.
-        sellButton.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e){
-                for(int i = 0; i < sellSpinners.size(); i++){
+        sellButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                for (int i = 0; i < sellSpinners.size(); i++) {
                     JSpinner spinner = sellSpinners.get(i);
                     //if the spinner is greater than 0, then it is relevant for us to sell!
                     //we use its index to choose the corresponding Good in the goodsArrayList
-                    if ((Integer) spinner.getValue() > 0){
+                    if ((Integer) spinner.getValue() > 0) {
                         _player.sell(goodsArrayList.get(i), (Integer) spinner.getValue());
 
                     }
@@ -139,27 +140,27 @@ public class MarketplaceScreen {
     /**
      * updating GUI panels is made flexible if its innerlogic is to be transferred over to GUIArbiter
      */
-    public void updatePlayerInfoLabel(){
+    public void updatePlayerInfoLabel() {
         playerInfoLabel.setText("You have: " + _player.getCredits() + " coins and " + _player.getShip().getCargoSpace() + " cargo spaces left.");
     }
 
-    public void updateGoodsLists(){
+    public void updateGoodsLists() {
         goodsList.setListData(getGoodsList());
     }
 
-    public void updateMarketPrices(){
+    public void updateMarketPrices() {
         buyPriceList.setListData(getMarketPrices());
     }
 
-    public void updateMarketQuantities(){
+    public void updateMarketQuantities() {
         marketQuantityList.setListData(getMarketQuantities());
     }
 
-    public void updateCargoPrices(){
+    public void updateCargoPrices() {
         sellPriceList.setListData(getMarketPrices());
     }
 
-    public void updateCargoQuantities(){
+    public void updateCargoQuantities() {
         invQuantityList.setListData(getCargoQuantities());
     }
 
@@ -170,14 +171,14 @@ public class MarketplaceScreen {
      *
      * @return the String[] version of _cargoQuantityArray so that its respective JList can read it
      */
-    public String[] getCargoQuantities(){
+    public String[] getCargoQuantities() {
         Map<Good, HashMap<Enums.MarketValues, Integer>> _localMarket = _port.getLocalMarket();
         ArrayList<String> _cargoQuantityArray = new ArrayList<String>();
-        for(int i = 0; i < _goodsRegistry.getGoods().size(); i++){
+        for (int i = 0; i < _goodsRegistry.getGoods().size(); i++) {
             Good good = _goodsRegistry.getGoods().get(i);
             // if a good in the goodsRegistry is also found in the _localMarket and is not null,
             // then add the name of the good to our ArrayList _cargoQuantityArray
-            if (_localMarket.get(good) != null){
+            if (_localMarket.get(good) != null) {
                 _cargoQuantityArray.add(_player.getShip().getCargo().get(good).toString());
             }
         }
@@ -190,22 +191,22 @@ public class MarketplaceScreen {
      * Clears the panel and resets/re-adds them for each transaction.
      * Stores the spinners in an ArrayList.
      */
-    public void updateBuySpinners(){
+    public void updateBuySpinners() {
         buySpinners = new ArrayList<JSpinner>();
         // resets the panel from previous transactions
         buySpinnerPanel.removeAll();
         // aligns all spinners vertically on top of each other
         buySpinnerPanel.setLayout(new BoxLayout(buySpinnerPanel, BoxLayout.Y_AXIS));
         Map<Good, HashMap<Enums.MarketValues, Integer>> _localMarket = _port.getLocalMarket();
-        for(int i = 0; i < _goodsRegistry.getGoods().size(); i++){
+        for (int i = 0; i < _goodsRegistry.getGoods().size(); i++) {
             Good good = _goodsRegistry.getGoods().get(i);
-            if (_localMarket.get(good) != null){
+            if (_localMarket.get(good) != null) {
                 // spinner has initial value 0, minimum 0, maximum is the amount of the good in the _localMarket, goes up by 1
                 SpinnerModel model = new SpinnerNumberModel(0, 0, (int) _localMarket.get(good).get(Enums.MarketValues.QUANTITY), 1);
                 JSpinner jsp = new JSpinner(model);
                 jsp.addChangeListener(new ChangeListener() {
                     public void stateChanged(ChangeEvent e) {
-                        JSpinner spinner = (JSpinner)e.getSource();
+                        JSpinner spinner = (JSpinner) e.getSource();
                         spinner.setValue((Integer) spinner.getValue());
                     }
                 });
@@ -221,22 +222,22 @@ public class MarketplaceScreen {
      * Clears the panel and resets/re-adds them for each transaction.
      * Stores the spinners in an ArrayList.
      */
-    public void updateSellSpinners(){
+    public void updateSellSpinners() {
         sellSpinners = new ArrayList<JSpinner>();
         // resets the panel from previous transactions
         sellSpinnerPanel.removeAll();
         // aligns all spinners vertically on top of each other
-        sellSpinnerPanel.setLayout(new BoxLayout(sellSpinnerPanel,BoxLayout.Y_AXIS));
+        sellSpinnerPanel.setLayout(new BoxLayout(sellSpinnerPanel, BoxLayout.Y_AXIS));
         Map<Good, HashMap<Enums.MarketValues, Integer>> _localMarket = _port.getLocalMarket();
-        for(int i = 0; i < _goodsRegistry.getGoods().size(); i++){
+        for (int i = 0; i < _goodsRegistry.getGoods().size(); i++) {
             Good good = _goodsRegistry.getGoods().get(i);
-            if (_localMarket.get(good) != null){
+            if (_localMarket.get(good) != null) {
                 // spinner has initial value 0, minimum 0, maximum is the amount of the good in the _localMarket, goes up by 1
                 SpinnerModel model = new SpinnerNumberModel(0, 0, (int) _player.getShip().getCargo().get(good), 1);
                 JSpinner jsp = new JSpinner(model);
                 jsp.addChangeListener(new ChangeListener() {
                     public void stateChanged(ChangeEvent e) {
-                        JSpinner spinner = (JSpinner)e.getSource();
+                        JSpinner spinner = (JSpinner) e.getSource();
                         spinner.setValue((Integer) spinner.getValue());
                     }
                 });
@@ -280,15 +281,16 @@ public class MarketplaceScreen {
 
     /**
      * gets an ArrayList of ONLY goods that have a non-null quantity at the current port
+     *
      * @return a String[] of the names of goods of non-null quantity
      */
-    public static String[] getGoodsList(){
+    public static String[] getGoodsList() {
         Port _port = _player.getCurrentPort();
         Map<Good, HashMap<Enums.MarketValues, Integer>> _localMarket = _port.getLocalMarket();
         String[] goodsArray = new String[_goodsRegistry.getGoods().size()];
-        for(int i = 0; i < _goodsRegistry.getGoods().size(); i++){
+        for (int i = 0; i < _goodsRegistry.getGoods().size(); i++) {
             Good good = _goodsRegistry.getGoods().get(i);
-            if (_localMarket.get(good) != null){
+            if (_localMarket.get(good) != null) {
                 goodsArray[i] = good.getName();
                 goodsArrayList.add(good);
             }
@@ -298,15 +300,16 @@ public class MarketplaceScreen {
 
     /**
      * gets a String[] of the market prices found in the localMarket
+     *
      * @return a String[] of prices for buying/selling a good at this particular port in the order of _goodsRegistry
      */
-    public String[] getMarketPrices(){
+    public String[] getMarketPrices() {
         Port _port = _player.getCurrentPort();
         Map<Good, HashMap<Enums.MarketValues, Integer>> _localMarket = _port.getLocalMarket();
         String[] marketPriceArray = new String[_goodsRegistry.getGoods().size()];
-        for (int i = 0; i < _goodsRegistry.getGoods().size(); i++){
+        for (int i = 0; i < _goodsRegistry.getGoods().size(); i++) {
             Good good = _goodsRegistry.getGoods().get(i);
-            if (_localMarket.get(good) != null){
+            if (_localMarket.get(good) != null) {
                 Integer _price = _localMarket.get(good).get(Enums.MarketValues.PRICE);
                 marketPriceArray[i] = _price.toString();
             }
@@ -316,15 +319,16 @@ public class MarketplaceScreen {
 
     /**
      * gets a String[] of the market quantities found in the localMarket
+     *
      * @return a String[] of quantities of goods at this particular port in the order of the _goodsRegistry
      */
-    public String[] getMarketQuantities(){
+    public String[] getMarketQuantities() {
         Port _port = _player.getCurrentPort();
         Map<Good, HashMap<Enums.MarketValues, Integer>> _localMarket = _port.getLocalMarket();
         ArrayList<String> marketQuantityArray = new ArrayList<String>();
-        for (int i = 0; i < _goodsRegistry.getGoods().size(); i++){
+        for (int i = 0; i < _goodsRegistry.getGoods().size(); i++) {
             Good good = _goodsRegistry.getGoods().get(i);
-            if (_localMarket.get(good) != null){
+            if (_localMarket.get(good) != null) {
                 Integer _quantity = _localMarket.get(good).get(Enums.MarketValues.QUANTITY);
                 marketQuantityArray.add(_quantity.toString());
             }
@@ -357,7 +361,7 @@ public class MarketplaceScreen {
      */
     private void $$$setupUI$$$() {
         _panel = new JPanel();
-        _panel.setLayout(new FormLayout("fill:10px:grow,left:7dlu:noGrow,fill:10px:grow,left:11dlu:noGrow,fill:187px:noGrow,left:13dlu:noGrow,fill:139px:noGrow,left:27dlu:noGrow,fill:max(d;4px):noGrow,left:14dlu:noGrow,fill:69px:noGrow,left:4dlu:noGrow,fill:96px:noGrow", "center:d:noGrow,top:3dlu:noGrow,center:max(d;4px):noGrow,top:3dlu:noGrow,center:max(d;4px):noGrow,top:3dlu:noGrow,center:d:grow,top:3dlu:noGrow,center:max(d;4px):noGrow,top:3dlu:noGrow,center:d:grow,top:3dlu:noGrow,center:max(d;4px):noGrow"));
+        _panel.setLayout(new FormLayout("fill:d:grow,left:7dlu:noGrow,fill:38px:grow,left:11dlu:noGrow,fill:m:noGrow,left:46px:noGrow,fill:95px:noGrow,left:7dlu:noGrow,fill:max(m;4px):noGrow,left:14dlu:noGrow,fill:max(d;4px):noGrow,left:4dlu:noGrow,fill:250px:noGrow", "center:d:noGrow,top:3dlu:noGrow,center:max(d;4px):noGrow,top:3dlu:noGrow,center:max(d;4px):noGrow,top:3dlu:noGrow,center:max(d;4px):noGrow,top:3dlu:noGrow,center:d:grow,top:3dlu:noGrow,center:max(d;4px):noGrow,top:3dlu:noGrow,center:d:grow,top:3dlu:noGrow,center:max(d;4px):noGrow"));
         _panel.setEnabled(false);
         MarketplaceLabel = new JLabel();
         MarketplaceLabel.setText("MARKETPLACE");
@@ -370,59 +374,56 @@ public class MarketplaceScreen {
         goods.setText("Goods");
         _panel.add(goods, cc.xy(1, 5));
         goodsList = new JList();
-        _panel.add(goodsList, cc.xy(1, 7, CellConstraints.DEFAULT, CellConstraints.FILL));
+        _panel.add(goodsList, cc.xy(1, 9, CellConstraints.DEFAULT, CellConstraints.FILL));
         inventoryLabel = new JLabel();
         inventoryLabel.setText("Inventory");
-        _panel.add(inventoryLabel, cc.xy(3, 5));
+        _panel.add(inventoryLabel, cc.xyw(3, 5, 4));
         marketLabel = new JLabel();
         marketLabel.setText("Market");
-        _panel.add(marketLabel, cc.xy(9, 5));
+        _panel.add(marketLabel, cc.xyw(9, 5, 3));
         sellButton = new JButton();
         sellButton.setText("Sell");
-        _panel.add(sellButton, cc.xy(3, 9));
+        _panel.add(sellButton, cc.xyw(3, 11, 5, CellConstraints.FILL, CellConstraints.DEFAULT));
         buyButton = new JButton();
         buyButton.setText("Buy");
-        _panel.add(buyButton, cc.xy(9, 9));
-        final JTextPane textPane1 = new JTextPane();
-        textPane1.setText("");
-        _panel.add(textPane1, cc.xy(9, 11, CellConstraints.FILL, CellConstraints.FILL));
+        _panel.add(buyButton, cc.xyw(9, 11, 5));
         returnToMainButton = new JButton();
         returnToMainButton.setText("Return to Main Screen");
-        _panel.add(returnToMainButton, cc.xy(3, 13));
+        _panel.add(returnToMainButton, cc.xy(3, 15, CellConstraints.LEFT, CellConstraints.DEFAULT));
         sellPriceList = new JList();
-        _panel.add(sellPriceList, cc.xy(5, 7, CellConstraints.DEFAULT, CellConstraints.FILL));
+        _panel.add(sellPriceList, cc.xy(5, 9, CellConstraints.DEFAULT, CellConstraints.FILL));
         marketQuantityList = new JList();
-        _panel.add(marketQuantityList, cc.xy(9, 7, CellConstraints.DEFAULT, CellConstraints.FILL));
-        buyPriceList = new JList();
-        _panel.add(buyPriceList, cc.xy(11, 7, CellConstraints.DEFAULT, CellConstraints.FILL));
+        _panel.add(marketQuantityList, cc.xy(9, 9, CellConstraints.DEFAULT, CellConstraints.FILL));
         invQuantityList = new JList();
-        _panel.add(invQuantityList, cc.xy(3, 7, CellConstraints.DEFAULT, CellConstraints.FILL));
-        MarketplaceLabel = new JLabel();
-        MarketplaceLabel.setText("MARKETPLACE");
-        _panel.add(MarketplaceLabel, cc.xy(1, 1));
-        playerInfoLabel = new JLabel();
-        playerInfoLabel.setText("You have: coins");
-        _panel.add(playerInfoLabel, cc.xy(1, 3));
-        goods = new JLabel();
-        goods.setText("Goods");
-        _panel.add(goods, cc.xy(1, 5));
-        goodsList = new JList();
-        _panel.add(goodsList, cc.xy(1, 7, CellConstraints.DEFAULT, CellConstraints.FILL));
-        inventoryLabel = new JLabel();
-        inventoryLabel.setText("Inventory");
-        _panel.add(inventoryLabel, cc.xy(3, 5));
-        marketLabel = new JLabel();
-        marketLabel.setText("Market");
-        _panel.add(marketLabel, cc.xy(5, 5));
-        sellButton = new JButton();
-        sellButton.setText("Sell");
-        _panel.add(sellButton, cc.xy(3, 9));
-        buyButton = new JButton();
-        buyButton.setText("Buy");
-        _panel.add(buyButton, cc.xy(5, 9));
-        returnToMainButton = new JButton();
-        returnToMainButton.setText("Return to Main Screen");
-        _panel.add(returnToMainButton, cc.xy(3, 13));
+        final DefaultListModel defaultListModel1 = new DefaultListModel();
+        invQuantityList.setModel(defaultListModel1);
+        _panel.add(invQuantityList, cc.xy(3, 9, CellConstraints.FILL, CellConstraints.FILL));
+        buySpinnerPanel = new JPanel();
+        buySpinnerPanel.setLayout(new BorderLayout(0, 0));
+        _panel.add(buySpinnerPanel, cc.xy(13, 9, CellConstraints.CENTER, CellConstraints.FILL));
+        currentPortLabel = new JLabel();
+        currentPortLabel.setText("Label");
+        _panel.add(currentPortLabel, cc.xy(1, 13));
+        targetPortLabel = new JLabel();
+        targetPortLabel.setText("Label");
+        _panel.add(targetPortLabel, cc.xy(9, 13));
+        final JLabel label1 = new JLabel();
+        label1.setText("Quantity");
+        _panel.add(label1, cc.xy(9, 7));
+        final JLabel label2 = new JLabel();
+        label2.setText("Price");
+        _panel.add(label2, cc.xy(11, 7));
+        buyPriceList = new JList();
+        _panel.add(buyPriceList, cc.xy(11, 9, CellConstraints.DEFAULT, CellConstraints.FILL));
+        final JLabel label3 = new JLabel();
+        label3.setText("Quantity");
+        _panel.add(label3, cc.xy(3, 7, CellConstraints.LEFT, CellConstraints.DEFAULT));
+        final JLabel label4 = new JLabel();
+        label4.setText("Price");
+        _panel.add(label4, cc.xy(6, 7));
+        sellSpinnerPanel = new JPanel();
+        sellSpinnerPanel.setLayout(new BorderLayout(0, 0));
+        _panel.add(sellSpinnerPanel, cc.xyw(7, 9, 2, CellConstraints.CENTER, CellConstraints.FILL));
     }
 
     /**
