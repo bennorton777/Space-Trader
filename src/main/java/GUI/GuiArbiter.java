@@ -82,11 +82,19 @@ public class GuiArbiter {
         double leftDist = Math.sqrt( Math.pow((port.getCoordinates().getxPos()-leftCandidatePort.getCoordinates().getxPos()),2) +
                 Math.pow((port.getCoordinates().getyPos()-leftCandidatePort.getCoordinates().getyPos()),2) );
 
-        if ((upDist < downDist) || (upDist < rightDist) || (upDist < leftDist)){ _player.setTargetPort(upCandidatePort);}
-        if ((downDist < upDist) || (downDist < rightDist) || (downDist < leftDist)){ _player.setTargetPort(downCandidatePort);}
-        if ((rightDist < downDist) || (rightDist < upDist) || (rightDist < leftDist)){ _player.setTargetPort(rightCandidatePort);}
-        if ((leftDist < downDist) || (leftDist < rightDist) || (leftDist < upDist)){ _player.setTargetPort(leftCandidatePort);}
-        // _player.setTargetPort(ocean.getPortSparseArray().moveUp(targetNode));
+        if(upDist<downDist && upDist<leftDist && upDist<rightDist){
+            _player.setTargetPort(upCandidatePort);
+        }
+        else if(downDist<upDist && downDist<leftDist && downDist<rightDist){
+            _player.setTargetPort(downCandidatePort);
+        }
+        else if(rightDist<downDist && rightDist<leftDist && rightDist<upDist){
+            _player.setTargetPort(rightCandidatePort);
+        }
+        else{
+            _player.setTargetPort(leftCandidatePort);
+        }
+
     }
 
     public static void GameScreen(String name, int coins){
