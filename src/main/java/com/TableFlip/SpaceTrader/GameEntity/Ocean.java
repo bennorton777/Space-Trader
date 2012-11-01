@@ -4,7 +4,6 @@ import com.TableFlip.SpaceTrader.DataStructure.SparseArray.SparseArray;
 import com.TableFlip.SpaceTrader.Model.Coordinates;
 import com.TableFlip.SpaceTrader.Model.Island;
 import com.TableFlip.SpaceTrader.Model.Port;
-import com.TableFlip.SpaceTrader.Model.RandomCoordinates;
 import com.TableFlip.SpaceTrader.Service.PortNames;
 
 import java.util.*;
