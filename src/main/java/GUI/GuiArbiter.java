@@ -10,6 +10,7 @@ import com.TableFlip.SpaceTrader.Service.ShipFactory;
 import com.TableFlip.SpaceTrader.Model.Island;
 import com.TableFlip.SpaceTrader.Model.Port;
 
+import javax.swing.*;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.*;
@@ -165,5 +166,39 @@ public class GuiArbiter {
         Player player = Player.getInstance();
         Node<Port> targetNode = ocean.getPortSparseArray().findNodeAt(player.getTargetPort().getCoordinates().getyPos(), player.getTargetPort().getCoordinates().getxPos());
         player.setTargetPort(ocean.getPortSparseArray().moveLeft(targetNode));
+    }
+
+    /**
+     * Displays and formats the current port
+     */
+    public static void updateCurrentPortInfo(JLabel currentPortLabel) {
+        Player _player = Player.getInstance();
+        Port _port = _player.getCurrentPort();
+        currentPortLabel.setText("<html>Current Port Details<br /><br />" +
+                "Name: " + _port.getName() + "<br />" +
+                "Tech Level: " + _port.getTechLevel() + "<br />" +
+                "Resource: " + _port.getResources() + "<br />" +
+                "Coordinates: " + _port.getCoordinates() + "<br /></html>");
+    }
+
+    /**
+     * Displays and formats the target port (to be removed)
+     */
+    public static void updateTargetPortInfo(JLabel targetPortLabel) {
+        Player _player = Player.getInstance();
+        Port _targetPort = _player.getTargetPort();
+        if (_targetPort != null) {
+            targetPortLabel.setText("<html>Target Port Details<br /><br />" +
+                    "Name: " + _targetPort.getName() + "<br />" +
+                    "Tech Level: " + _targetPort.getTechLevel() + "<br />" +
+                    "Resource: " + _targetPort.getResources() + "<br />" +
+                    "Coordinates: " + _targetPort.getCoordinates() + "<br /></html>");
+        } else {
+            targetPortLabel.setText("<html>Target Port Details<br /><br />" +
+                    "Name: ---<br />" +
+                    "Tech Level: ---<br />" +
+                    "Resource: ---<br />" +
+                    "Coordinates: ---<br /></html>");
+        }
     }
 }

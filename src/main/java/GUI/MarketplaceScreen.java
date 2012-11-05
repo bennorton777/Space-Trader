@@ -25,7 +25,7 @@ import java.util.Map;
  * User: Dannielle
  * Date: 10/23/12
  * Time: 6:26 PM
- * <p/>
+ *
  * MarketplaceScreen
  * The GUI that handles the Marketplace. Currently organizes a lot of the goods found in the target port
  * (via the GoodsRegistry) into a format readable for the GUI.
@@ -52,12 +52,16 @@ public class MarketplaceScreen {
     private JPanel sellSpinnerPanel;
     private JLabel currentPortLabel;
     private JLabel targetPortLabel;
+    private JLabel goodsLabel;
+    private JLabel invQuantityLabel;
+    private JLabel sellPriceLabel;
+    private JLabel buyPriceLabel;
+    private JLabel marketQuantityLabel;
     private static JFrame frame;
 
     private static Player _player;
     private static GoodsRegistry _goodsRegistry;
     private static Port _port;
-    private static Port _targetPort;
 
     private static ArrayList<Good> goodsArrayList;
     private ArrayList<JSpinner> sellSpinners;
@@ -72,7 +76,6 @@ public class MarketplaceScreen {
         _goodsRegistry = GoodsRegistry.getInstance();
         _player = Player.getInstance();
         _port = _player.getCurrentPort();
-        _targetPort = _player.getTargetPort();
         goodsArrayList = new ArrayList<Good>();
 
         returnToMainButton.addActionListener(new ActionListener() {
@@ -91,7 +94,7 @@ public class MarketplaceScreen {
         updateMarketQuantities();
         updateBuySpinners();
         updateSellSpinners();
-        updateTargetPortInfo();
+        //updateTargetPortInfo();
         updateCurrentPortInfo();
 
         //Button Listeners
@@ -138,30 +141,30 @@ public class MarketplaceScreen {
     }
 
     /**
-     * updating GUI panels is made flexible if its innerlogic is to be transferred over to GUIArbiter
+     * updating GUI panels is made flexible if its inner logic is to be transferred over to GUIArbiter
      */
     public void updatePlayerInfoLabel() {
         playerInfoLabel.setText("You have: " + _player.getCredits() + " coins and " + _player.getShip().getCargoSpace() + " cargo spaces left.");
     }
 
     public void updateGoodsLists() {
-        goodsList.setListData(getGoodsList());
+        goodsLabel.setText(getGoodsList());
     }
 
     public void updateMarketPrices() {
-        buyPriceList.setListData(getMarketPrices());
+        buyPriceLabel.setText(getMarketPrices());
     }
 
     public void updateMarketQuantities() {
-        marketQuantityList.setListData(getMarketQuantities());
+        marketQuantityLabel.setText(getMarketQuantities());
     }
 
     public void updateCargoPrices() {
-        sellPriceList.setListData(getMarketPrices());
+        sellPriceLabel.setText(getMarketPrices());
     }
 
     public void updateCargoQuantities() {
-        invQuantityList.setListData(getCargoQuantities());
+        invQuantityLabel.setText(getCargoQuantities());
     }
 
     /**
@@ -171,19 +174,20 @@ public class MarketplaceScreen {
      *
      * @return the String[] version of _cargoQuantityArray so that its respective JList can read it
      */
-    public String[] getCargoQuantities() {
+    public String getCargoQuantities() {
         Map<Good, HashMap<Enums.MarketValues, Integer>> _localMarket = _port.getLocalMarket();
-        ArrayList<String> _cargoQuantityArray = new ArrayList<String>();
+        String _cargoQuantityString = "<html>";
         for (int i = 0; i < _goodsRegistry.getGoods().size(); i++) {
             Good good = _goodsRegistry.getGoods().get(i);
             // if a good in the goodsRegistry is also found in the _localMarket and is not null,
             // then add the name of the good to our ArrayList _cargoQuantityArray
             if (_localMarket.get(good) != null) {
-                _cargoQuantityArray.add(_player.getShip().getCargo().get(good).toString());
+                _cargoQuantityString = _cargoQuantityString + (_player.getShip().getCargo().get(good).toString()) + "<br /><br />";
             }
         }
-        // returns a String[] for JList to read
-        return _cargoQuantityArray.toArray(new String[0]);
+        // returns a String for JLabel to read
+        _cargoQuantityString = _cargoQuantityString + "</html>";
+        return _cargoQuantityString;
     }
 
     /**
@@ -253,30 +257,14 @@ public class MarketplaceScreen {
      * Displays and formats the current port
      */
     public void updateCurrentPortInfo() {
-        currentPortLabel.setText("<html>Current Port Details<br /><br />" +
-                "Name: " + _port.getName() + "<br />" +
-                "Tech Level: " + _port.getTechLevel() + "<br />" +
-                "Resource: " + _port.getResources() + "<br />" +
-                "Coordinates: " + _port.getCoordinates() + "<br /></html>");
+        GUI.GuiArbiter.updateCurrentPortInfo( currentPortLabel );
     }
 
     /**
      * Displays and formats the target port (to be removed)
      */
     public void updateTargetPortInfo() {
-        if (_targetPort != null) {
-            targetPortLabel.setText("<html>Target Port Details<br /><br />" +
-                    "Name: " + _targetPort.getName() + "<br />" +
-                    "Tech Level: " + _targetPort.getTechLevel() + "<br />" +
-                    "Resource: " + _targetPort.getResources() + "<br />" +
-                    "Coordinates: " + _targetPort.getCoordinates() + "<br /></html>");
-        } else {
-            targetPortLabel.setText("<html>Target Port Details<br /><br />" +
-                    "Name: ---<br />" +
-                    "Tech Level: ---<br />" +
-                    "Resource: ---<br />" +
-                    "Coordinates: ---<br /></html>");
-        }
+        GUI.GuiArbiter.updateTargetPortInfo( targetPortLabel );
     }
 
     /**
@@ -284,18 +272,19 @@ public class MarketplaceScreen {
      *
      * @return a String[] of the names of goods of non-null quantity
      */
-    public static String[] getGoodsList() {
+    public static String getGoodsList() {
         Port _port = _player.getCurrentPort();
         Map<Good, HashMap<Enums.MarketValues, Integer>> _localMarket = _port.getLocalMarket();
-        String[] goodsArray = new String[_goodsRegistry.getGoods().size()];
+        String goodsNames = "<html>";
         for (int i = 0; i < _goodsRegistry.getGoods().size(); i++) {
             Good good = _goodsRegistry.getGoods().get(i);
             if (_localMarket.get(good) != null) {
-                goodsArray[i] = good.getName();
+                goodsNames = goodsNames + good.getName() + "<br /><br />";
                 goodsArrayList.add(good);
             }
         }
-        return goodsArray;
+        goodsNames = goodsNames + "</html>";
+        return goodsNames;
     }
 
     /**
@@ -303,18 +292,19 @@ public class MarketplaceScreen {
      *
      * @return a String[] of prices for buying/selling a good at this particular port in the order of _goodsRegistry
      */
-    public String[] getMarketPrices() {
+    public String getMarketPrices() {
         Port _port = _player.getCurrentPort();
         Map<Good, HashMap<Enums.MarketValues, Integer>> _localMarket = _port.getLocalMarket();
-        String[] marketPriceArray = new String[_goodsRegistry.getGoods().size()];
+        String marketPriceString = "<html>";
         for (int i = 0; i < _goodsRegistry.getGoods().size(); i++) {
             Good good = _goodsRegistry.getGoods().get(i);
             if (_localMarket.get(good) != null) {
                 Integer _price = _localMarket.get(good).get(Enums.MarketValues.PRICE);
-                marketPriceArray[i] = _price.toString();
+                marketPriceString = marketPriceString + _price.toString() + "<br /><br />";
             }
         }
-        return marketPriceArray;
+        marketPriceString = marketPriceString + "</html>";
+        return marketPriceString;
     }
 
     /**
@@ -322,18 +312,19 @@ public class MarketplaceScreen {
      *
      * @return a String[] of quantities of goods at this particular port in the order of the _goodsRegistry
      */
-    public String[] getMarketQuantities() {
+    public String getMarketQuantities() {
         Port _port = _player.getCurrentPort();
         Map<Good, HashMap<Enums.MarketValues, Integer>> _localMarket = _port.getLocalMarket();
-        ArrayList<String> marketQuantityArray = new ArrayList<String>();
+        String marketQuantityString = "<html>";
         for (int i = 0; i < _goodsRegistry.getGoods().size(); i++) {
             Good good = _goodsRegistry.getGoods().get(i);
             if (_localMarket.get(good) != null) {
                 Integer _quantity = _localMarket.get(good).get(Enums.MarketValues.QUANTITY);
-                marketQuantityArray.add(_quantity.toString());
+                marketQuantityString = marketQuantityString + _quantity.toString() + "<br /><br />";
             }
         }
-        return marketQuantityArray.toArray(new String[0]);
+        marketQuantityString = marketQuantityString + "</html>";
+        return marketQuantityString;
     }
 
 
