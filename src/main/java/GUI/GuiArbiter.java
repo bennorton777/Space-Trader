@@ -129,6 +129,11 @@ public class GuiArbiter {
         return player.getCurrentPort();
     }
 
+    public static int getCurrentSupplies() {
+        Player player = Player.getInstance();
+        return player.getShip().getSuppliesRemaining();
+    }
+
     public static Port getTargetPort(){
         Player player = Player.getInstance();
         return player.getTargetPort();
@@ -161,6 +166,4 @@ public class GuiArbiter {
         Node<Port> targetNode = ocean.getPortSparseArray().findNodeAt(player.getTargetPort().getCoordinates().getyPos(), player.getTargetPort().getCoordinates().getxPos());
         player.setTargetPort(ocean.getPortSparseArray().moveLeft(targetNode));
     }
-
-
 }

@@ -3,6 +3,7 @@ package GUI;
 import com.TableFlip.SpaceTrader.Bootstrap.Bootstrapper;
 import com.TableFlip.SpaceTrader.GameEntity.Ocean;
 import com.TableFlip.SpaceTrader.GameEntity.Player;
+import com.TableFlip.SpaceTrader.Model.Coordinates;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
@@ -11,9 +12,7 @@ import com.TableFlip.SpaceTrader.Model.Port;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.Graphics.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
+import java.awt.event.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -46,7 +45,7 @@ public class SelectPortScreen {
         updateCurrentPortInfo();
         updateTargetPortInfo();
         updateFuelStatus();
-        updateDistance();
+        updateDistance(mantattanDistance(GuiArbiter.getTargetPort().getCoordinates(), GuiArbiter.getCurrentPort().getCoordinates()));
         OceanMap.setBackground(Color.cyan);
 
 
@@ -113,6 +112,7 @@ public class SelectPortScreen {
                     "Tech Level: " + targetPort.getTechLevel() + "<br />" +
                     "Resource: " + targetPort.getResources() + "<br />" +
                     "Coordinates: " + targetPort.getCoordinates() + "<br /></html>");
+            updateDistance(mantattanDistance(targetPort.getCoordinates(), GuiArbiter.getCurrentPort().getCoordinates()));
         } else {
             targetPortLabel.setText("<html>Target Port Details<br /><br />" +
                     "Name: ---<br />" +
@@ -124,17 +124,21 @@ public class SelectPortScreen {
     }
 
     public void updateFuelStatus() {
-        fuelStatusLabel.setText("You have infinite fuel! or whatever we'll call it. yay!");
+
+        fuelStatusLabel.setText("You have supplies to travel " + GuiArbiter.getCurrentSupplies() + " leagues.");
     }
 
-    public void updateDistance() {
-        distanceLabel.setText("But the next island is infinitely away. Bummer.");
+    public void updateDistance(int distance) {
+        distanceLabel.setText("This island is " + distance + " leagues away.");
     }
 
     private void createUIComponents() {
         OceanMapP = new OceanMapPanel();
     }
 
+    private int mantattanDistance(Coordinates a, Coordinates b) {
+        return Math.abs(a.getxPos() - b.getxPos()) + Math.abs(a.getyPos() - b.getyPos());
+    }
 
     public static void main(String[] args) {
 
