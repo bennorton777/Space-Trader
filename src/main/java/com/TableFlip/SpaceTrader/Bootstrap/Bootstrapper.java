@@ -29,7 +29,7 @@ public class Bootstrapper {
         Ocean ocean = Ocean.getInstance();
         //System.out.println(ocean);
         System.out.println(ocean.ASCIIMap());
-        displayGameScreen();
+//        displayGameScreen();
     }
     /**
      * Third major phase of game boot.  (Following galaxy generation)

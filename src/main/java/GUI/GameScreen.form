@@ -1,92 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="GUI.GameScreen">
   <grid id="27dc6" binding="_panel" layout-manager="FormLayout">
-    <rowspec value="center:51px:noGrow"/>
+    <rowspec value="center:d:noGrow"/>
     <rowspec value="top:6dlu:noGrow"/>
-    <rowspec value="center:max(d;4px):noGrow"/>
+    <rowspec value="center:d:noGrow"/>
     <rowspec value="top:3dlu:noGrow"/>
-    <rowspec value="center:260px:noGrow"/>
-    <rowspec value="top:3dlu:noGrow"/>
-    <rowspec value="center:max(d;4px):noGrow"/>
+    <rowspec value="center:38px:grow"/>
     <rowspec value="top:3dlu:noGrow"/>
     <rowspec value="center:max(d;4px):noGrow"/>
-    <colspec value="fill:137px:noGrow"/>
-    <colspec value="left:4dlu:noGrow"/>
+    <rowspec value="top:3dlu:noGrow"/>
+    <rowspec value="center:max(d;4px):noGrow"/>
+    <rowspec value="top:3dlu:noGrow"/>
+    <rowspec value="center:max(d;4px):noGrow"/>
     <colspec value="fill:173px:noGrow"/>
     <colspec value="left:4dlu:noGrow"/>
     <colspec value="fill:185px:noGrow"/>
+    <colspec value="left:4dlu:noGrow"/>
+    <colspec value="fill:max(d;4px):noGrow"/>
     <constraints>
-      <xy x="20" y="20" width="512" height="522"/>
+      <xy x="20" y="20" width="459" height="211"/>
     </constraints>
     <properties/>
     <border type="none"/>
     <children>
-      <component id="83f19" class="javax.swing.JLabel" binding="shipStatusLabel">
-        <constraints>
-          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-          <forms/>
-        </constraints>
-        <properties>
-          <labelFor value="76f10"/>
-          <text value="Ship Status "/>
-        </properties>
-      </component>
-      <component id="bfd70" class="javax.swing.JLabel" binding="currentPortLabel">
-        <constraints>
-          <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-          <forms/>
-        </constraints>
-        <properties>
-          <labelFor value="73e62"/>
-          <text value="Current Port"/>
-        </properties>
-      </component>
-      <component id="365d4" class="javax.swing.JLabel" binding="targetPortLabel">
-        <constraints>
-          <grid row="2" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-          <forms/>
-        </constraints>
-        <properties>
-          <labelFor value="94930"/>
-          <text value="Target Port"/>
-        </properties>
-      </component>
-      <component id="76f10" class="javax.swing.JTextPane" binding="shipStatusPane">
-        <constraints>
-          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
-            <preferred-size width="150" height="50"/>
-          </grid>
-          <forms defaultalign-horz="false" defaultalign-vert="false"/>
-        </constraints>
-        <properties>
-          <editable value="false"/>
-        </properties>
-      </component>
-      <component id="73e62" class="javax.swing.JTextPane" binding="currentPortPane">
-        <constraints>
-          <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
-            <preferred-size width="150" height="50"/>
-          </grid>
-          <forms defaultalign-horz="false" defaultalign-vert="false"/>
-        </constraints>
-        <properties>
-          <editable value="false"/>
-        </properties>
-      </component>
-      <component id="94930" class="javax.swing.JTextPane" binding="targetPortPane">
-        <constraints>
-          <grid row="4" column="4" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
-            <preferred-size width="150" height="50"/>
-          </grid>
-          <forms defaultalign-horz="false" defaultalign-vert="false"/>
-        </constraints>
-        <properties>
-          <editable value="false"/>
-        </properties>
-      </component>
       <component id="a8404" class="javax.swing.JTextPane" binding="playerInfo">
         <constraints>
-          <grid row="0" column="0" row-span="1" col-span="5" vsize-policy="6" hsize-policy="6" anchor="1" fill="1" indent="0" use-parent-layout="false">
+          <grid row="0" column="0" row-span="1" col-span="3" vsize-policy="6" hsize-policy="6" anchor="1" fill="1" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="50"/>
           </grid>
           <forms defaultalign-horz="false" defaultalign-vert="false"/>
@@ -96,18 +35,9 @@
           <text value="Name: Pilot: Fighter: Trader: Engineer:  You have: coins."/>
         </properties>
       </component>
-      <component id="73b91" class="javax.swing.JButton" binding="toShipyardButton">
-        <constraints>
-          <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-          <forms/>
-        </constraints>
-        <properties>
-          <text value="Shipyard"/>
-        </properties>
-      </component>
       <component id="3ac09" class="javax.swing.JButton" binding="toMarketplaceButton">
         <constraints>
-          <grid row="6" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <grid row="8" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
           <forms/>
         </constraints>
         <properties>
@@ -116,7 +46,7 @@
       </component>
       <component id="44933" class="javax.swing.JButton" binding="toOceanMapButton">
         <constraints>
-          <grid row="6" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <grid row="8" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
           <forms/>
         </constraints>
         <properties>
@@ -125,13 +55,64 @@
       </component>
       <component id="92a08" class="javax.swing.JButton" binding="toTargetPortButton">
         <constraints>
-          <grid row="8" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <grid row="10" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
           <forms/>
         </constraints>
         <properties>
           <text value="Warp to Target Port"/>
         </properties>
       </component>
+      <component id="1484c" class="javax.swing.JLabel" binding="currentPortLabel">
+        <constraints>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
+          <forms defaultalign-horz="false" defaultalign-vert="false"/>
+        </constraints>
+        <properties>
+          <text value="Label"/>
+        </properties>
+      </component>
+      <component id="1fdfc" class="javax.swing.JLabel" binding="targetPortLabel">
+        <constraints>
+          <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
+          <forms defaultalign-horz="false" defaultalign-vert="false"/>
+        </constraints>
+        <properties>
+          <text value="Label"/>
+        </properties>
+      </component>
+      <component id="73b91" class="javax.swing.JButton" binding="toShipyardButton">
+        <constraints>
+          <grid row="10" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <forms/>
+        </constraints>
+        <properties>
+          <text value="Shipyard"/>
+        </properties>
+      </component>
+      <component id="856fd" class="javax.swing.JButton" binding="saveButton" default-binding="true">
+        <constraints>
+          <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <forms/>
+        </constraints>
+        <properties>
+          <text value="Save"/>
+        </properties>
+      </component>
+      <component id="eb579" class="javax.swing.JLabel" binding="shipStatusLabel">
+        <constraints>
+          <grid row="6" column="0" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <forms/>
+        </constraints>
+        <properties>
+          <text value="Label"/>
+        </properties>
+      </component>
+      <vspacer id="c8f26">
+        <constraints>
+          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+          <forms defaultalign-vert="false"/>
+        </constraints>
+      </vspacer>
     </children>
   </grid>
 </form>

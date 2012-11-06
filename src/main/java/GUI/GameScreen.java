@@ -1,5 +1,8 @@
 package GUI;
 
+import com.TableFlip.SpaceTrader.GameEntity.Player;
+import com.TableFlip.SpaceTrader.Model.Port;
+import com.TableFlip.SpaceTrader.Model.Ship;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
@@ -12,28 +15,32 @@ import java.awt.event.ActionListener;
  */
 public class GameScreen {
     private JTextPane playerInfo;
-    private JLabel shipStatusLabel;
-    private JLabel currentPortLabel;
-    private JLabel targetPortLabel;
-    private JTextPane shipStatusPane;
-    private JTextPane currentPortPane;
-    private JTextPane targetPortPane;
     private JButton toShipyardButton;
     private JButton toMarketplaceButton;
     private JButton toOceanMapButton;
     private JButton toTargetPortButton;
 
     private JPanel _panel;
+    private JLabel currentPortLabel;
+    private JLabel targetPortLabel;
+    private JButton saveButton;
+    private JLabel shipStatusLabel;
     private static JFrame frame;
 
     private String _name;
     private String _coins;
 
+    static Player _player;
+    static Ship _ship;
 
     public GameScreen(String name, String coins) {
         _name = name;
         _coins = coins;
+        _player = Player.getInstance();
+        _ship = _player.getShip();
         updatePlayerInfoPane();
+        updateShipLabel();
+        updatePortLabels();
         toShipyardButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
@@ -57,6 +64,11 @@ public class GameScreen {
 
             }
         });
+        saveButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                //To change body of implemented methods use File | Settings | File Templates.
+            }
+        });
     }
 
     public void updatePlayerInfoPane() {
@@ -66,6 +78,22 @@ public class GameScreen {
     public void updateCredits(String coins) {
         _coins = coins;
         updatePlayerInfoPane();
+    }
+
+    public void updateShipLabel() {
+        shipStatusLabel.setText("<html>Ship Status:<br />" +
+                "<br />Name: " + _ship.getName() +
+                "<br />Max Supplies Number: " + _ship.getSuppliesMax() +
+                "<br />Weapons Slots: " + _ship.getWeaponSlots() +
+                "<br />Armor Slots: " + _ship.getArmorSlots() +
+                "<br />Crew Slots: " + _ship.getCrewSlots() +
+                "<br />Tool Slots: " + _ship.getToolSlots() +
+                "</html>");
+    }
+
+    public void updatePortLabels() {
+        GuiArbiter.updateCurrentPortInfo(currentPortLabel);
+        GuiArbiter.updateTargetPortInfo(targetPortLabel);
     }
 
     public static void close() {
@@ -96,45 +124,36 @@ public class GameScreen {
      */
     private void $$$setupUI$$$() {
         _panel = new JPanel();
-        _panel.setLayout(new FormLayout("fill:137px:noGrow,left:4dlu:noGrow,fill:173px:noGrow,left:4dlu:noGrow,fill:185px:noGrow", "center:51px:noGrow,top:6dlu:noGrow,center:max(d;4px):noGrow,top:3dlu:noGrow,center:260px:noGrow,top:3dlu:noGrow,center:max(d;4px):noGrow,top:3dlu:noGrow,center:max(d;4px):noGrow"));
-        shipStatusLabel = new JLabel();
-        shipStatusLabel.setText("Ship Status ");
-        CellConstraints cc = new CellConstraints();
-        _panel.add(shipStatusLabel, cc.xy(1, 3));
-        currentPortLabel = new JLabel();
-        currentPortLabel.setText("Current Port");
-        _panel.add(currentPortLabel, cc.xy(3, 3));
-        targetPortLabel = new JLabel();
-        targetPortLabel.setText("Target Port");
-        _panel.add(targetPortLabel, cc.xy(5, 3));
-        shipStatusPane = new JTextPane();
-        shipStatusPane.setEditable(false);
-        _panel.add(shipStatusPane, cc.xy(1, 5, CellConstraints.FILL, CellConstraints.FILL));
-        currentPortPane = new JTextPane();
-        currentPortPane.setEditable(false);
-        _panel.add(currentPortPane, cc.xy(3, 5, CellConstraints.FILL, CellConstraints.FILL));
-        targetPortPane = new JTextPane();
-        targetPortPane.setEditable(false);
-        _panel.add(targetPortPane, cc.xy(5, 5, CellConstraints.FILL, CellConstraints.FILL));
+        _panel.setLayout(new FormLayout("fill:173px:noGrow,left:4dlu:noGrow,fill:185px:noGrow,left:4dlu:noGrow,fill:max(d;4px):noGrow", "center:d:noGrow,top:6dlu:noGrow,center:d:noGrow,top:3dlu:noGrow,center:max(d;4px):noGrow,top:3dlu:noGrow,center:max(d;4px):noGrow,top:3dlu:noGrow,center:max(d;4px):noGrow"));
         playerInfo = new JTextPane();
         playerInfo.setEditable(false);
         playerInfo.setText("Name: Pilot: Fighter: Trader: Engineer:  You have: coins.");
-        _panel.add(playerInfo, cc.xyw(1, 1, 5, CellConstraints.FILL, CellConstraints.TOP));
-        toShipyardButton = new JButton();
-        toShipyardButton.setText("Shipyard");
-        _panel.add(toShipyardButton, cc.xy(1, 7));
+        CellConstraints cc = new CellConstraints();
+        _panel.add(playerInfo, cc.xyw(1, 1, 3, CellConstraints.FILL, CellConstraints.TOP));
         toMarketplaceButton = new JButton();
         toMarketplaceButton.setText("Marketplace");
-        _panel.add(toMarketplaceButton, cc.xy(3, 7));
+        _panel.add(toMarketplaceButton, cc.xy(1, 7));
         toOceanMapButton = new JButton();
         toOceanMapButton.setText("Ocean Map");
-        _panel.add(toOceanMapButton, cc.xy(5, 7));
+        _panel.add(toOceanMapButton, cc.xy(3, 7));
         toTargetPortButton = new JButton();
         toTargetPortButton.setText("Warp to Target Port");
-        _panel.add(toTargetPortButton, cc.xy(5, 9));
-        shipStatusLabel.setLabelFor(shipStatusPane);
-        currentPortLabel.setLabelFor(currentPortPane);
-        targetPortLabel.setLabelFor(targetPortPane);
+        _panel.add(toTargetPortButton, cc.xy(3, 9));
+        currentPortLabel = new JLabel();
+        currentPortLabel.setText("Label");
+        _panel.add(currentPortLabel, cc.xy(1, 3, CellConstraints.LEFT, CellConstraints.TOP));
+        targetPortLabel = new JLabel();
+        targetPortLabel.setText("Label");
+        _panel.add(targetPortLabel, cc.xy(3, 3, CellConstraints.LEFT, CellConstraints.TOP));
+        toShipyardButton = new JButton();
+        toShipyardButton.setText("Shipyard");
+        _panel.add(toShipyardButton, cc.xy(1, 9));
+        saveButton = new JButton();
+        saveButton.setText("Save");
+        _panel.add(saveButton, cc.xy(5, 1));
+        shipStatusLabel = new JLabel();
+        shipStatusLabel.setText("Label");
+        _panel.add(shipStatusLabel, cc.xyw(1, 5, 3));
     }
 
     /**

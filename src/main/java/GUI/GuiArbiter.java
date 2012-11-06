@@ -96,6 +96,7 @@ public class GuiArbiter {
             _player.setTargetPort(leftCandidatePort);
         }
 
+        GameScreen(Player.getInstance().getName(), Player.getInstance().getCredits());
     }
 
     public static void GameScreen(String name, int coins){
@@ -201,4 +202,5 @@ public class GuiArbiter {
                     "Coordinates: ---<br /></html>");
         }
     }
+
 }
