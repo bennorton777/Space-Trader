@@ -62,6 +62,8 @@ public class GameScreen {
         toTargetPortButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
+                _ship.fly();
+
             }
         });
         saveButton.addActionListener(new ActionListener() {
