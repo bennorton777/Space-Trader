@@ -99,4 +99,17 @@ public class Island
 
         return done;
     }
+
+    public String toSave() {
+        String save = "island|" + _location.getyPos() + '|' + _location.getxPos() + '\n';
+
+        for (Port p : _ports)
+        {
+            save += "\t" + p.toSave() + '\n';
+        }
+
+        save += "endisland";
+
+        return save;
+    }
 }

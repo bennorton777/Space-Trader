@@ -73,4 +73,8 @@ public class Port {
     public String toString() {
         return ("Port " + _name + ". Tech Level: " + _techLevel + " Resource: " + _resources + " at location " + _coordinates);
     }
+
+    public String toSave() {
+        return ("port|" + _name + '|' + _techLevel + '|' + _resources + '|' + _coordinates.getyPos() + '|' + _coordinates.getxPos());
+    }
 }

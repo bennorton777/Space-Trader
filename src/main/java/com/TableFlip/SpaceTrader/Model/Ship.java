@@ -184,4 +184,20 @@ public class Ship {
     public String toString() {
         return _name + ": Range " + _suppliesMax + " Fuel " + _suppliesRemaining + "/" + _suppliesMax;
     }
+
+    public String toSave() {
+        String save = "ship|" + _name + '\n';
+
+        save += _currentPort.toSave() + '\n';
+        save += _targetPort.toSave() + '\n';
+
+        for (Good g : _cargo.keySet())
+        {
+            save += "good|" + g.getName() + '|' + _cargo.get(g) + '\n';
+        }
+
+        save += "endship";
+
+        return save;
+    }
 }
