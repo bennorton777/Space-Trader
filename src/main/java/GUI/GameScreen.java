@@ -3,6 +3,7 @@ package GUI;
 import com.TableFlip.SpaceTrader.GameEntity.Player;
 import com.TableFlip.SpaceTrader.Model.Port;
 import com.TableFlip.SpaceTrader.Model.Ship;
+import com.TableFlip.SpaceTrader.Service.SaveMaker;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
@@ -68,7 +69,7 @@ public class GameScreen {
         });
         saveButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                //To change body of implemented methods use File | Settings | File Templates.
+                SaveMaker.getInstance().save();
             }
         });
     }

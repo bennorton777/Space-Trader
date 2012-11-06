@@ -141,4 +141,12 @@ public class Player {
         _credits = credits;
         return this;
     }
+
+    public String toSave() {
+        String save = "player|" + _name + '|' + _credits + '|' + _stats.get(Enums.Skill.TRADER) + '|' + _stats.get(Enums.Skill.ENGINEER) + '|' +_stats.get(Enums.Skill.FIGHTER) + '|' +_stats.get(Enums.Skill.PILOT) + '\n';
+
+        save += _ship.toSave() + "\nendplayer";
+
+        return save;
+    }
 }

@@ -21,7 +21,6 @@ public class Ocean {
     private static final int _MAXNUMPORTS = 7;
     private static final int _OCEANHEIGHT = 100;
     private static final int _OCEANWIDTH = 100;
-
     private static SparseArray<Port> _portSparseArray;
 
     /**
@@ -199,5 +198,18 @@ public class Ocean {
 
     public void setPortSparseArray(SparseArray<Port> portSparseArray) {
         _portSparseArray = portSparseArray;
+    }
+
+    public String toSave() {
+        String save = "ocean|" + _oceanHeight + "|" + _oceanWidth + '\n';
+
+        for (Island i : _islands)
+        {
+            save += i.toSave() + '\n';
+        }
+
+        save += "endocean";
+
+        return save;
     }
 }
