@@ -37,8 +37,7 @@ public class Bootstrapper {
      */
     public static void displayGameScreen(){
         System.out.println("Displaying Game Screen");
-        //TODO Make this come from Player
-        GuiArbiter.GameScreen(Player.getInstance().getName(), Player.getInstance().getCredits());
+        GuiArbiter.GameScreen();
     }
 
 }
