@@ -109,7 +109,7 @@ public class Ship {
             }
             Random randomGenerator = new Random();
             System.out.println("Generating a random event!");
-            int randomInt = randomGenerator.nextInt(4);
+            int randomInt = randomGenerator.nextInt(3);
             if(randomInt == 0)
                 GuiArbiter.popUp("You arrive without incident.");  //UI alert
             if(randomInt == 1) {
