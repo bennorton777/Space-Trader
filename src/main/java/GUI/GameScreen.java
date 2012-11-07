@@ -4,6 +4,7 @@ import com.TableFlip.SpaceTrader.GameEntity.Player;
 import com.TableFlip.SpaceTrader.Model.Port;
 import com.TableFlip.SpaceTrader.Model.Ship;
 import com.intellij.uiDesigner.core.Spacer;
+import com.TableFlip.SpaceTrader.Service.SaveMaker;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
@@ -56,12 +57,15 @@ public class GameScreen {
 
         toTargetPortButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
+                GuiArbiter.fly();
+                updatePlayerInfoPane();
+                updateShipLabel();
+                updatePortLabels();
             }
         });
         saveButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                //To change body of implemented methods use File | Settings | File Templates.
+                GuiArbiter.save();
             }
         });
     }
@@ -107,17 +111,17 @@ public class GameScreen {
      */
     private void $$$setupUI$$$() {
         _panel = new JPanel();
-        _panel.setLayout(new FormLayout("fill:max(d;4px):noGrow,fill:173px:noGrow,left:4dlu:noGrow,fill:185px:noGrow,left:4dlu:noGrow,fill:max(d;4px):noGrow", "center:d:noGrow,top:6dlu:noGrow,center:d:noGrow,top:3dlu:noGrow,center:38px:grow,top:3dlu:noGrow,center:max(d;4px):noGrow,top:3dlu:noGrow,center:max(d;4px):noGrow,top:3dlu:noGrow,center:41px:noGrow"));
+        _panel.setLayout(new FormLayout("fill:max(d;4px):noGrow,fill:173px:noGrow,left:4dlu:noGrow,fill:185px:noGrow,left:4dlu:noGrow,fill:max(d;4px):noGrow", "center:d:noGrow,top:6dlu:noGrow,center:d:noGrow,top:3dlu:noGrow,center:38px:grow,top:3dlu:noGrow,center:max(d;4px):noGrow,top:3dlu:noGrow,center:max(d;4px):noGrow,top:3dlu:noGrow,center:70px:noGrow"));
         toMarketplaceButton = new JButton();
         toMarketplaceButton.setText("Marketplace");
         CellConstraints cc = new CellConstraints();
-        _panel.add(toMarketplaceButton, cc.xy(2, 9, CellConstraints.LEFT, CellConstraints.DEFAULT));
+        _panel.add(toMarketplaceButton, cc.xy(2, 9, CellConstraints.CENTER, CellConstraints.TOP));
         toOceanMapButton = new JButton();
         toOceanMapButton.setText("Ocean Map");
-        _panel.add(toOceanMapButton, cc.xy(4, 9, CellConstraints.LEFT, CellConstraints.DEFAULT));
+        _panel.add(toOceanMapButton, cc.xy(4, 9, CellConstraints.CENTER, CellConstraints.TOP));
         toTargetPortButton = new JButton();
         toTargetPortButton.setText("Warp to Target Port");
-        _panel.add(toTargetPortButton, cc.xy(4, 11, CellConstraints.LEFT, CellConstraints.TOP));
+        _panel.add(toTargetPortButton, cc.xy(4, 11, CellConstraints.CENTER, CellConstraints.TOP));
         currentPortLabel = new JLabel();
         currentPortLabel.setText("Label");
         _panel.add(currentPortLabel, cc.xy(2, 3, CellConstraints.LEFT, CellConstraints.TOP));
@@ -126,7 +130,7 @@ public class GameScreen {
         _panel.add(targetPortLabel, cc.xy(4, 3, CellConstraints.LEFT, CellConstraints.TOP));
         toShipyardButton = new JButton();
         toShipyardButton.setText("Shipyard");
-        _panel.add(toShipyardButton, cc.xy(2, 11, CellConstraints.LEFT, CellConstraints.TOP));
+        _panel.add(toShipyardButton, cc.xy(2, 11, CellConstraints.CENTER, CellConstraints.TOP));
         saveButton = new JButton();
         saveButton.setText("Save");
         _panel.add(saveButton, cc.xy(6, 1));

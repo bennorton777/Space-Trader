@@ -6,6 +6,7 @@ import com.TableFlip.SpaceTrader.GameEntity.Ocean;
 import com.TableFlip.SpaceTrader.GameEntity.Player;
 import com.TableFlip.SpaceTrader.Model.*;
 import com.TableFlip.SpaceTrader.Service.GoodsRegistry;
+import com.TableFlip.SpaceTrader.Service.SaveMaker;
 import com.TableFlip.SpaceTrader.Service.ShipFactory;
 
 import javax.swing.*;
@@ -335,5 +336,12 @@ public class GuiArbiter {
         return GoodsRegistry.getInstance().getGoods().get(i);
     }
 
+    public static void fly(){
+        Player.getInstance().getShip().fly();
+    }
+
+    public static void save(){
+        SaveMaker.getInstance().save();
+    }
 
 }

@@ -1,5 +1,6 @@
 package com.TableFlip.SpaceTrader.Model;
 
+import com.TableFlip.SpaceTrader.GameEntity.Player;
 import com.TableFlip.SpaceTrader.Service.GoodsRegistry;
 import com.TableFlip.SpaceTrader.Service.ShipPrototype;
 
@@ -66,41 +67,82 @@ public class Ship {
         return _suppliesRemaining;
 	}
 
+    private int mantattanDistance(Coordinates a, Coordinates b) {
+        return Math.abs(a.getxPos() - b.getxPos()) + Math.abs(a.getyPos() - b.getyPos());
+    }
+
     /**
      * Most important method in ship!  Currently does nothing.  Stay tuned!
      */
     public void fly(){
+
+        Port _target = this.getTargetPort();
+        Port _current = this.getCurrentPort();
+
+            if(_target == _current)
+                System.out.println("You are currently on the right port!"); //need UI alert
+            else{
+
+
+
+                //get remaining supply
+                int _remaining = this.getSuppliesRemaining();
+
+                //find distance between 2 planets
+                int _distBetween = this.mantattanDistance(_target.getCoordinates(), _current.getCoordinates());
+
+                //check to see if you have enough fuel to travel
+                if(_remaining < _distBetween)   {
+                    System.out.println("You don't have enough fuel to travel!");//need UI alert
+                    throw new IndexOutOfBoundsException();
+                }
+                else
+                {
+                        this.setCurrentPort(_target); //you then travel to planet
+                        System.out.println("You have now reached your target port");//need UI alert
+                        int _decrementSupplies = (this.getSuppliesRemaining() - _distBetween);
+                        //this sets the new supply amount
+                        this.setSuppliesRemaining(_decrementSupplies);
+                }
+
+
+            }
         Random randomGenerator = new Random();
         System.out.println("Generating a random event!");
-        //do I use enum to generate an event
-        //what are the random events?
-        //pirates and police
-        //depending on number it generates a pirate or police
-        //need to get current port and future port to determine distance between the two
-        int randomInt = randomGenerator.nextInt(11);
+        int randomInt = randomGenerator.nextInt(4);
 
         if(randomInt == 0)
-            System.out.print("You are safe!");
-        if(randomInt == 1)
-            System.out.print("You have come up against a police officer!");
-        if(randomInt == 2)
-            System.out.print("You have come up against a pirate and you can beat it!");
-        if(randomInt == 3)
-            System.out.print("You have come up against  2 pirates and you may not escape!");
-        if(randomInt == 4)
-            System.out.print("You have come up against many pirates and you can escape if you use your skills properly!");
-        if(randomInt == 5)
-            System.out.print("You have come up against a police officer and a pirate!");
-        if(randomInt == 6)
-            System.out.print("You have come up against a police officer who is going to arrest you!");
-        if(randomInt == 7)
-            System.out.print("Hurry, a gang of pirates is coming to steal your goods");
-        if(randomInt == 8)
-            System.out.print("You have no threats of pirates or police officers!");
-        if(randomInt == 9)
-            System.out.print("I hope you have enough skills to defeat the threats posed to you at this port!");
+            System.out.println("You are safe to travel!");  //UI alert
+        if(randomInt == 1) {
+
+            System.out.println("You have come up against a pirate who has stolen some of your money!"); //UI alert
+            int _creditAmount = Player.getInstance().getCredits();
+
+            if( _creditAmount <= 0)
+                System.out.println("You have no money for the pirate to take"); //UI alert
+
+            else{
+                Player.getInstance().setCredits(_creditAmount - 1);
+
+                if(Player.getInstance().getCredits() == 0 || Player.getInstance().getCredits() < 0 )
+                    System.out.println("You have no more money ");//UI alert
+                else
+                    System.out.println("Your amount of money" + Player.getInstance().getCredits());
+
+            }
+        }
+        if(randomInt == 2) {
+            //police officer checks to see if you have narcotics
+            //use the cargo
+            System.out.println("You have met a police office who is checking for narcotics!");
+            Good _narcotics = new Good("Narcotics", 2500, 5);
+            if(this._cargo.containsValue(_narcotics))
+                   System.out.println("You have Narcotics, you are going to jail!"); //UI alert
+            else
+                System.out.println("You don't have any narcotics, good job!"); //UI alert
+        }
         else
-            System.out.print("You have come up against a pirate!");
+            System.out.println("You have come up against a pirate!");
 
 
     }
@@ -183,5 +225,21 @@ public class Ship {
 
     public String toString() {
         return _name + ": Range " + _suppliesMax + " Fuel " + _suppliesRemaining + "/" + _suppliesMax;
+    }
+
+    public String toSave() {
+        String save = "ship|" + _name + '\n';
+
+        save += _currentPort.toSave() + '\n';
+        save += _targetPort.toSave() + '\n';
+
+        for (Good g : _cargo.keySet())
+        {
+            save += "good|" + g.getName() + '|' + _cargo.get(g) + '\n';
+        }
+
+        save += "endship";
+
+        return save;
     }
 }
