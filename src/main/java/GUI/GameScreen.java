@@ -31,6 +31,7 @@ public class GameScreen {
     private JButton saveButton;
     private JLabel shipStatusLabel;
     private JLabel playerInfo;
+    private JButton _fillUpFuelTankButton;
     private static JFrame frame;
 
     public GameScreen() {
@@ -68,8 +69,33 @@ public class GameScreen {
                 GuiArbiter.save();
             }
         });
+        _fillUpFuelTankButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                int selectedOption = JOptionPane.showConfirmDialog(_panel, "Filling up your traveling supplies will cost " + (Player.getInstance().getShip().getSuppliesMax()-Player.getInstance().getShip().getSuppliesRemaining()) + " coins, are you sure you want to fill up?", "", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                if (selectedOption==1){
+                    GuiArbiter.popUp("Okay, your traveling supplies have not been filled up.");
+                }
+                if (selectedOption==0){
+                    Player player=Player.getInstance();
+                    Ship ship = player.getShip();
+                    int missingSupplies=ship.getSuppliesMax()-ship.getSuppliesRemaining();
+                    if (player.getCredits()<missingSupplies){
+                        JOptionPane.showMessageDialog(_panel, "You don't have enough coins!", "", JOptionPane.ERROR_MESSAGE);
+                    }
+                    else{
+                        player.setCredits(player.getCredits()-missingSupplies);
+                        ship.setSuppliesRemaining(ship.getSuppliesMax());
+                        GuiArbiter.popUp("You supplies have been replenished.");
+                    }
+                }
+                updatePlayerInfoPane();
+                GuiArbiter.updateShipStatus(shipStatusLabel);
+           }
+        });
     }
-
+    public void popUp(String message){
+        JOptionPane.showMessageDialog(_panel, "You cannot travel to that port.", "Error", JOptionPane.ERROR_MESSAGE);
+    }
     public void updatePlayerInfoPane() {
         GuiArbiter.updatePlayerInfo(playerInfo);
     }

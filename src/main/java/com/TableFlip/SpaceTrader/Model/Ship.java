@@ -1,5 +1,6 @@
 package com.TableFlip.SpaceTrader.Model;
 
+import GUI.GuiArbiter;
 import com.TableFlip.SpaceTrader.GameEntity.Player;
 import com.TableFlip.SpaceTrader.Service.GoodsRegistry;
 
@@ -85,73 +86,67 @@ public class Ship {
         Port _target = this.getTargetPort();
         Port _current = this.getCurrentPort();
 
-            if(_target == _current)
-                System.out.println("You are currently on the right port!"); //need UI alert
-            else{
+        if(_target == _current)
+            GuiArbiter.popUp("You are currently on the right port!"); //need UI alert
+        else{
+            //get remaining supply
+            int _remaining = this.getSuppliesRemaining();
 
+            //find distance between 2 planets
+            //int _distBetween = this.manhattanDistance(_target.getCoordinates(), _current.getCoordinates());
+            int _distBetween = this.distance(_target.getCoordinates(), _current.getCoordinates());
 
-
-                //get remaining supply
-                int _remaining = this.getSuppliesRemaining();
-
-                //find distance between 2 planets
-                //int _distBetween = this.manhattanDistance(_target.getCoordinates(), _current.getCoordinates());
-                int _distBetween = this.distance(_target.getCoordinates(), _current.getCoordinates());
-
-                //check to see if you have enough fuel to travel
-                if(_remaining < _distBetween)   {
-                    System.out.println("You don't have enough fuel to travel!");//need UI alert
-                    throw new IndexOutOfBoundsException();
-                }
-                else
-                {
-                        this.setCurrentPort(_target); //you then travel to planet
-                        System.out.println("You have now reached your target port");//need UI alert
-                        int _decrementSupplies = (this.getSuppliesRemaining() - _distBetween);
-                        //this sets the new supply amount
-                        this.setSuppliesRemaining(_decrementSupplies);
-                }
-
-
+            //check to see if you have enough fuel to travel
+            if(_remaining < _distBetween)   {
+                GuiArbiter.popUp("You don't have enough fuel to travel!");//need UI alert
             }
-        Random randomGenerator = new Random();
-        System.out.println("Generating a random event!");
-        int randomInt = randomGenerator.nextInt(4);
-
-        if(randomInt == 0)
-            System.out.println("You are safe to travel!");  //UI alert
-        if(randomInt == 1) {
-
-            System.out.println("You have come up against a pirate who has stolen some of your money!"); //UI alert
-            int _creditAmount = Player.getInstance().getCredits();
-
-            if( _creditAmount <= 0)
-                System.out.println("You have no money for the pirate to take"); //UI alert
-
-            else{
-                Player.getInstance().setCredits(_creditAmount - 1);
-
-                if(Player.getInstance().getCredits() == 0 || Player.getInstance().getCredits() < 0 )
-                    System.out.println("You have no more money ");//UI alert
-                else
-                    System.out.println("Your amount of money" + Player.getInstance().getCredits());
-
-            }
-        }
-        if(randomInt == 2) {
-            //police officer checks to see if you have narcotics
-            //use the cargo
-            System.out.println("You have met a police office who is checking for narcotics!");
-            Good _narcotics = new Good("Narcotics", 2500, 5);
-            if(this._cargo.containsValue(_narcotics))
-                   System.out.println("You have Narcotics, you are going to jail!"); //UI alert
             else
-                System.out.println("You don't have any narcotics, good job!"); //UI alert
+            {
+                    this.setCurrentPort(_target); //you then travel to planet
+                    int _decrementSupplies = (this.getSuppliesRemaining() - _distBetween);
+                    //this sets the new supply amount
+                    this.setSuppliesRemaining(_decrementSupplies);
+            }
+            Random randomGenerator = new Random();
+            System.out.println("Generating a random event!");
+            int randomInt = randomGenerator.nextInt(4);
+            if(randomInt == 0)
+                GuiArbiter.popUp("You arrive without incident.");  //UI alert
+            if(randomInt == 1) {
+                GuiArbiter.popUp("You have come up against a pirate who attempts to steal some of your money!"); //UI alert
+                int _creditAmount = Player.getInstance().getCredits();
+                if( _creditAmount <= 0){
+                    GuiArbiter.popUp("You have no money for the pirate to take"); //UI alert
+                }
+                else{
+                    Player.getInstance().setCredits(_creditAmount - 1);
+                    if(Player.getInstance().getCredits() == 0 || Player.getInstance().getCredits() < 0 ){
+                       GuiArbiter.popUp("The pirate stole the last of your money");//UI alert
+                    }
+                    else{
+                        GuiArbiter.popUp("The pirate took a coin, you now have " + Player.getInstance().getCredits() + " coins left");
+                    }
+                }
+            }
+            if(randomInt == 2) {
+                //police officer checks to see if you have narcotics
+                //use the cargo
+                GuiArbiter.popUp("You have met a police office who is checking for narcotics!");
+                Good _narcotics = new Good("Narcotics", 2500, 5);
+                if(this._cargo.containsValue(_narcotics)){
+                       GuiArbiter.popUp("The officer finds narcotics, and fines you 10% of your coins!"); //UI alert
+                       Player player = Player.getInstance();
+                       int currentCoins=player.getCredits();
+                        int newCoins=currentCoins-((int) (0.1*currentCoins));
+                        player.setCredits(newCoins);
+                        GuiArbiter.popUp("You have " + player.getCredits() + " coins left");
+                }
+                else{
+                    GuiArbiter.popUp("You don't have any narcotics, good job!"); //UI alert
+                }
+            }
+
         }
-        else
-            System.out.println("You have come up against a pirate!");
-
-
     }
 
     public Ship setSuppliesRemaining(int SuppliesRemaining) {

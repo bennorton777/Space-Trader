@@ -1,7 +1,6 @@
 package GUI;
 
 import com.TableFlip.SpaceTrader.DataStructure.SparseArray.Node;
-import com.TableFlip.SpaceTrader.DataStructure.SparseArray.SparseArray;
 import com.TableFlip.SpaceTrader.GameEntity.Ocean;
 import com.TableFlip.SpaceTrader.GameEntity.Player;
 import com.TableFlip.SpaceTrader.Model.*;
@@ -21,6 +20,16 @@ import java.util.*;
  * Any changes in a Game Logic class should bubble down no further than this class.
  */
 public class GuiArbiter {
+    public static JFrame _invisiFrame;
+    public static JPanel _invisiPanel;
+    {
+        _invisiPanel =new JPanel();
+        _invisiFrame = new JFrame("SelectPortScreen");
+
+        _invisiFrame.setContentPane(_invisiPanel);
+        _invisiFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        _invisiFrame.pack();
+    }
     /**
      * Interpreter method to make new Character GUI things happen.
      * Game logic does not need to know how this is done.
@@ -29,7 +38,9 @@ public class GuiArbiter {
     public static void charGen(){
         CharGen.main(new String[3]);
     }
-
+    public static void popUp(String message){
+        JOptionPane.showMessageDialog(_invisiPanel, message, "", JOptionPane.INFORMATION_MESSAGE);
+    }
     /**
      * new character game logic abstraction.  The GUI classes do not need to know how to make the Game Logic create a new character.
      * @param name
@@ -263,7 +274,8 @@ public class GuiArbiter {
         Ship ship = player.getShip();
         shipStatusLabel.setText("<html>Ship Status:<br />" +
             "<br />Name: " + ship.getName() +
-            "<br />Max Supplies Number: " + ship.getSuppliesMax() +
+            "<br />Max Supplies: " + ship.getSuppliesMax() +
+            "<br />Supplies Left: " + ship.getSuppliesRemaining() +
             "<br />Weapons Slots: " + ship.getWeaponSlots() +
             "<br />Armor Slots: " + ship.getArmorSlots() +
             "<br />Crew Slots: " + ship.getCrewSlots() +
