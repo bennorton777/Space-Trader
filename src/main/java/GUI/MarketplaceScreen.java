@@ -87,7 +87,7 @@ public class MarketplaceScreen {
         updateMarketQuantities();
         updateBuySpinners();
         updateSellSpinners();
-        //updateTargetPortInfo();
+        //updateHighlightedPortInfo();
         updateCurrentPortInfo();
 
         //Button Listeners

@@ -1,8 +1,6 @@
 package GUI;
 
 import com.TableFlip.SpaceTrader.Bootstrap.Bootstrapper;
-import com.TableFlip.SpaceTrader.GameEntity.Ocean;
-import com.TableFlip.SpaceTrader.GameEntity.Player;
 import com.TableFlip.SpaceTrader.Model.Coordinates;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
@@ -11,7 +9,6 @@ import com.TableFlip.SpaceTrader.Model.Port;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.Graphics.*;
 import java.awt.event.*;
 
 /**
@@ -24,28 +21,21 @@ import java.awt.event.*;
 public class SelectPortScreen {
     private JPanel panel1;
     private JPanel OceanMap;
-    //private JPanel OceanMapPanel;
     private JButton backToMainScreenButton;
     private JButton downButton;
     private JButton upButton;
     private JButton rightButton;
     private JButton leftButton;
     private static JFrame frame;
-    //private Player _player;
-    //private Port _port;
-    //  private Ocean _ocean;
-    //private Port _targetPort;
 
     public SelectPortScreen() {
         $$$setupUI$$$();
-        //_player = Player.getInstance();
-        //_port = _player.getCurrentPort();
-        //_targetPort = _player.getTargetPort();
 
         updateCurrentPortInfo();
-        updateTargetPortInfo();
+        updateHighlightedPortInfo();
         updateFuelStatus();
-        updateDistance(mantattanDistance(GuiArbiter.getTargetPort().getCoordinates(), GuiArbiter.getCurrentPort().getCoordinates()));
+        updateDistance(GuiArbiter.calculateDistance(GuiArbiter.getTargetPort().getCoordinates(), GuiArbiter.getCurrentPort().getCoordinates()));
+        updatePortSelected();
         OceanMap.setBackground(Color.cyan);
 
 
@@ -59,41 +49,45 @@ public class SelectPortScreen {
             public void actionPerformed(ActionEvent e) {
                 GuiArbiter.up();
                 OceanMapP.repaint();
-                updateTargetPortInfo();
+                updateHighlightedPortInfo();
             }
         });
         downButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 GuiArbiter.down();
                 OceanMapP.repaint();
-                updateTargetPortInfo();
+                updateHighlightedPortInfo();
             }
         });
         rightButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 GuiArbiter.right();
                 OceanMapP.repaint();
-                updateTargetPortInfo();
+                updateHighlightedPortInfo();
             }
         });
         leftButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 GuiArbiter.left();
                 OceanMapP.repaint();
-                updateTargetPortInfo();
+                updateHighlightedPortInfo();
+            }
+        });
+        selectPortButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                int value = GuiArbiter.setTargetPort();
+                if(value==1){
+                    JOptionPane.showMessageDialog(panel1, "You cannot travel to that port.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                if(value==2){
+                    JOptionPane.showMessageDialog(panel1, "You cannot select your current port to be your target port.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                updatePortSelected();
             }
         });
         OceanMapP.addKeyListener(new KeyAdapter() {
         });
     }
-/*
-    public void paintComponent(Graphics g) {
-
-        //super.paintComponent(g);
-
-        g.setColor(Color.yellow);
-        g.fillOval(0, 0, 80, 80);
-    }*/
 
     public void updateCurrentPortInfo() {
         Port port = GuiArbiter.getCurrentPort();
@@ -104,17 +98,18 @@ public class SelectPortScreen {
                 "Coordinates: " + port.getCoordinates() + "<br /></html>");
     }
 
-    public void updateTargetPortInfo() {
-        Port targetPort = GuiArbiter.getTargetPort();
-        if (targetPort != null) {
-            targetPortLabel.setText("<html>Target Port Details<br /><br />" +
-                    "Name: " + targetPort.getName() + "<br />" +
-                    "Tech Level: " + targetPort.getTechLevel() + "<br />" +
-                    "Resource: " + targetPort.getResources() + "<br />" +
-                    "Coordinates: " + targetPort.getCoordinates() + "<br /></html>");
-            updateDistance(mantattanDistance(targetPort.getCoordinates(), GuiArbiter.getCurrentPort().getCoordinates()));
+    public void updateHighlightedPortInfo() {
+        Port highlightedPort = GuiArbiter.getHighlightedPort();
+        if (highlightedPort != null) {
+            highlightedPortLabel.setText("<html>Highlighted Port Details<br /><br />" +
+                    "Name: " + highlightedPort.getName() + "<br />" +
+                    "Tech Level: " + highlightedPort.getTechLevel() + "<br />" +
+                    "Resource: " + highlightedPort.getResources() + "<br />" +
+                    "Coordinates: " + highlightedPort.getCoordinates() + "<br /></html>");
+            updateDistance(GuiArbiter.calculateDistance(highlightedPort.getCoordinates(), GuiArbiter.getCurrentPort().getCoordinates()));
+            updatePortSelected();
         } else {
-            targetPortLabel.setText("<html>Target Port Details<br /><br />" +
+            highlightedPortLabel.setText("<html>Target Port Details<br /><br />" +
                     "Name: ---<br />" +
                     "Tech Level: ---<br />" +
                     "Resource: ---<br />" +
@@ -132,12 +127,17 @@ public class SelectPortScreen {
         distanceLabel.setText("This island is " + distance + " leagues away.");
     }
 
-    private void createUIComponents() {
-        OceanMapP = new OceanMapPanel();
+    public void updatePortSelected() {
+        if (GuiArbiter.getTargetPort().equals(GuiArbiter.getHighlightedPort())){
+            portSelectedLabel.setText("<html>This port has been<br /> selected as your target.</html>");
+        }
+        else {
+            portSelectedLabel.setText("<html>This port has not been<br /> selected as your target.</html>");
+        }
     }
 
-    private int mantattanDistance(Coordinates a, Coordinates b) {
-        return Math.abs(a.getxPos() - b.getxPos()) + Math.abs(a.getyPos() - b.getyPos());
+    private void createUIComponents() {
+        OceanMapP = new OceanMapPanel();
     }
 
     public static void main(String[] args) {
@@ -145,7 +145,6 @@ public class SelectPortScreen {
         frame = new JFrame("SelectPortScreen");
 
         frame.setContentPane(new SelectPortScreen().panel1);
-        //frame.getContentPane().add(new OceanMapPanel());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
@@ -154,10 +153,12 @@ public class SelectPortScreen {
     private JTextPane currentPortTextPane;
     private JLabel selectDestinationLabel;
     private JLabel currentPortLabel;
-    private JLabel targetPortLabel;
+    private JLabel highlightedPortLabel;
     private JLabel fuelStatusLabel;
     private JLabel distanceLabel;
     private JPanel OceanMapP;
+    private JButton selectPortButton;
+    private JLabel portSelectedLabel;
 
     /**
      * Method generated by IntelliJ IDEA GUI Designer
@@ -200,9 +201,9 @@ public class SelectPortScreen {
         currentPortLabel = new JLabel();
         currentPortLabel.setText("change me!");
         panel2.add(currentPortLabel, new GridConstraints(1, 3, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        targetPortLabel = new JLabel();
-        targetPortLabel.setText("change me!");
-        panel2.add(targetPortLabel, new GridConstraints(2, 3, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        highlightedPortLabel = new JLabel();
+        highlightedPortLabel.setText("change me!");
+        panel2.add(highlightedPortLabel, new GridConstraints(2, 3, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         fuelStatusLabel = new JLabel();
         fuelStatusLabel.setText("fuel stuff");
         panel2.add(fuelStatusLabel, new GridConstraints(3, 3, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));

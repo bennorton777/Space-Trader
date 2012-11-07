@@ -22,6 +22,7 @@ public class Ocean {
     private static final int _OCEANHEIGHT = 100;
     private static final int _OCEANWIDTH = 100;
     private static SparseArray<Port> _portSparseArray;
+    private Port _highlightedPort;
 
     /**
      * Sets default values for galaxy
@@ -123,6 +124,14 @@ public class Ocean {
 
     public void setOceanWidth(int oceanWidth) {
         _oceanWidth = oceanWidth;
+    }
+
+    public Port getHighlightedPort() {
+        return _highlightedPort;
+    }
+
+    public void setHighlightedPort(Port port) {
+        _highlightedPort = port;
     }
 
     private void makeCandidates()

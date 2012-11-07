@@ -95,6 +95,8 @@ public class GuiArbiter {
             _player.setTargetPort(leftCandidatePort);
         }
 
+        ocean.setHighlightedPort(_player.getTargetPort()); //sets chosen target port as highlighted port
+
         GameScreen();
     }
 
@@ -138,32 +140,55 @@ public class GuiArbiter {
         return player.getTargetPort();
     }
 
+    public static Port getHighlightedPort(){
+        Ocean ocean = Ocean.getInstance();
+        return ocean.getHighlightedPort();
+    }
+
+    public static int setTargetPort(){
+        Ocean ocean = Ocean.getInstance();
+        Port highlightedPort = ocean.getHighlightedPort();
+        Player player = Player.getInstance();
+        if (calculateDistance(highlightedPort.getCoordinates(), player.getCurrentPort().getCoordinates()) > getCurrentSupplies()){
+            return 1;
+        }
+        if (player.getCurrentPort().equals(highlightedPort)){
+            return 2;
+        }
+
+        player.setTargetPort(highlightedPort);
+        return 0;
+    }
+
+    public static int calculateDistance(Coordinates port1, Coordinates port2){
+        double distance = Math.sqrt( Math.pow((port1.getxPos()-port2.getxPos()),2) +
+                Math.pow((port1.getyPos()-port2.getyPos()),2) );
+        int d = (int)distance;
+        return d;
+    }
+
     public static void up(){
         Ocean ocean = Ocean.getInstance();
-        Player player = Player.getInstance();
-        Node<Port> targetNode = ocean.getPortSparseArray().findNodeAt(player.getTargetPort().getCoordinates().getyPos(), player.getTargetPort().getCoordinates().getxPos());
-        player.setTargetPort(ocean.getPortSparseArray().moveUp(targetNode));
+        Node<Port> highlightedNode = ocean.getPortSparseArray().findNodeAt(ocean.getHighlightedPort().getCoordinates().getyPos(), ocean.getHighlightedPort().getCoordinates().getxPos());
+        ocean.setHighlightedPort(ocean.getPortSparseArray().moveUp(highlightedNode));
     }
 
     public static void down(){
         Ocean ocean = Ocean.getInstance();
-        Player player = Player.getInstance();
-        Node<Port> targetNode = ocean.getPortSparseArray().findNodeAt(player.getTargetPort().getCoordinates().getyPos(), player.getTargetPort().getCoordinates().getxPos());
-        player.setTargetPort(ocean.getPortSparseArray().moveDown(targetNode));
+        Node<Port> highlightedNode = ocean.getPortSparseArray().findNodeAt(ocean.getHighlightedPort().getCoordinates().getyPos(), ocean.getHighlightedPort().getCoordinates().getxPos());
+        ocean.setHighlightedPort(ocean.getPortSparseArray().moveDown(highlightedNode));
     }
 
     public static void right(){
         Ocean ocean = Ocean.getInstance();
-        Player player = Player.getInstance();
-        Node<Port> targetNode = ocean.getPortSparseArray().findNodeAt(player.getTargetPort().getCoordinates().getyPos(), player.getTargetPort().getCoordinates().getxPos());
-        player.setTargetPort(ocean.getPortSparseArray().moveRight(targetNode));
+        Node<Port> highlightedNode = ocean.getPortSparseArray().findNodeAt(ocean.getHighlightedPort().getCoordinates().getyPos(), ocean.getHighlightedPort().getCoordinates().getxPos());
+        ocean.setHighlightedPort(ocean.getPortSparseArray().moveRight(highlightedNode));
     }
 
     public static void left(){
         Ocean ocean = Ocean.getInstance();
-        Player player = Player.getInstance();
-        Node<Port> targetNode = ocean.getPortSparseArray().findNodeAt(player.getTargetPort().getCoordinates().getyPos(), player.getTargetPort().getCoordinates().getxPos());
-        player.setTargetPort(ocean.getPortSparseArray().moveLeft(targetNode));
+        Node<Port> highlightedNode = ocean.getPortSparseArray().findNodeAt(ocean.getHighlightedPort().getCoordinates().getyPos(), ocean.getHighlightedPort().getCoordinates().getxPos());
+        ocean.setHighlightedPort(ocean.getPortSparseArray().moveLeft(highlightedNode));
     }
 
     public static Map<Good, HashMap<Enums.MarketValues, Integer>> getLocalMarket(){
