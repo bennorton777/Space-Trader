@@ -2,7 +2,6 @@ package com.TableFlip.SpaceTrader.Model;
 
 import com.TableFlip.SpaceTrader.GameEntity.Player;
 import com.TableFlip.SpaceTrader.Service.GoodsRegistry;
-import com.TableFlip.SpaceTrader.Service.ShipPrototype;
 
 import java.util.HashMap;
 import java.util.Random;
@@ -21,6 +20,8 @@ public class Ship {
     private int _armorSlots;
     private int _crewSlots;
     private int _toolSlots;
+    private Port _targetPort;
+    private Port _highlightedPort;
 
     private static GoodsRegistry _goodsRegistry;
 
@@ -42,8 +43,6 @@ public class Ship {
             _cargo.put(g, 0);
         }
     }
-
-    private Port _targetPort;
 
     public HashMap<Good, Integer> getCargo() {
         return _cargo;
@@ -67,8 +66,15 @@ public class Ship {
         return _suppliesRemaining;
 	}
 
-    private int mantattanDistance(Coordinates a, Coordinates b) {
+    private int manhattanDistance(Coordinates a, Coordinates b) {
         return Math.abs(a.getxPos() - b.getxPos()) + Math.abs(a.getyPos() - b.getyPos());
+    }
+
+    private int distance (Coordinates a, Coordinates b){
+        double distance = Math.sqrt( Math.pow((a.getxPos()-b.getxPos()),2) +
+                Math.pow((a.getyPos()-b.getyPos()),2) );
+        int d = (int)distance;
+        return d;
     }
 
     /**
@@ -89,7 +95,8 @@ public class Ship {
                 int _remaining = this.getSuppliesRemaining();
 
                 //find distance between 2 planets
-                int _distBetween = this.mantattanDistance(_target.getCoordinates(), _current.getCoordinates());
+                //int _distBetween = this.manhattanDistance(_target.getCoordinates(), _current.getCoordinates());
+                int _distBetween = this.distance(_target.getCoordinates(), _current.getCoordinates());
 
                 //check to see if you have enough fuel to travel
                 if(_remaining < _distBetween)   {

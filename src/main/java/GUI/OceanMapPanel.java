@@ -39,11 +39,14 @@ public class OceanMapPanel extends JPanel {
         g.fillRect((currentPort.getxPos() * 5) - 2, (currentPort.getyPos() * 5) - 2, 5, 5);
         g.drawRect((currentPort.getxPos() * 5) - 4, (currentPort.getyPos() * 5) - 4, 8, 8);
 
-        Coordinates targetPort = GuiArbiter.getTargetPort().getCoordinates();
-        if (targetPort != null) {
+        int travelRadius = GuiArbiter.getCurrentSupplies()*5;
+        g.drawOval((currentPort.getxPos()*5)-(travelRadius)-2, (currentPort.getyPos()*5)-travelRadius-2, travelRadius*2+4, travelRadius*2+4);
+
+        Coordinates highlightedPort = GuiArbiter.getHighlightedPort().getCoordinates();
+        if (highlightedPort != null) {
             g.setColor(Color.red);
-            g.fillRect((targetPort.getxPos() * 5) - 2, (targetPort.getyPos() * 5) - 2, 5, 5);
-            g.drawRect((targetPort.getxPos() * 5) - 4, (targetPort.getyPos() * 5) - 4, 8, 8);
+            g.fillRect((highlightedPort.getxPos() * 5) - 2, (highlightedPort.getyPos() * 5) - 2, 5, 5);
+            g.drawRect((highlightedPort.getxPos() * 5) - 4, (highlightedPort.getyPos() * 5) - 4, 8, 8);
         }
     }
 
