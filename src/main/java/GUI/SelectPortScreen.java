@@ -75,9 +75,12 @@ public class SelectPortScreen {
         });
         selectPortButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                boolean value = GuiArbiter.setTargetPort();
-                if(!value){
+                int value = GuiArbiter.setTargetPort();
+                if(value==1){
                     JOptionPane.showMessageDialog(panel1, "You cannot travel to that port.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                if(value==2){
+                    JOptionPane.showMessageDialog(panel1, "You cannot select your current port to be your target port.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
                 updatePortSelected();
             }

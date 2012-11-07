@@ -143,7 +143,7 @@
           </component>
           <component id="133a5" class="javax.swing.JButton" binding="backToMainScreenButton" default-binding="true">
             <constraints>
-              <grid row="8" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false">
+              <grid row="8" column="0" row-span="1" col-span="3" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="95" height="29"/>
               </grid>
             </constraints>
