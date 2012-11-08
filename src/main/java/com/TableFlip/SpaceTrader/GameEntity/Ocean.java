@@ -5,6 +5,9 @@ import com.TableFlip.SpaceTrader.Model.Coordinates;
 import com.TableFlip.SpaceTrader.Model.Island;
 import com.TableFlip.SpaceTrader.Model.Port;
 import com.TableFlip.SpaceTrader.Service.PortNames;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.*;
 
@@ -26,30 +29,54 @@ public class Ocean {
     /**
      * Sets default values for galaxy
      */
-    private Ocean(){
+    private Ocean(boolean makeBlank){
         setOceanHeight(_OCEANHEIGHT);
         setOceanWidth(_OCEANWIDTH);
-        _portSparseArray = new SparseArray<Port>(_OCEANWIDTH, _OCEANHEIGHT);
-        _islands = new ArrayList<Island>();
-        generateIslands();
+        //if (!makeBlank)
+        {
+            System.out.println("New full Ocean");
+            _portSparseArray = new SparseArray<Port>(_OCEANWIDTH, _OCEANHEIGHT);
+            _islands = new ArrayList<Island>();
+            generateIslands();
 
-        for (Island island : _islands){
-            for(Port port : island.getPorts()){
-                _portSparseArray.putAt(port.getCoordinates().getyPos(), port.getCoordinates().getxPos(), port);
+            for (Island island : _islands){
+                for(Port port : island.getPorts()){
+                    _portSparseArray.putAt(port.getCoordinates().getyPos(), port.getCoordinates().getxPos(), port);
+                }
             }
-        }
+            System.out.println("Ocean Done!");
+        }/* else {
+            System.out.println("New empty Ocean.");
+            _portSparseArray = new SparseArray<Port>(_OCEANWIDTH, _OCEANHEIGHT);
+            _islands = new ArrayList<Island>();
+        }*/
     }
 
     public static Ocean getInstance() {
         if (_instance==null){
+
+            _instance=new Ocean(false);
             System.out.println("New Ocean!");
-            _instance=new Ocean();
             return _instance;
         }
         else{
             return _instance;
         }
 
+    }
+
+    public static Ocean hydrateOcean(List<Island> islands) {
+        _instance = new Ocean(true);
+
+        _instance.setIslands(islands);
+
+        for (Island island : _instance.getIslands()){
+            for(Port port : island.getPorts()){
+                _portSparseArray.putAt(port.getCoordinates().getyPos(), port.getCoordinates().getxPos(), port);
+            }
+        }
+
+        return _instance;
     }
 
     public void generateIslands() {
@@ -85,7 +112,6 @@ public class Ocean {
                 tempNames[i] = names.remove(gen.nextInt(names.size()));
             }
             Island temp = new Island(tempNames,  pos);
-
             _islands.add(temp);
         }
     }
@@ -201,7 +227,7 @@ public class Ocean {
     }
 
     public String toSave() {
-        String save = "ocean|" + _oceanHeight + "|" + _oceanWidth + '\n';
+        String save = "ocean\n";
 
         for (Island i : _islands)
         {
@@ -211,5 +237,22 @@ public class Ocean {
         save += "endocean";
 
         return save;
+    }
+
+    public JSONObject toJSON() {
+        JSONObject ret = new JSONObject();
+        JSONArray arr = new JSONArray();
+
+        try {
+            for (Island i : _islands)
+            {
+                arr.put(i.toJSON());
+            }
+
+            ret.put("islands", arr);
+        } catch (JSONException e) {
+            System.out.println("JSON creation error " + e.toString());
+        }
+        return ret;
     }
 }

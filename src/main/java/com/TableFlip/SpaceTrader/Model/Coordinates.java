@@ -1,5 +1,8 @@
 package com.TableFlip.SpaceTrader.Model;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Information Holder Class, contains coordinates of a planet
  */
@@ -75,5 +78,26 @@ public class Coordinates implements Comparable{
             else
                 return xDiff;
         }
+    }
+
+    public JSONObject toJSON() {
+        JSONObject ret = new JSONObject();
+
+        try {
+            ret.put("x", _xPos);
+            ret.put("y", _yPos);
+        } catch (JSONException e) {
+            System.out.println("JSON creation error " + e.toString());
+        }
+        return ret;
+    }
+
+    public static Coordinates hydrate(JSONObject dry) {
+        try {
+            return new Coordinates(dry.getInt("x"), dry.getInt("y"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

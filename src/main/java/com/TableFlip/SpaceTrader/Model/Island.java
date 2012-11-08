@@ -1,6 +1,10 @@
 package com.TableFlip.SpaceTrader.Model;
 
 import com.TableFlip.SpaceTrader.GameEntity.RandomPort;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -37,24 +41,35 @@ public class Island
         placePorts();
     }
 
+    public Island() {
+
+    }
+
     public Coordinates getLocation() {
         return _location;
     }
 
-    public void setLocation(Coordinates location) {
+    public Island setLocation(Coordinates location) {
         _location = location;
+        return this;
     }
 
     public int getSize() {
         return _size;
     }
 
-    public void setSize(int size) {
+    public Island setSize(int size) {
         _size = size;
+        return this;
     }
 
     public ArrayList<Port> getPorts() {
         return _ports;
+    }
+
+    public Island setPorts(ArrayList<Port> ports) {
+        _ports = ports;
+        return this;
     }
 
     private void placePorts() {
@@ -111,5 +126,41 @@ public class Island
         save += "endisland";
 
         return save;
+    }
+
+    public JSONObject toJSON() {
+        JSONObject ret = new JSONObject();
+        JSONArray arr = new JSONArray();
+
+        try {
+            for (Port i : _ports)
+            {
+                arr.put(i.toJSON());
+            }
+
+            ret.put("ports", arr);
+            ret.put("location", _location);
+        } catch (JSONException e) {
+            System.out.println("JSON creation error " + e.toString());
+        }
+        return ret;
+    }
+
+    public static Island hydrate(JSONObject dry) {
+        try {
+            JSONArray dryPorts = dry.getJSONArray("ports");
+            ArrayList<Port> wetPorts = new ArrayList<Port>();
+
+            for (int i = 0; i < dryPorts.length(); i++) {
+                wetPorts.add(Port.hydrate(dryPorts.getJSONObject(i)));
+            }
+
+            Island wet = new Island().setLocation(Coordinates.hydrate(dry.getJSONObject("location"))).setPorts(wetPorts).setSize(wetPorts.size());
+
+            return wet;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

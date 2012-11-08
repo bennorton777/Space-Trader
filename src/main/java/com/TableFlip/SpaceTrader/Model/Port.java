@@ -1,6 +1,10 @@
 package com.TableFlip.SpaceTrader.Model;
 
+import com.TableFlip.SpaceTrader.GameEntity.RandomPort;
 import com.TableFlip.SpaceTrader.Service.GoodsRegistry;
+import com.TableFlip.SpaceTrader.Service.MarketGenerator;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,8 +27,9 @@ public class Port {
         return _resources;
     }
 
-    public void setResources(Enums.Resources resources) {
+    public Port setResources(Enums.Resources resources) {
         _resources = resources;
+        return this;
     }
     public int price(Good good){
         return getLocalMarket().get(good).get(Enums.MarketValues.PRICE);
@@ -36,16 +41,18 @@ public class Port {
         return _techLevel;
     }
 
-    public void setTechLevel(Enums.TechLevel techLevel) {
+    public Port setTechLevel(Enums.TechLevel techLevel) {
         _techLevel = techLevel;
+        return this;
     }
 
     public Map<Good, HashMap<Enums.MarketValues, Integer>> getLocalMarket() {
         return _localMarket;
     }
 
-    public void setLocalMarket(Map<Good, HashMap<Enums.MarketValues, Integer>> localMarket) {
+    public Port setLocalMarket(Map<Good, HashMap<Enums.MarketValues, Integer>> localMarket) {
         _localMarket = localMarket;
+        return this;
     }
 
     Enums.TechLevel _techLevel;
@@ -57,16 +64,18 @@ public class Port {
         return _name;
     }
 
-    public void setName(String name) {
+    public Port setName(String name) {
         _name = name;
+        return this;
     }
 
     public Coordinates getCoordinates() {
         return _coordinates;
     }
 
-    public void setCoordinates(Coordinates coordinates) {
+    public Port setCoordinates(Coordinates coordinates) {
         _coordinates = coordinates;
+        return this;
     }
 
     @Override
@@ -76,5 +85,34 @@ public class Port {
 
     public String toSave() {
         return ("port|" + _name + '|' + _techLevel + '|' + _resources + '|' + _coordinates.getyPos() + '|' + _coordinates.getxPos());
+    }
+
+    public JSONObject toJSON() {
+        JSONObject ret = new JSONObject();
+
+        try {
+            ret.put("name", _name);
+            ret.put("techLevel", _techLevel);
+            ret.put("resources", _resources);
+            ret.put("location", _coordinates.toJSON());
+        } catch (JSONException e) {
+            System.out.println("JSON creation error " + e.toString());
+        }
+        return ret;
+    }
+
+    public static Port hydrate(JSONObject dry) {
+        try {
+            RandomPort wet = new RandomPort(dry.getString("name"));
+
+            wet.setCoordinates(Coordinates.hydrate(dry.getJSONObject("location"))).setTechLevel(Enums.TechLevel.valueOf(dry.getString("techLevel"))).setResources(Enums.Resources.valueOf(dry.getString("resources")));
+
+            wet.setLocalMarket(MarketGenerator.getInstance().generateMarket(wet).getLocalMarket());
+
+            return wet;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

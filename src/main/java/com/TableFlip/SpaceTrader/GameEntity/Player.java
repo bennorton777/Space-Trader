@@ -4,6 +4,8 @@ import com.TableFlip.SpaceTrader.Model.Enums;
 import com.TableFlip.SpaceTrader.Model.Good;
 import com.TableFlip.SpaceTrader.Model.Port;
 import com.TableFlip.SpaceTrader.Model.Ship;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Map;
 /**
@@ -21,6 +23,14 @@ public class Player {
         if (_instance==null){
             _instance=new Player();
         }
+        return _instance;
+    }
+
+    public static Player hydratePlayer(String name, int credits, Map<Enums.Skill, Integer> skills, Ship ship) {
+        _instance = new Player();
+
+        _instance.setName(name).setStats(skills).setCredits(credits).setShip(ship);
+
         return _instance;
     }
 
@@ -148,5 +158,19 @@ public class Player {
         save += _ship.toSave() + "\nendplayer";
 
         return save;
+    }
+
+    public JSONObject toJSON() {
+        JSONObject ret = new JSONObject();
+
+        try {
+            ret.put("name", _name);
+            ret.put("credits", _credits);
+            ret.put("skills", _stats);
+            ret.put("ship", _ship.toJSON());
+        } catch (JSONException e) {
+            System.out.println("JSON creation error " + e.toString());
+        }
+        return ret;
     }
 }

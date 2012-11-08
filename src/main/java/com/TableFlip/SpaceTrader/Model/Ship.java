@@ -1,7 +1,11 @@
 package com.TableFlip.SpaceTrader.Model;
 
 import com.TableFlip.SpaceTrader.Service.GoodsRegistry;
+import com.TableFlip.SpaceTrader.Service.MarketGenerator;
+import com.TableFlip.SpaceTrader.Service.ShipFactory;
 import com.TableFlip.SpaceTrader.Service.ShipPrototype;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Random;
@@ -177,8 +181,9 @@ public class Ship {
         return _targetPort;
     }
 
-    public void setTargetPort(Port targetPort) {
+    public Ship setTargetPort(Port targetPort) {
         _targetPort = targetPort;
+        return this;
     }
 
     public String toString() {
@@ -199,5 +204,40 @@ public class Ship {
         save += "endship";
 
         return save;
+    }
+
+    public JSONObject toJSON() {
+        JSONObject ret = new JSONObject();
+
+        try {
+            ret.put("name", _name);
+            ret.put("cargo", _cargo);
+            ret.put("targetPort", _targetPort.toJSON());
+            ret.put("currentPort", _currentPort.toJSON());
+            ret.put("suppliesRemaining", _suppliesRemaining);
+        } catch (JSONException e) {
+            System.out.println("JSON creation error " + e.toString());
+        }
+        return ret;
+    }
+
+    public static Ship hydrate(JSONObject dry) {
+        try {
+            JSONObject dryCargo = dry.getJSONObject("cargo");
+
+            Ship wet = ShipFactory.makeShip(dry.getString("name"))
+                    .setSuppliesRemaining(dry.getInt("suppliesRemaining"))
+                    .setTargetPort(Port.hydrate(dry.getJSONObject("targetPort")))
+                    .setCurrentPort(Port.hydrate(dry.getJSONObject("currentPort")));
+
+            for (Good g : wet.getCargo().keySet()) {
+                wet.getCargo().put(g, dryCargo.getInt(g.getName()));
+            }
+
+            return wet;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

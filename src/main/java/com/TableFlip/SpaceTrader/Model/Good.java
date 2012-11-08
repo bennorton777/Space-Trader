@@ -199,4 +199,8 @@ public class Good {
         this.techCutOff = techCutOff;
         return this;
     }
+
+    public String toString() {
+        return _name;
+    }
 }

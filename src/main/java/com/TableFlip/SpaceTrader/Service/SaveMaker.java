@@ -30,11 +30,12 @@ public class SaveMaker {
 
     public void save() {
         try {
-            System.out.println("New Save.");
-            BufferedWriter out = new BufferedWriter(new FileWriter("save.txt"));
-            out.write(Ocean.getInstance().toSave(), 0, Ocean.getInstance().toSave().length());
+            System.out.println("New Save. JSON");
+            BufferedWriter out = new BufferedWriter(new FileWriter("save.json"));
+            //System.out.println(Player.getInstance().toJSON().toString());
+            out.write(Ocean.getInstance().toJSON().toString(), 0, Ocean.getInstance().toJSON().toString().length());
             out.newLine();
-            out.write(Player.getInstance().toSave(), 0, Player.getInstance().toSave().length());
+            out.write(Player.getInstance().toJSON().toString(), 0, Player.getInstance().toJSON().toString().length());
             out.flush();
         } catch (IOException e) {
             System.err.println("Save IO File Access Fail: " + e.toString());
