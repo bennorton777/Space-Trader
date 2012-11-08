@@ -1,14 +1,12 @@
 package GUI;
 
 import com.TableFlip.SpaceTrader.DataStructure.SparseArray.Node;
-import com.TableFlip.SpaceTrader.DataStructure.SparseArray.SparseArray;
 import com.TableFlip.SpaceTrader.GameEntity.Ocean;
 import com.TableFlip.SpaceTrader.GameEntity.Player;
-import com.TableFlip.SpaceTrader.Model.Coordinates;
-import com.TableFlip.SpaceTrader.Model.Enums;
+import com.TableFlip.SpaceTrader.Model.*;
+import com.TableFlip.SpaceTrader.Service.GoodsRegistry;
+import com.TableFlip.SpaceTrader.Service.SaveMaker;
 import com.TableFlip.SpaceTrader.Service.ShipFactory;
-import com.TableFlip.SpaceTrader.Model.Island;
-import com.TableFlip.SpaceTrader.Model.Port;
 
 import javax.swing.*;
 import java.util.HashMap;
@@ -22,6 +20,16 @@ import java.util.*;
  * Any changes in a Game Logic class should bubble down no further than this class.
  */
 public class GuiArbiter {
+    public static JFrame _invisiFrame;
+    public static JPanel _invisiPanel;
+    {
+        _invisiPanel =new JPanel();
+        _invisiFrame = new JFrame("SelectPortScreen");
+
+        _invisiFrame.setContentPane(_invisiPanel);
+        _invisiFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        _invisiFrame.pack();
+    }
     /**
      * Interpreter method to make new Character GUI things happen.
      * Game logic does not need to know how this is done.
@@ -30,7 +38,9 @@ public class GuiArbiter {
     public static void charGen(){
         CharGen.main(new String[3]);
     }
-
+    public static void popUp(String message){
+        JOptionPane.showMessageDialog(_invisiPanel, message, "", JOptionPane.INFORMATION_MESSAGE);
+    }
     /**
      * new character game logic abstraction.  The GUI classes do not need to know how to make the Game Logic create a new character.
      * @param name
@@ -96,13 +106,13 @@ public class GuiArbiter {
             _player.setTargetPort(leftCandidatePort);
         }
 
-        GameScreen(Player.getInstance().getName(), Player.getInstance().getCredits());
+        ocean.setHighlightedPort(_player.getTargetPort()); //sets chosen target port as highlighted port
+
+        GameScreen();
     }
 
-    public static void GameScreen(String name, int coins){
-        String[] args=new String[2];
-        args[0]=name;
-        args[1]=Integer.toString(coins);
+    public static void GameScreen(){
+        String[] args=new String[0];
         GameScreen.main(args);
     }
 
@@ -141,32 +151,75 @@ public class GuiArbiter {
         return player.getTargetPort();
     }
 
+    public static Port getHighlightedPort(){
+        Ocean ocean = Ocean.getInstance();
+        return ocean.getHighlightedPort();
+    }
+
+    public static int setTargetPort(){
+        Ocean ocean = Ocean.getInstance();
+        Port highlightedPort = ocean.getHighlightedPort();
+        Player player = Player.getInstance();
+        if (calculateDistance(highlightedPort.getCoordinates(), player.getCurrentPort().getCoordinates()) > getCurrentSupplies()){
+            return 1;
+        }
+        if (player.getCurrentPort().equals(highlightedPort)){
+            return 2;
+        }
+
+        player.setTargetPort(highlightedPort);
+        return 0;
+    }
+
+    public static int calculateDistance(Coordinates port1, Coordinates port2){
+        double distance = Math.sqrt( Math.pow((port1.getxPos()-port2.getxPos()),2) +
+                Math.pow((port1.getyPos()-port2.getyPos()),2) );
+        int d = (int)distance;
+        return d;
+    }
+
     public static void up(){
         Ocean ocean = Ocean.getInstance();
-        Player player = Player.getInstance();
-        Node<Port> targetNode = ocean.getPortSparseArray().findNodeAt(player.getTargetPort().getCoordinates().getyPos(), player.getTargetPort().getCoordinates().getxPos());
-        player.setTargetPort(ocean.getPortSparseArray().moveUp(targetNode));
+        Node<Port> highlightedNode = ocean.getPortSparseArray().findNodeAt(ocean.getHighlightedPort().getCoordinates().getyPos(), ocean.getHighlightedPort().getCoordinates().getxPos());
+        ocean.setHighlightedPort(ocean.getPortSparseArray().moveUp(highlightedNode));
     }
 
     public static void down(){
         Ocean ocean = Ocean.getInstance();
-        Player player = Player.getInstance();
-        Node<Port> targetNode = ocean.getPortSparseArray().findNodeAt(player.getTargetPort().getCoordinates().getyPos(), player.getTargetPort().getCoordinates().getxPos());
-        player.setTargetPort(ocean.getPortSparseArray().moveDown(targetNode));
+        Node<Port> highlightedNode = ocean.getPortSparseArray().findNodeAt(ocean.getHighlightedPort().getCoordinates().getyPos(), ocean.getHighlightedPort().getCoordinates().getxPos());
+        ocean.setHighlightedPort(ocean.getPortSparseArray().moveDown(highlightedNode));
     }
 
     public static void right(){
         Ocean ocean = Ocean.getInstance();
-        Player player = Player.getInstance();
-        Node<Port> targetNode = ocean.getPortSparseArray().findNodeAt(player.getTargetPort().getCoordinates().getyPos(), player.getTargetPort().getCoordinates().getxPos());
-        player.setTargetPort(ocean.getPortSparseArray().moveRight(targetNode));
+        Node<Port> highlightedNode = ocean.getPortSparseArray().findNodeAt(ocean.getHighlightedPort().getCoordinates().getyPos(), ocean.getHighlightedPort().getCoordinates().getxPos());
+        ocean.setHighlightedPort(ocean.getPortSparseArray().moveRight(highlightedNode));
     }
 
     public static void left(){
         Ocean ocean = Ocean.getInstance();
+        Node<Port> highlightedNode = ocean.getPortSparseArray().findNodeAt(ocean.getHighlightedPort().getCoordinates().getyPos(), ocean.getHighlightedPort().getCoordinates().getxPos());
+        ocean.setHighlightedPort(ocean.getPortSparseArray().moveLeft(highlightedNode));
+    }
+
+    public static Map<Good, HashMap<Enums.MarketValues, Integer>> getLocalMarket(){
+        Port port = getCurrentPort();
+        return port.getLocalMarket();
+    }
+
+    public static int getGoodQuantity(Good good){
         Player player = Player.getInstance();
-        Node<Port> targetNode = ocean.getPortSparseArray().findNodeAt(player.getTargetPort().getCoordinates().getyPos(), player.getTargetPort().getCoordinates().getxPos());
-        player.setTargetPort(ocean.getPortSparseArray().moveLeft(targetNode));
+        return player.getShip().getCargo().get(good);
+    }
+
+    public static boolean playerBuy(Good good, int amount){
+        Player player = Player.getInstance();
+        return player.buy(good, amount);
+    }
+
+    public static boolean playerSell(Good good, int amount){
+        Player player = Player.getInstance();
+        return player.sell(good, amount);
     }
 
     /**
@@ -183,7 +236,7 @@ public class GuiArbiter {
     }
 
     /**
-     * Displays and formats the target port (to be removed)
+     * Displays and formats the target port
      */
     public static void updateTargetPortInfo(JLabel targetPortLabel) {
         Player _player = Player.getInstance();
@@ -201,6 +254,131 @@ public class GuiArbiter {
                     "Resource: ---<br />" +
                     "Coordinates: ---<br /></html>");
         }
+    }
+
+    /**
+     * Displays and formats basic player information for the main screen
+     */
+    public static void updatePlayerInfo(JLabel playerInfo){
+        String name = Player.getInstance().getName();
+        String coins = Integer.toString(Player.getInstance().getCredits());
+        String cargoSpace = Integer.toString(Player.getInstance().getShip().getCargoSpace());
+        playerInfo.setText("Name: " + name + " You have: " + coins + " coins and " + cargoSpace + " cargo spaces left.");
+    }
+
+    /**
+     * Displays and formats the status of the current ship for the main screen
+     */
+    public static void updateShipStatus( JLabel shipStatusLabel){
+        Player player = Player.getInstance();
+        Ship ship = player.getShip();
+        shipStatusLabel.setText("<html>Ship Status:<br />" +
+            "<br />Name: " + ship.getName() +
+            "<br />Max Supplies: " + ship.getSuppliesMax() +
+            "<br />Supplies Left: " + ship.getSuppliesRemaining() +
+            "<br />Weapons Slots: " + ship.getWeaponSlots() +
+            "<br />Armor Slots: " + ship.getArmorSlots() +
+            "<br />Crew Slots: " + ship.getCrewSlots() +
+            "<br />Tool Slots: " + ship.getToolSlots() +
+            "</html>");
+    }
+
+    /**
+     * gets an ArrayList of ONLY goods that have a non-null quantity at the current port
+     *
+     * @return a String[] of the names of goods of non-null quantity
+     */
+    public static String getGoodsList(ArrayList goodsArrayList) {
+        Map<Good, HashMap<Enums.MarketValues, Integer>> _localMarket = getLocalMarket();
+        GoodsRegistry _goodsRegistry = GoodsRegistry.getInstance();
+        String goodsNames = "<html>";
+        for (int i = 0; i < goodsRegSize(); i++) {
+            Good good = getGood(i);
+            if (_localMarket.get(good) != null) {
+                goodsNames = goodsNames + good.getName() + "<br /><br />";
+                goodsArrayList.add(good);
+            }
+        }
+        goodsNames = goodsNames + "</html>";
+        return goodsNames;
+    }
+
+    /**
+     * getCargoQuantities
+     * gets the quantities of ONLY the goods in the ship's cargo that are ALSO found in the target port
+     * and stores it into an ArrayList _cargoQuantityArray
+     *
+     * @return the String[] version of _cargoQuantityArray so that its respective JList can read it
+     */
+    public static String getCargoQuantities() {
+        Map<Good, HashMap<Enums.MarketValues, Integer>> _localMarket = getLocalMarket();
+        String _cargoQuantityString = "<html>";
+        for (int i = 0; i < goodsRegSize(); i++) {
+            Good good = getGood(i);
+            // if a good in the goodsRegistry is also found in the _localMarket and is not null,
+            // then add the name of the good to our ArrayList _cargoQuantityArray
+            if (_localMarket.get(good) != null) {
+                _cargoQuantityString = _cargoQuantityString + getGoodQuantity(good) + "<br /><br />";
+            }
+        }
+        // returns a String for JLabel to read
+        _cargoQuantityString = _cargoQuantityString + "</html>";
+        return _cargoQuantityString;
+    }
+
+    /**
+     * gets a String[] of the market prices found in the localMarket
+     *
+     * @return a String[] of prices for buying/selling a good at this particular port in the order of _goodsRegistry
+     */
+    public static String getMarketPrices() {
+        Map<Good, HashMap<Enums.MarketValues, Integer>> _localMarket = GuiArbiter.getLocalMarket();
+        String marketPriceString = "<html>";
+        for (int i = 0; i < goodsRegSize(); i++) {
+            Good good = getGood(i);
+            if (_localMarket.get(good) != null) {
+                Integer _price = _localMarket.get(good).get(Enums.MarketValues.PRICE);
+                marketPriceString = marketPriceString + _price.toString() + "<br /><br />";
+            }
+        }
+        marketPriceString = marketPriceString + "</html>";
+        return marketPriceString;
+    }
+
+    /**
+     * gets a String[] of the market quantities found in the localMarket
+     *
+     * @return a String[] of quantities of goods at this particular port in the order of the _goodsRegistry
+     */
+    public static String getMarketQuantities() {
+        Map<Good, HashMap<Enums.MarketValues, Integer>> _localMarket = getLocalMarket();
+        String marketQuantityString = "<html>";
+        for (int i = 0; i < goodsRegSize(); i++) {
+            Good good = getGood(i);
+            if (_localMarket.get(good) != null) {
+                Integer _quantity = _localMarket.get(good).get(Enums.MarketValues.QUANTITY);
+                marketQuantityString = marketQuantityString + _quantity.toString() + "<br /><br />";
+            }
+        }
+        marketQuantityString = marketQuantityString + "</html>";
+        return marketQuantityString;
+    }
+
+    public static int goodsRegSize(){
+        GoodsRegistry goodsRegistry = GoodsRegistry.getInstance();
+        return goodsRegistry.getGoods().size();
+    }
+
+    public static Good getGood(int i){
+        return GoodsRegistry.getInstance().getGoods().get(i);
+    }
+
+    public static void fly(){
+        Player.getInstance().getShip().fly();
+    }
+
+    public static void save(){
+        SaveMaker.getInstance().save();
     }
 
 }
