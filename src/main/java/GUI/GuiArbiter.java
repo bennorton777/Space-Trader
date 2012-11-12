@@ -381,4 +381,8 @@ public class GuiArbiter {
         SaveMaker.getInstance().save();
     }
 
+    public static void load(){
+
+    }
+
 }

@@ -72,7 +72,7 @@ public class GameScreen {
         });
         loadButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                //To change body of implemented methods use File | Settings | File Templates.
+                //GuiArbiter.load();
             }
         });
         _fillUpFuelTankButton.addActionListener(new ActionListener() {
