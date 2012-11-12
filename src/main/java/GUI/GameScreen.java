@@ -72,7 +72,7 @@ public class GameScreen {
         });
         loadButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                //GuiArbiter.load();
+                GuiArbiter.load();
             }
         });
         _fillUpFuelTankButton.addActionListener(new ActionListener() {
