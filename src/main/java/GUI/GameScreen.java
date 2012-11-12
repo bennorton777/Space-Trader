@@ -73,6 +73,9 @@ public class GameScreen {
         loadButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 GuiArbiter.load();
+                updatePlayerInfoPane();
+                updateShipLabel();
+                updatePortLabels();
             }
         });
         _fillUpFuelTankButton.addActionListener(new ActionListener() {
