@@ -5,6 +5,7 @@ import com.TableFlip.SpaceTrader.GameEntity.Ocean;
 import com.TableFlip.SpaceTrader.GameEntity.Player;
 import com.TableFlip.SpaceTrader.Model.*;
 import com.TableFlip.SpaceTrader.Service.GoodsRegistry;
+import com.TableFlip.SpaceTrader.Service.LoadReader;
 import com.TableFlip.SpaceTrader.Service.SaveMaker;
 import com.TableFlip.SpaceTrader.Service.ShipFactory;
 
@@ -382,7 +383,8 @@ public class GuiArbiter {
     }
 
     public static void load(){
-
+        LoadReader.getInstance().loadGame();
+        System.out.println(Ocean.getInstance().ASCIIMap());
     }
 
 }

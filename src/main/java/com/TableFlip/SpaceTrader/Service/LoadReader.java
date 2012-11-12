@@ -4,6 +4,7 @@ import com.TableFlip.SpaceTrader.GameEntity.Ocean;
 import com.TableFlip.SpaceTrader.GameEntity.Player;
 import com.TableFlip.SpaceTrader.Model.Enums;
 import com.TableFlip.SpaceTrader.Model.Island;
+import com.TableFlip.SpaceTrader.Model.Port;
 import com.TableFlip.SpaceTrader.Model.Ship;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -53,7 +54,7 @@ public class LoadReader {
                         toMake.add(Island.hydrate(islands.getJSONObject(i)));
                     }
 
-                    Ocean.hydrateOcean(toMake);
+                    Ocean.hydrateOcean(toMake, Port.hydrate(ocean.getJSONObject("highlighted")));
 
                     line = read.readLine();
 

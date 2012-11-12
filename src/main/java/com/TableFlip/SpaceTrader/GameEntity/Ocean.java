@@ -33,7 +33,7 @@ public class Ocean {
     private Ocean(boolean makeBlank){
         setOceanHeight(_OCEANHEIGHT);
         setOceanWidth(_OCEANWIDTH);
-        //if (!makeBlank)
+        if (!makeBlank)
         {
             System.out.println("New full Ocean");
             _portSparseArray = new SparseArray<Port>(_OCEANWIDTH, _OCEANHEIGHT);
@@ -46,11 +46,11 @@ public class Ocean {
                 }
             }
             System.out.println("Ocean Done!");
-        }/* else {
+        } else {
             System.out.println("New empty Ocean.");
             _portSparseArray = new SparseArray<Port>(_OCEANWIDTH, _OCEANHEIGHT);
             _islands = new ArrayList<Island>();
-        }*/
+        }
     }
 
     public static Ocean getInstance() {
@@ -66,16 +66,18 @@ public class Ocean {
 
     }
 
-    public static Ocean hydrateOcean(List<Island> islands) {
+    public static Ocean hydrateOcean(List<Island> islands, Port highlighted) {
         _instance = new Ocean(true);
 
         _instance.setIslands(islands);
 
-        for (Island island : _instance.getIslands()){
+        for (Island island : islands){
             for(Port port : island.getPorts()){
                 _portSparseArray.putAt(port.getCoordinates().getyPos(), port.getCoordinates().getxPos(), port);
             }
         }
+
+        _instance.setHighlightedPort(highlighted);
 
         return _instance;
     }
@@ -259,6 +261,7 @@ public class Ocean {
             }
 
             ret.put("islands", arr);
+            ret.put("highlighted", _highlightedPort.toJSON());
         } catch (JSONException e) {
             System.out.println("JSON creation error " + e.toString());
         }

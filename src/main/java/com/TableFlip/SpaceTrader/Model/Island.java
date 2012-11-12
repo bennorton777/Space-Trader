@@ -139,7 +139,7 @@ public class Island
             }
 
             ret.put("ports", arr);
-            ret.put("location", _location);
+            ret.put("location", _location.toJSON());
         } catch (JSONException e) {
             System.out.println("JSON creation error " + e.toString());
         }
