@@ -90,6 +90,13 @@ public class CharGen {
                 }
             }
         });
+        loadButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                GuiArbiter.load();
+                frame.dispose();
+                GuiArbiter.GameScreen();
+            }
+        });
     }
 
     private JTextField _textField1;
@@ -97,6 +104,7 @@ public class CharGen {
     private JButton _submitButton;
     private JLabel _totalLabel = new JLabel();
     private JSlider _slider1;
+    private JButton loadButton;
 
     //Everything below was generated.
     public static void main(String[] args) {
