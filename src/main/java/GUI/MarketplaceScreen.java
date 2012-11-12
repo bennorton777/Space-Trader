@@ -112,7 +112,7 @@ public class MarketplaceScreen {
                 updateBuySpinners();
                 updateSellSpinners();
                 frame.repaint();
-                frame.revalidate();
+                frame.validate();
             }
         });
 
