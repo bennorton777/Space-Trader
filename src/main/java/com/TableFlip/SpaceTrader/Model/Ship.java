@@ -109,6 +109,7 @@ public class Ship {
             else
             {
                     this.setCurrentPort(_target); //you then travel to planet
+                    this.setTargetPort(_current);
                     int _decrementSupplies = (this.getSuppliesRemaining() - _distBetween);
                     //this sets the new supply amount
                     this.setSuppliesRemaining(_decrementSupplies);
