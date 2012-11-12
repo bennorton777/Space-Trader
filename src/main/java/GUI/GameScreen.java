@@ -47,7 +47,7 @@ public class GameScreen {
         toMarketplaceButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
-                System.out.print("Displaying Marketplace Screen");
+                System.out.println("Displaying Marketplace Screen");
                 GuiArbiter.MarketplaceScreen();
             }
         });
