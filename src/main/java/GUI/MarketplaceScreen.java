@@ -245,7 +245,8 @@ public class MarketplaceScreen {
     public static void main(String[] args) {
         frame = new JFrame("Marketplace");
         frame.setContentPane(new MarketplaceScreen()._panel);
-        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        frame.addWindowListener(new CloseHandler());
         frame.pack();
         frame.setVisible(true);
     }

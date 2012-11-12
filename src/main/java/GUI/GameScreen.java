@@ -126,7 +126,7 @@ public class GameScreen {
     public static void main(String[] args) {
         frame = new JFrame("Main Screen");
         frame.setContentPane(new GameScreen()._panel);
-        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
     }

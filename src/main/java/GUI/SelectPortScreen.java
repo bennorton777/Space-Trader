@@ -145,7 +145,8 @@ public class SelectPortScreen {
         frame = new JFrame("SelectPortScreen");
 
         frame.setContentPane(new SelectPortScreen().panel1);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        frame.addWindowListener(new CloseHandler());
         frame.pack();
         frame.setVisible(true);
     }

@@ -102,7 +102,7 @@ public class CharGen {
     public static void main(String[] args) {
         frame = new JFrame("CharGen");
         frame.setContentPane(new CharGen()._panel);
-        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
     }
