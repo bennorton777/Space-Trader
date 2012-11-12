@@ -32,6 +32,7 @@ public class GameScreen {
     private JLabel shipStatusLabel;
     private JLabel playerInfo;
     private JButton _fillUpFuelTankButton;
+    private JButton loadButton;
     private static JFrame frame;
 
     public GameScreen() {
@@ -69,6 +70,11 @@ public class GameScreen {
                 GuiArbiter.save();
             }
         });
+        loadButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                //To change body of implemented methods use File | Settings | File Templates.
+            }
+        });
         _fillUpFuelTankButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 int selectedOption = JOptionPane.showConfirmDialog(_panel, "Filling up your traveling supplies will cost " + (Player.getInstance().getShip().getSuppliesMax()-Player.getInstance().getShip().getSuppliesRemaining()) + " coins, are you sure you want to fill up?", "", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
@@ -92,6 +98,7 @@ public class GameScreen {
                 GuiArbiter.updateShipStatus(shipStatusLabel);
            }
         });
+
     }
     public void popUp(String message){
         JOptionPane.showMessageDialog(_panel, "You cannot travel to that port.", "Error", JOptionPane.ERROR_MESSAGE);

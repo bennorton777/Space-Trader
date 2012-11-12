@@ -263,7 +263,7 @@ public class GuiArbiter {
         String name = Player.getInstance().getName();
         String coins = Integer.toString(Player.getInstance().getCredits());
         String cargoSpace = Integer.toString(Player.getInstance().getShip().getCargoSpace());
-        playerInfo.setText("Name: " + name + " You have: " + coins + " coins and " + cargoSpace + " cargo spaces left.");
+        playerInfo.setText("<html>Ahoy, " + name + "!<br /> You have: " + coins + " coins and " + cargoSpace + " open cargo spaces</html>");
     }
 
     /**
