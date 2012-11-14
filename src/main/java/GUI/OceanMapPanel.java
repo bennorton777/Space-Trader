@@ -18,7 +18,7 @@ import javax.swing.*;
 public class OceanMapPanel extends JPanel {
 
     public OceanMapPanel() {
-        Color oceanBlue = new Color(78, 188, 234);
+        Color oceanBlue = new Color(87, 164, 230);
         setBackground(oceanBlue);
         setSize(500, 500);
     }
