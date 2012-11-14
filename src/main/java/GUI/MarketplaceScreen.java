@@ -6,6 +6,7 @@ import com.TableFlip.SpaceTrader.Model.Enums;
 import com.TableFlip.SpaceTrader.Model.Good;
 import com.TableFlip.SpaceTrader.Model.Port;
 import com.TableFlip.SpaceTrader.Service.GoodsRegistry;
+import com.intellij.uiDesigner.core.Spacer;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
@@ -25,7 +26,7 @@ import java.util.Map;
  * User: Dannielle
  * Date: 10/23/12
  * Time: 6:26 PM
- *
+ * <p/>
  * MarketplaceScreen
  * The GUI that handles the Marketplace. Currently organizes a lot of the goods found in the target port
  * (via the GoodsRegistry) into a format readable for the GUI.
@@ -100,7 +101,7 @@ public class MarketplaceScreen {
                     //we use its index to choose the corresponding Good in the goodsArrayList
                     if ((Integer) spinner.getValue() > 0) {
                         Boolean f = GuiArbiter.playerBuy(goodsArrayList.get(i), (Integer) spinner.getValue());
-                        if (f == false){
+                        if (f == false) {
                             buySpinnerPanel.removeAll();
                         }
                     }
@@ -231,14 +232,14 @@ public class MarketplaceScreen {
      * Displays and formats the current port
      */
     public void updateCurrentPortInfo() {
-        GUI.GuiArbiter.updateCurrentPortInfo( currentPortLabel );
+        GuiArbiter.updateCurrentPortInfo(currentPortLabel);
     }
 
     /**
      * Displays and formats the target port (to be removed)
      */
     public void updateTargetPortInfo() {
-        GUI.GuiArbiter.updateTargetPortInfo( targetPortLabel );
+        GuiArbiter.updateTargetPortInfo(targetPortLabel);
     }
 
 
@@ -267,69 +268,76 @@ public class MarketplaceScreen {
      */
     private void $$$setupUI$$$() {
         _panel = new JPanel();
-        _panel.setLayout(new FormLayout("fill:d:grow,left:7dlu:noGrow,fill:38px:grow,left:11dlu:noGrow,fill:m:noGrow,left:46px:noGrow,fill:95px:noGrow,left:7dlu:noGrow,fill:max(m;4px):noGrow,left:14dlu:noGrow,fill:max(d;4px):noGrow,left:4dlu:noGrow,fill:250px:noGrow", "center:d:noGrow,top:3dlu:noGrow,center:max(d;4px):noGrow,top:3dlu:noGrow,center:max(d;4px):noGrow,top:3dlu:noGrow,center:max(d;4px):noGrow,top:3dlu:noGrow,center:d:grow,top:3dlu:noGrow,center:max(d;4px):noGrow,top:3dlu:noGrow,center:d:grow,top:3dlu:noGrow,center:max(d;4px):noGrow"));
+        _panel.setLayout(new FormLayout("fill:max(d;4px):noGrow,left:d:noGrow,fill:max(d;4px):noGrow,left:d:noGrow,fill:m:noGrow,left:4dlu:noGrow,left:d:noGrow,fill:d:noGrow,left:4dlu:noGrow,fill:d:grow,fill:57px:noGrow,left:4dlu:noGrow,fill:35px:noGrow,left:4dlu:noGrow,fill:d:grow,fill:d:noGrow", "center:d:noGrow,top:3dlu:noGrow,center:max(d;4px):noGrow,top:3dlu:noGrow,center:max(d;4px):noGrow,top:3dlu:noGrow,center:max(d;4px):noGrow,top:3dlu:noGrow,center:d:noGrow,top:3dlu:noGrow,center:max(d;4px):noGrow,top:3dlu:noGrow,top:d:noGrow,top:3dlu:noGrow,center:57px:noGrow"));
         _panel.setEnabled(false);
         MarketplaceLabel = new JLabel();
-        MarketplaceLabel.setText("MARKETPLACE");
+        MarketplaceLabel.setText("MARKET!");
         CellConstraints cc = new CellConstraints();
-        _panel.add(MarketplaceLabel, cc.xy(1, 1));
+        _panel.add(MarketplaceLabel, cc.xy(2, 1));
         playerInfoLabel = new JLabel();
         playerInfoLabel.setText("You have: coins");
-        _panel.add(playerInfoLabel, cc.xy(1, 3));
+        _panel.add(playerInfoLabel, cc.xyw(2, 3, 14));
         goods = new JLabel();
         goods.setText("Goods");
-        _panel.add(goods, cc.xy(1, 5));
-        goodsList = new JList();
-        _panel.add(goodsList, cc.xy(1, 9, CellConstraints.DEFAULT, CellConstraints.FILL));
+        _panel.add(goods, cc.xy(2, 5));
         inventoryLabel = new JLabel();
         inventoryLabel.setText("Inventory");
-        _panel.add(inventoryLabel, cc.xyw(3, 5, 4));
+        _panel.add(inventoryLabel, cc.xyw(4, 5, 4));
         marketLabel = new JLabel();
         marketLabel.setText("Market");
-        _panel.add(marketLabel, cc.xyw(9, 5, 3));
+        _panel.add(marketLabel, cc.xyw(11, 5, 3));
         sellButton = new JButton();
         sellButton.setText("Sell");
-        _panel.add(sellButton, cc.xyw(3, 11, 5, CellConstraints.FILL, CellConstraints.DEFAULT));
+        _panel.add(sellButton, cc.xyw(4, 11, 5, CellConstraints.FILL, CellConstraints.DEFAULT));
         buyButton = new JButton();
         buyButton.setText("Buy");
-        _panel.add(buyButton, cc.xyw(9, 11, 5));
-        returnToMainButton = new JButton();
-        returnToMainButton.setText("Return to Main Screen");
-        _panel.add(returnToMainButton, cc.xy(3, 15, CellConstraints.LEFT, CellConstraints.DEFAULT));
-        sellPriceList = new JList();
-        _panel.add(sellPriceList, cc.xy(5, 9, CellConstraints.DEFAULT, CellConstraints.FILL));
-        marketQuantityList = new JList();
-        _panel.add(marketQuantityList, cc.xy(9, 9, CellConstraints.DEFAULT, CellConstraints.FILL));
-        invQuantityList = new JList();
-        final DefaultListModel defaultListModel1 = new DefaultListModel();
-        invQuantityList.setModel(defaultListModel1);
-        _panel.add(invQuantityList, cc.xy(3, 9, CellConstraints.FILL, CellConstraints.FILL));
+        _panel.add(buyButton, cc.xyw(11, 11, 6));
         buySpinnerPanel = new JPanel();
         buySpinnerPanel.setLayout(new BorderLayout(0, 0));
-        _panel.add(buySpinnerPanel, cc.xy(13, 9, CellConstraints.CENTER, CellConstraints.FILL));
+        _panel.add(buySpinnerPanel, cc.xy(16, 9, CellConstraints.CENTER, CellConstraints.FILL));
         currentPortLabel = new JLabel();
         currentPortLabel.setText("Label");
-        _panel.add(currentPortLabel, cc.xy(1, 13));
+        _panel.add(currentPortLabel, cc.xyw(2, 13, 6, CellConstraints.DEFAULT, CellConstraints.TOP));
         targetPortLabel = new JLabel();
-        targetPortLabel.setText("Label");
-        _panel.add(targetPortLabel, cc.xy(9, 13));
+        targetPortLabel.setText("");
+        _panel.add(targetPortLabel, cc.xyw(11, 13, 3, CellConstraints.LEFT, CellConstraints.TOP));
         final JLabel label1 = new JLabel();
         label1.setText("Quantity");
-        _panel.add(label1, cc.xy(9, 7));
+        _panel.add(label1, cc.xy(11, 7));
         final JLabel label2 = new JLabel();
         label2.setText("Price");
-        _panel.add(label2, cc.xy(11, 7));
-        buyPriceList = new JList();
-        _panel.add(buyPriceList, cc.xy(11, 9, CellConstraints.DEFAULT, CellConstraints.FILL));
+        _panel.add(label2, cc.xy(13, 7));
         final JLabel label3 = new JLabel();
         label3.setText("Quantity");
-        _panel.add(label3, cc.xy(3, 7, CellConstraints.LEFT, CellConstraints.DEFAULT));
+        _panel.add(label3, cc.xy(4, 7, CellConstraints.LEFT, CellConstraints.DEFAULT));
         final JLabel label4 = new JLabel();
         label4.setText("Price");
-        _panel.add(label4, cc.xy(6, 7));
+        _panel.add(label4, cc.xy(7, 7));
         sellSpinnerPanel = new JPanel();
         sellSpinnerPanel.setLayout(new BorderLayout(0, 0));
-        _panel.add(sellSpinnerPanel, cc.xyw(7, 9, 2, CellConstraints.CENTER, CellConstraints.FILL));
+        _panel.add(sellSpinnerPanel, cc.xy(8, 9, CellConstraints.CENTER, CellConstraints.FILL));
+        goodsLabel = new JLabel();
+        goodsLabel.setText("Label");
+        _panel.add(goodsLabel, cc.xy(2, 9, CellConstraints.LEFT, CellConstraints.TOP));
+        invQuantityLabel = new JLabel();
+        invQuantityLabel.setText("Label");
+        _panel.add(invQuantityLabel, cc.xy(4, 9, CellConstraints.LEFT, CellConstraints.TOP));
+        sellPriceLabel = new JLabel();
+        sellPriceLabel.setText("Label");
+        _panel.add(sellPriceLabel, cc.xy(7, 9, CellConstraints.DEFAULT, CellConstraints.TOP));
+        buyPriceLabel = new JLabel();
+        buyPriceLabel.setText("Label");
+        _panel.add(buyPriceLabel, cc.xy(13, 9, CellConstraints.LEFT, CellConstraints.TOP));
+        marketQuantityLabel = new JLabel();
+        marketQuantityLabel.setText("Label");
+        _panel.add(marketQuantityLabel, cc.xy(11, 9, CellConstraints.LEFT, CellConstraints.TOP));
+        returnToMainButton = new JButton();
+        returnToMainButton.setText("Return to Main Screen");
+        _panel.add(returnToMainButton, cc.xyw(2, 15, 6, CellConstraints.LEFT, CellConstraints.TOP));
+        final Spacer spacer1 = new Spacer();
+        _panel.add(spacer1, cc.xy(15, 1, CellConstraints.FILL, CellConstraints.DEFAULT));
+        final Spacer spacer2 = new Spacer();
+        _panel.add(spacer2, cc.xy(10, 1, CellConstraints.FILL, CellConstraints.DEFAULT));
     }
 
     /**
