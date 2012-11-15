@@ -16,7 +16,6 @@ import java.util.*;
 
 public class Ocean {
     private List<Island> _islands;
-    private ArrayList<Coordinates> _candidates;
     private static Ocean _instance;
     private final int _MAXNUMPORTS = 7;
     private final int _OCEANHEIGHT = 100;
@@ -79,28 +78,27 @@ public class Ocean {
     public void generateIslands() {
         ArrayList<String> names = new ArrayList<String>();
         Random gen = new Random();
+        ArrayList<Coordinates> islandCandidateLocations = makeIslandCandidateLocations();
 
         for (String n : PortNames.getInstance().getPortNames())
         {
             names.add(n);
         }
 
-        makeCandidates();
-
         while (names.size() != 0)
         {
             int size;
-            if (_MAXNUMPORTS > names.size())
-            {
+            if (_MAXNUMPORTS <= names.size())
+                size = gen.nextInt(_MAXNUMPORTS - 1) + 2;
+            else {
                 if (names.size() == 1)
                     break;
                 else
                     size = gen.nextInt(names.size()) + 1;
             }
-            else
-                size = gen.nextInt(_MAXNUMPORTS - 1) + 2;
 
-            Coordinates pos = newIslandLocation(size);
+
+            Coordinates pos = newIslandLocation(size, islandCandidateLocations);
 
             String[] tempNames = new String[size];
 
@@ -113,9 +111,9 @@ public class Ocean {
         }
     }
 
-    private Coordinates newIslandLocation(int numPorts) {
+    private Coordinates newIslandLocation(int numPorts, ArrayList<Coordinates> islandCandidateLocations) {
         Random gen = new Random();
-        Coordinates base = _candidates.remove(gen.nextInt(_candidates.size()));
+        Coordinates base = islandCandidateLocations.remove(gen.nextInt(islandCandidateLocations.size()));
         switch (numPorts) {
             case 1:case 2: base.setxPos(base.getxPos() + gen.nextInt(4) - 2); base.setyPos(base.getyPos() + gen.nextInt(4) - 2); break;
             case 3:case 4: base.setxPos(base.getxPos() + gen.nextInt(2) - 1); base.setyPos(base.getyPos() + gen.nextInt(2) - 1); break;
@@ -148,14 +146,14 @@ public class Ocean {
         _highlightedPort = port;
     }
 
-    private void makeCandidates()
+    private ArrayList<Coordinates> makeIslandCandidateLocations()
     {
         if (_OCEANHEIGHT == 0 || _OCEANWIDTH == 0 || _islands.size() != 0)
         {
-            return;
+            return null;
         }
 
-        _candidates = new ArrayList<Coordinates>();
+        ArrayList<Coordinates> islandCandidateLocations = new ArrayList<Coordinates>();
 
         int increment = _MAXNUMPORTS % 2 == 1 ? _MAXNUMPORTS + 1 : _MAXNUMPORTS + 2;
 
@@ -163,9 +161,11 @@ public class Ocean {
         {
             for (int y = 1; y < _OCEANHEIGHT / increment; y++)
             {
-                _candidates.add(new Coordinates(x*increment, y*increment));
+                islandCandidateLocations.add(new Coordinates(x * increment, y * increment));
             }
         }
+
+        return islandCandidateLocations;
     }
 
     @Override
