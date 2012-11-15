@@ -48,9 +48,7 @@ public class Ocean {
 
     public static Ocean getInstance() {
         if (_instance==null){
-
             _instance=new Ocean(false);
-            System.out.println("New Ocean!");
             return _instance;
         }
         else{
