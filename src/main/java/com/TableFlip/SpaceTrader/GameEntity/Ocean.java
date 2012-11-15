@@ -8,7 +8,6 @@ import com.TableFlip.SpaceTrader.Service.PortNames;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.*;
 
 /**
@@ -18,8 +17,6 @@ import java.util.*;
 public class Ocean {
     List<Island> _islands;
     ArrayList<Coordinates> _candidates;
-    int _oceanHeight;
-    int _oceanWidth;
     private static Ocean _instance;
     private static final int _MAXNUMPORTS = 7;
     private static final int _OCEANHEIGHT = 100;
@@ -28,11 +25,9 @@ public class Ocean {
     private Port _highlightedPort;
 
     /**
-     * Sets default values for galaxy
+     * Initializes a new Ocean, with or without islands depending on the parameters.
      */
     private Ocean(boolean makeBlank){
-        setOceanHeight(_OCEANHEIGHT);
-        setOceanWidth(_OCEANWIDTH);
         if (!makeBlank)
         {
             System.out.println("New full Ocean");
@@ -139,19 +134,11 @@ public class Ocean {
     }
 
     public int getOceanHeight() {
-        return _oceanHeight;
-    }
-
-    public void setOceanHeight(int oceanHeight) {
-        _oceanHeight = oceanHeight;
+        return _OCEANHEIGHT;
     }
 
     public int getOceanWidth() {
-        return _oceanWidth;
-    }
-
-    public void setOceanWidth(int oceanWidth) {
-        _oceanWidth = oceanWidth;
+        return _OCEANWIDTH;
     }
 
     public Port getHighlightedPort() {
@@ -164,7 +151,7 @@ public class Ocean {
 
     private void makeCandidates()
     {
-        if (_oceanHeight == 0 || _oceanWidth == 0 || _islands.size() != 0)
+        if (_OCEANHEIGHT == 0 || _OCEANWIDTH == 0 || _islands.size() != 0)
         {
             return;
         }
@@ -173,9 +160,9 @@ public class Ocean {
 
         int increment = _MAXNUMPORTS % 2 == 1 ? _MAXNUMPORTS + 1 : _MAXNUMPORTS + 2;
 
-        for (int x = 1; x < _oceanWidth / increment; x++)
+        for (int x = 1; x < _OCEANWIDTH / increment; x++)
         {
-            for (int y = 1; y < _oceanHeight / increment; y++)
+            for (int y = 1; y < _OCEANHEIGHT / increment; y++)
             {
                 _candidates.add(new Coordinates(x*increment, y*increment));
             }
@@ -201,11 +188,11 @@ public class Ocean {
     public String ASCIIMap() {
         List<Island> islands = getIslands();
         ArrayList<Port> ports = new ArrayList<Port>();
-        char[][] out = new char[_oceanWidth][_oceanHeight];
+        char[][] out = new char[_OCEANWIDTH][_OCEANHEIGHT];
         String outstring = "";
         char marker = 'A';
 
-        for(int i = 0; i < _oceanWidth; i++) {
+        for(int i = 0; i < _OCEANWIDTH; i++) {
             Arrays.fill(out[i], '-');
         }
 
@@ -219,8 +206,8 @@ public class Ocean {
             marker++;
         }
 
-        for(int i = 0; i < _oceanWidth; i++) {
-            for(int j = 0; j < _oceanHeight; j++) {
+        for(int i = 0; i < _OCEANWIDTH; i++) {
+            for(int j = 0; j < _OCEANHEIGHT; j++) {
                 outstring += String.valueOf(out[i][j]);
             }
             outstring += String.valueOf('\n');
