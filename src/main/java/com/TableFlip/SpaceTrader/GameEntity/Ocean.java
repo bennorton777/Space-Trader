@@ -113,8 +113,8 @@ public class Ocean {
         Random gen = new Random();
         Coordinates base = islandCandidateLocations.remove(gen.nextInt(islandCandidateLocations.size()));
         switch (numPorts) {
-            case 1:case 2: base.setxPos(base.getxPos() + gen.nextInt(4) - 2); base.setyPos(base.getyPos() + gen.nextInt(4) - 2); break;
-            case 3:case 4: base.setxPos(base.getxPos() + gen.nextInt(2) - 1); base.setyPos(base.getyPos() + gen.nextInt(2) - 1); break;
+            case 1:case 2: base.setxPos(base.getxPos() + gen.nextInt(5) - 2); base.setyPos(base.getyPos() + gen.nextInt(5) - 2); break;
+            case 3:case 4: base.setxPos(base.getxPos() + gen.nextInt(3) - 1); base.setyPos(base.getyPos() + gen.nextInt(3) - 1); break;
             default: break;
         }
         return base;
