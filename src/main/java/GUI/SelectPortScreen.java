@@ -93,8 +93,8 @@ public class SelectPortScreen {
         Port port = GuiArbiter.getCurrentPort();
         currentPortLabel.setText("<html>Current Port Details<br /><br />" +
                 "Name: " + port.getName() + "<br />" +
-                "Tech Level: " + port.getTechLevel() + "<br />" +
-                "Resource: " + port.getResources() + "<br />" +
+                "Tech Level: " + port.getTechLevel().getText() + "<br />" +
+                "Resource: " + port.getResources().getText() + "<br />" +
                 "Coordinates: " + port.getCoordinates() + "<br /></html>");
     }
 
@@ -103,8 +103,8 @@ public class SelectPortScreen {
         if (highlightedPort != null) {
             highlightedPortLabel.setText("<html>Highlighted Port Details<br /><br />" +
                     "Name: " + highlightedPort.getName() + "<br />" +
-                    "Tech Level: " + highlightedPort.getTechLevel() + "<br />" +
-                    "Resource: " + highlightedPort.getResources() + "<br />" +
+                    "Tech Level: " + highlightedPort.getTechLevel().getText() + "<br />" +
+                    "Resource: " + highlightedPort.getResources().getText() + "<br />" +
                     "Coordinates: " + highlightedPort.getCoordinates() + "<br /></html>");
             updateDistance(GuiArbiter.calculateDistance(highlightedPort.getCoordinates(), GuiArbiter.getCurrentPort().getCoordinates()));
             updatePortSelected();

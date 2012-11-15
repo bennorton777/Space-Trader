@@ -231,8 +231,8 @@ public class GuiArbiter {
         Port _port = _player.getCurrentPort();
         currentPortLabel.setText("<html>Current Port Details<br /><br />" +
                 "Name: " + _port.getName() + "<br />" +
-                "Tech Level: " + _port.getTechLevel() + "<br />" +
-                "Resource: " + _port.getResources() + "<br />" +
+                "Tech Level: " + _port.getTechLevel().getText() + "<br />" +
+                "Resource: " + _port.getResources().getText() + "<br />" +
                 "Coordinates: " + _port.getCoordinates() + "<br /></html>");
     }
 
@@ -245,8 +245,8 @@ public class GuiArbiter {
         if (_targetPort != null) {
             targetPortLabel.setText("<html>Target Port Details<br /><br />" +
                     "Name: " + _targetPort.getName() + "<br />" +
-                    "Tech Level: " + _targetPort.getTechLevel() + "<br />" +
-                    "Resource: " + _targetPort.getResources() + "<br />" +
+                    "Tech Level: " + _targetPort.getTechLevel().getText() + "<br />" +
+                    "Resource: " + _targetPort.getResources().getText() + "<br />" +
                     "Coordinates: " + _targetPort.getCoordinates() + "<br /></html>");
         } else {
             targetPortLabel.setText("<html>Target Port Details<br /><br />" +
