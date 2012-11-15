@@ -11,7 +11,7 @@ import org.json.JSONObject;
 import java.util.*;
 
 /**
- * Hold reference to all planets and their locations.  Instantiating Port triggers planet creation
+ * Hold reference to all Islands and their locations.
  */
 
 public class Ocean {
@@ -179,7 +179,7 @@ public class Ocean {
     }
 
     /**
-     * Generates a beautiful ascii representation of the galaxy.  Too cool for school
+     * Generates a beautiful ascii representation of the Ocean.  Too cool for school
      * @return String ascii awesomeness
      */
     public String ASCIIMap() {
