@@ -27,12 +27,13 @@ public class Ocean {
     /**
      * Initializes a new Ocean, with or without islands depending on the parameters.
      */
-    private Ocean(boolean makeBlank){
-        if (!makeBlank)
+    private Ocean(boolean makeEmpty){
+        _portSparseArray = new SparseArray<Port>(_OCEANWIDTH, _OCEANHEIGHT);
+        _islands = new ArrayList<Island>();
+
+        if (!makeEmpty)
         {
-            System.out.println("New full Ocean");
-            _portSparseArray = new SparseArray<Port>(_OCEANWIDTH, _OCEANHEIGHT);
-            _islands = new ArrayList<Island>();
+            System.out.println("New populated Ocean");
             generateIslands();
 
             for (Island island : _islands){
@@ -40,12 +41,10 @@ public class Ocean {
                     _portSparseArray.putAt(port.getCoordinates().getyPos(), port.getCoordinates().getxPos(), port);
                 }
             }
-            System.out.println("Ocean Done!");
         } else {
             System.out.println("New empty Ocean.");
-            _portSparseArray = new SparseArray<Port>(_OCEANWIDTH, _OCEANHEIGHT);
-            _islands = new ArrayList<Island>();
         }
+        System.out.println("Ocean Done!");
     }
 
     public static Ocean getInstance() {
