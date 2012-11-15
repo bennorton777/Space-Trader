@@ -18,10 +18,10 @@ public class Ocean {
     private List<Island> _islands;
     private ArrayList<Coordinates> _candidates;
     private static Ocean _instance;
-    private static final int _MAXNUMPORTS = 7;
-    private static final int _OCEANHEIGHT = 100;
-    private static final int _OCEANWIDTH = 100;
-    private static SparseArray<Port> _portSparseArray;
+    private final int _MAXNUMPORTS = 7;
+    private final int _OCEANHEIGHT = 100;
+    private final int _OCEANWIDTH = 100;
+    private SparseArray<Port> _portSparseArray;
     private Port _highlightedPort;
 
     /**
@@ -68,7 +68,7 @@ public class Ocean {
 
         for (Island island : islands){
             for(Port port : island.getPorts()){
-                _portSparseArray.putAt(port.getCoordinates().getyPos(), port.getCoordinates().getxPos(), port);
+                _instance.getPortSparseArray().putAt(port.getCoordinates().getyPos(), port.getCoordinates().getxPos(), port);
             }
         }
 
