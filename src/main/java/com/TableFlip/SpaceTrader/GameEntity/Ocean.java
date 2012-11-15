@@ -15,8 +15,8 @@ import java.util.*;
  */
 
 public class Ocean {
-    List<Island> _islands;
-    ArrayList<Coordinates> _candidates;
+    private List<Island> _islands;
+    private ArrayList<Coordinates> _candidates;
     private static Ocean _instance;
     private static final int _MAXNUMPORTS = 7;
     private static final int _OCEANHEIGHT = 100;
