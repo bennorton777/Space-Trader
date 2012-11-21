@@ -96,7 +96,7 @@ public class MarketplaceScreen {
                     //we use its index to choose the corresponding Good in the goodsArrayList
                     if ((Integer) spinner.getValue() > 0) {
                         Boolean f = GuiArbiter.playerBuy(goodsArrayList.get(i), (Integer) spinner.getValue());
-                        if (!f){
+                        if (!f) {
                             buySpinnerPanel.removeAll();
                         }
                     }

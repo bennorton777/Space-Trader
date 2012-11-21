@@ -50,6 +50,37 @@ public class PlayerTest extends TestCase {
         while (localMarket.get(good) == null) {
             i++;
         }
-        assertEquals("More goods than possible can be bought", false, _player.buy( good, 1000));
+
+        testTooMuch(good);
+
+        Integer oldQuantity = localMarket.get(good).get(Enums.MarketValues.QUANTITY);
+        int originalCredits = _player.getCredits();
+        _player.buy(good, 1);
+        Integer newQuantity = localMarket.get(good).get(Enums.MarketValues.QUANTITY);
+
+        testInventoryQuantity(good);
+        testMarketQuantity(oldQuantity, newQuantity);
+        testCoinTransaction(_player.getCredits()+localMarket.get(good).get(Enums.MarketValues.PRICE), originalCredits);
     }
+
+
+    public void testTooMuch(Good good){
+        Good _good = good;
+        assertEquals("More goods than possible can be bought", false, _player.buy( _good, 1000));
+    }
+
+    public void testInventoryQuantity(Good good){
+        Good _good = good;
+        assertEquals("Good is not in Player cargo", (Integer) 1, _player.getShip().getCargo().get(_good));
+    }
+
+    public void testMarketQuantity(Integer oldQ, Integer newQ){
+        assertEquals("Good Quantity is not removed from Market", newQ+1, (int) oldQ );
+    }
+
+    public void testCoinTransaction(Integer oldC, Integer newC){
+        assertEquals("Currency calculations are incorrect", newC, oldC );
+    }
+
+
 }
