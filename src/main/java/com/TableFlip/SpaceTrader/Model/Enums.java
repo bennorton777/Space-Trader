@@ -9,12 +9,26 @@ public class Enums {
     }
 
     public enum TechLevel{
-        PREAGRICULTURE, AGRICULTURE, MEDIEVAL, RENAISSANCE, EARLY, INDUSTRIAL, POSTINDUSTRIAL, HITECH
+        PREAGRICULTURE ("Pre-Agricultural"), AGRICULTURE ("Agrarian"), MEDIEVAL ("Medieval"), RENAISSANCE ("Renaissance"), EARLY ("Low Tech"), INDUSTRIAL ("Industrial"), POSTINDUSTRIAL ("Post-Industrial"), HITECH ("High-Tech");
+        private final String _TEXT;
+        TechLevel (String text) {
+            _TEXT = text;
+        }
+        public String getText() {
+            return _TEXT;
+        }
     }
 
     public enum Resources{
-        NOSPECIALRESOURCES, MINERALRICH, MINERALPOOR, WHYISTHERUMGONE, LOTSOFRUM, RICHSOIL, POORSOIL, RICHFAUNA, LIFELESS, WEIRDMUSHROOMS,
-        LOTSOFHERBS, ARTISTIC, WARLIKE
+        NOSPECIALRESOURCES ("Nothing"), MINERALRICH ("Mineral-Rich"), MINERALPOOR ("Mineral-Poor"), WHYISTHERUMGONE ("Why Is The Rum Gone?"), LOTSOFRUM ("So Much Rum!"), RICHSOIL ("Fertile Soil"), POORSOIL ("Barren Soil"), RICHFAUNA ("Rich Fauna"), LIFELESS ("Lifeless"), WEIRDMUSHROOMS ("Strange Mushrooms"),
+        LOTSOFHERBS ("Lots of Herbs"), ARTISTIC ("Artistic"), WARLIKE ("Warlike");
+        private final String _TEXT;
+        Resources (String text) {
+            _TEXT = text;
+        }
+        public String getText() {
+            return _TEXT;
+        }
     }
     public enum MarketValues{
         PRICE, QUANTITY

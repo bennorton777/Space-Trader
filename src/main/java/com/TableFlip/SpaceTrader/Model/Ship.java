@@ -139,9 +139,9 @@ public class Ship {
                        GuiArbiter.popUp("The officer finds narcotics, and fines you 10% of your coins!"); //UI alert
                        Player player = Player.getInstance();
                        int currentCoins=player.getCredits();
-                        int newCoins=currentCoins-((int) (0.1*currentCoins));
-                        player.setCredits(newCoins);
-                        GuiArbiter.popUp("You have " + player.getCredits() + " coins left");
+                       int newCoins=currentCoins-((int) (0.1*currentCoins));
+                       player.setCredits(newCoins);
+                       GuiArbiter.popUp("You have " + player.getCredits() + " coins left");
                 }
                 else{
                     GuiArbiter.popUp("You don't have any narcotics, good job!"); //UI alert

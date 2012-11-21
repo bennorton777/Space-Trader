@@ -78,32 +78,33 @@ public class GameScreen {
         });
         _fillUpFuelTankButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                int selectedOption = JOptionPane.showConfirmDialog(_panel, "Filling up your traveling supplies will cost " + (Player.getInstance().getShip().getSuppliesMax()-Player.getInstance().getShip().getSuppliesRemaining()) + " coins, are you sure you want to fill up?", "", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-                if (selectedOption==1){
+                int selectedOption = JOptionPane.showConfirmDialog(_panel, "Filling up your traveling supplies will cost " + (Player.getInstance().getShip().getSuppliesMax() - Player.getInstance().getShip().getSuppliesRemaining()) + " coins, are you sure you want to fill up?", "", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                if (selectedOption == 1) {
                     GuiArbiter.popUp("Okay, your traveling supplies have not been filled up.");
                 }
-                if (selectedOption==0){
-                    Player player=Player.getInstance();
+                if (selectedOption == 0) {
+                    Player player = Player.getInstance();
                     Ship ship = player.getShip();
-                    int missingSupplies=ship.getSuppliesMax()-ship.getSuppliesRemaining();
-                    if (player.getCredits()<missingSupplies){
+                    int missingSupplies = ship.getSuppliesMax() - ship.getSuppliesRemaining();
+                    if (player.getCredits() < missingSupplies) {
                         JOptionPane.showMessageDialog(_panel, "You don't have enough coins!", "", JOptionPane.ERROR_MESSAGE);
-                    }
-                    else{
-                        player.setCredits(player.getCredits()-missingSupplies);
+                    } else {
+                        player.setCredits(player.getCredits() - missingSupplies);
                         ship.setSuppliesRemaining(ship.getSuppliesMax());
                         GuiArbiter.popUp("You supplies have been replenished.");
                     }
                 }
                 updatePlayerInfoPane();
                 GuiArbiter.updateShipStatus(shipStatusLabel);
-           }
+            }
         });
 
     }
-    public void popUp(String message){
+
+    public void popUp(String message) {
         JOptionPane.showMessageDialog(_panel, "You cannot travel to that port.", "Error", JOptionPane.ERROR_MESSAGE);
     }
+
     public void updatePlayerInfoPane() {
         GuiArbiter.updatePlayerInfo(playerInfo);
     }
@@ -145,37 +146,43 @@ public class GameScreen {
      */
     private void $$$setupUI$$$() {
         _panel = new JPanel();
-        _panel.setLayout(new FormLayout("fill:max(d;4px):noGrow,fill:173px:noGrow,left:4dlu:noGrow,fill:185px:noGrow,left:4dlu:noGrow,fill:max(d;4px):noGrow", "center:d:noGrow,top:6dlu:noGrow,center:d:noGrow,top:3dlu:noGrow,center:38px:grow,top:3dlu:noGrow,center:max(d;4px):noGrow,top:3dlu:noGrow,center:max(d;4px):noGrow,top:3dlu:noGrow,center:70px:noGrow"));
+        _panel.setLayout(new FormLayout("fill:max(d;4px):noGrow,fill:173px:noGrow,left:4dlu:noGrow,fill:185px:noGrow,left:4dlu:noGrow,fill:max(d;4px):noGrow", "center:30px:noGrow,center:32px:noGrow,center:max(d;4px):noGrow,top:m:noGrow,center:d:noGrow,top:3dlu:noGrow,center:38px:grow,top:3dlu:noGrow,center:max(d;4px):noGrow,top:3dlu:noGrow,center:max(d;4px):noGrow,top:3dlu:noGrow,center:m:noGrow,top:3dlu:noGrow,center:50px:noGrow,top:3dlu:noGrow,center:max(d;4px):noGrow"));
         toMarketplaceButton = new JButton();
         toMarketplaceButton.setText("Marketplace");
         CellConstraints cc = new CellConstraints();
-        _panel.add(toMarketplaceButton, cc.xy(2, 9, CellConstraints.CENTER, CellConstraints.TOP));
+        _panel.add(toMarketplaceButton, cc.xy(2, 11, CellConstraints.CENTER, CellConstraints.TOP));
         toOceanMapButton = new JButton();
         toOceanMapButton.setText("Ocean Map");
-        _panel.add(toOceanMapButton, cc.xy(4, 9, CellConstraints.CENTER, CellConstraints.TOP));
+        _panel.add(toOceanMapButton, cc.xy(4, 11, CellConstraints.CENTER, CellConstraints.TOP));
         toTargetPortButton = new JButton();
         toTargetPortButton.setText("Warp to Target Port");
-        _panel.add(toTargetPortButton, cc.xy(4, 11, CellConstraints.CENTER, CellConstraints.TOP));
+        _panel.add(toTargetPortButton, cc.xy(4, 13, CellConstraints.CENTER, CellConstraints.TOP));
         currentPortLabel = new JLabel();
         currentPortLabel.setText("Label");
-        _panel.add(currentPortLabel, cc.xy(2, 3, CellConstraints.LEFT, CellConstraints.TOP));
+        _panel.add(currentPortLabel, cc.xy(2, 5, CellConstraints.LEFT, CellConstraints.TOP));
         targetPortLabel = new JLabel();
         targetPortLabel.setText("Label");
-        _panel.add(targetPortLabel, cc.xy(4, 3, CellConstraints.LEFT, CellConstraints.TOP));
+        _panel.add(targetPortLabel, cc.xy(4, 5, CellConstraints.LEFT, CellConstraints.TOP));
         toShipyardButton = new JButton();
         toShipyardButton.setText("Shipyard");
-        _panel.add(toShipyardButton, cc.xy(2, 11, CellConstraints.CENTER, CellConstraints.TOP));
+        _panel.add(toShipyardButton, cc.xy(2, 13, CellConstraints.CENTER, CellConstraints.TOP));
         saveButton = new JButton();
         saveButton.setText("Save");
         _panel.add(saveButton, cc.xy(6, 1));
         shipStatusLabel = new JLabel();
         shipStatusLabel.setText("Label");
-        _panel.add(shipStatusLabel, cc.xyw(2, 7, 3));
+        _panel.add(shipStatusLabel, cc.xyw(2, 9, 3));
         final Spacer spacer1 = new Spacer();
-        _panel.add(spacer1, cc.xy(2, 5, CellConstraints.DEFAULT, CellConstraints.FILL));
+        _panel.add(spacer1, cc.xy(2, 7, CellConstraints.DEFAULT, CellConstraints.FILL));
         playerInfo = new JLabel();
         playerInfo.setText("Label");
-        _panel.add(playerInfo, cc.xyw(2, 1, 3, CellConstraints.DEFAULT, CellConstraints.TOP));
+        _panel.add(playerInfo, cc.xywh(2, 1, 3, 2, CellConstraints.DEFAULT, CellConstraints.TOP));
+        _fillUpFuelTankButton = new JButton();
+        _fillUpFuelTankButton.setText("Replenish Traveling Supplies");
+        _panel.add(_fillUpFuelTankButton, cc.xyw(2, 15, 3, CellConstraints.DEFAULT, CellConstraints.TOP));
+        loadButton = new JButton();
+        loadButton.setText("Load");
+        _panel.add(loadButton, cc.xy(6, 2, CellConstraints.FILL, CellConstraints.TOP));
     }
 
     /**

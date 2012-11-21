@@ -8,39 +8,36 @@ import com.TableFlip.SpaceTrader.Service.PortNames;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
 /**
- * Hold reference to all planets and their locations.  Instantiating Port triggers planet creation
+ * Hold reference to all Islands and their locations.
  */
 
 public class Ocean {
-    List<Island> _islands;
-    ArrayList<Coordinates> _candidates;
-    int _oceanHeight;
-    int _oceanWidth;
+    private List<Island> _islands;
     private static Ocean _instance;
-    private static final int _MAXNUMPORTS = 7;
-    private static final int _OCEANHEIGHT = 100;
-    private static final int _OCEANWIDTH = 100;
-    private static SparseArray<Port> _portSparseArray;
+    private final int _MAXNUMPORTS = 7;
+    private final int _OCEANHEIGHT = 100;
+    private final int _OCEANWIDTH = 100;
+    private SparseArray<Port> _portSparseArray;
     private Port _highlightedPort;
+    private boolean _makeEmpty;
 
     /**
-     * Sets default values for galaxy
+     * Initializes a new Ocean, with or without islands depending on the parameters.
      */
-    private Ocean(boolean makeBlank){
-        setOceanHeight(_OCEANHEIGHT);
-        setOceanWidth(_OCEANWIDTH);
-        if (!makeBlank)
+    private Ocean(boolean makeEmpty){
+        _makeEmpty = makeEmpty;
+        _portSparseArray = new SparseArray<Port>(_OCEANWIDTH, _OCEANHEIGHT);
+        _islands = new ArrayList<Island>();
+
+        if (!makeEmpty)
         {
-            System.out.println("New full Ocean");
-            _portSparseArray = new SparseArray<Port>(_OCEANWIDTH, _OCEANHEIGHT);
-            _islands = new ArrayList<Island>();
+            System.out.println("New populated Ocean");
             generateIslands();
 
             for (Island island : _islands){
@@ -48,19 +45,15 @@ public class Ocean {
                     _portSparseArray.putAt(port.getCoordinates().getyPos(), port.getCoordinates().getxPos(), port);
                 }
             }
-            System.out.println("Ocean Done!");
         } else {
             System.out.println("New empty Ocean.");
-            _portSparseArray = new SparseArray<Port>(_OCEANWIDTH, _OCEANHEIGHT);
-            _islands = new ArrayList<Island>();
         }
+        System.out.println("Ocean Done!");
     }
 
     public static Ocean getInstance() {
         if (_instance==null){
-
             _instance=new Ocean(false);
-            System.out.println("New Ocean!");
             return _instance;
         }
         else{
@@ -76,7 +69,7 @@ public class Ocean {
 
         for (Island island : islands){
             for(Port port : island.getPorts()){
-                _portSparseArray.putAt(port.getCoordinates().getyPos(), port.getCoordinates().getxPos(), port);
+                _instance.getPortSparseArray().putAt(port.getCoordinates().getyPos(), port.getCoordinates().getxPos(), port);
             }
         }
 
@@ -88,28 +81,27 @@ public class Ocean {
     public void generateIslands() {
         ArrayList<String> names = new ArrayList<String>();
         Random gen = new Random();
+        ArrayList<Coordinates> islandCandidateLocations = makeIslandCandidateLocations();
 
         for (String n : PortNames.getInstance().getPortNames())
         {
             names.add(n);
         }
 
-        makeCandidates();
-
         while (names.size() != 0)
         {
             int size;
-            if (_MAXNUMPORTS > names.size())
-            {
+            if (_MAXNUMPORTS <= names.size())
+                size = gen.nextInt(_MAXNUMPORTS - 1) + 2;
+            else {
                 if (names.size() == 1)
                     break;
                 else
                     size = gen.nextInt(names.size()) + 1;
             }
-            else
-                size = gen.nextInt(_MAXNUMPORTS - 1) + 2;
 
-            Coordinates pos = newIslandLocation(size);
+
+            Coordinates pos = newIslandLocation(size, islandCandidateLocations);
 
             String[] tempNames = new String[size];
 
@@ -122,12 +114,12 @@ public class Ocean {
         }
     }
 
-    private Coordinates newIslandLocation(int numPorts) {
+    private Coordinates newIslandLocation(int numPorts, ArrayList<Coordinates> islandCandidateLocations) {
         Random gen = new Random();
-        Coordinates base = _candidates.remove(gen.nextInt(_candidates.size()));
+        Coordinates base = islandCandidateLocations.remove(gen.nextInt(islandCandidateLocations.size()));
         switch (numPorts) {
-            case 1:case 2: base.setxPos(base.getxPos() + gen.nextInt(4) - 2); base.setyPos(base.getyPos() + gen.nextInt(4) - 2); break;
-            case 3:case 4: base.setxPos(base.getxPos() + gen.nextInt(2) - 1); base.setyPos(base.getyPos() + gen.nextInt(2) - 1); break;
+            case 1:case 2: base.setxPos(base.getxPos() + gen.nextInt(5) - 2); base.setyPos(base.getyPos() + gen.nextInt(5) - 2); break;
+            case 3:case 4: base.setxPos(base.getxPos() + gen.nextInt(3) - 1); base.setyPos(base.getyPos() + gen.nextInt(3) - 1); break;
             default: break;
         }
         return base;
@@ -142,19 +134,11 @@ public class Ocean {
     }
 
     public int getOceanHeight() {
-        return _oceanHeight;
-    }
-
-    public void setOceanHeight(int oceanHeight) {
-        _oceanHeight = oceanHeight;
+        return _OCEANHEIGHT;
     }
 
     public int getOceanWidth() {
-        return _oceanWidth;
-    }
-
-    public void setOceanWidth(int oceanWidth) {
-        _oceanWidth = oceanWidth;
+        return _OCEANWIDTH;
     }
 
     public Port getHighlightedPort() {
@@ -165,24 +149,26 @@ public class Ocean {
         _highlightedPort = port;
     }
 
-    private void makeCandidates()
+    private ArrayList<Coordinates> makeIslandCandidateLocations()
     {
-        if (_oceanHeight == 0 || _oceanWidth == 0 || _islands.size() != 0)
+        if (_OCEANHEIGHT == 0 || _OCEANWIDTH == 0 || _islands.size() != 0)
         {
-            return;
+            return null;
         }
 
-        _candidates = new ArrayList<Coordinates>();
+        ArrayList<Coordinates> islandCandidateLocations = new ArrayList<Coordinates>();
 
         int increment = _MAXNUMPORTS % 2 == 1 ? _MAXNUMPORTS + 1 : _MAXNUMPORTS + 2;
 
-        for (int x = 1; x < _oceanWidth / increment; x++)
+        for (int x = 1; x < _OCEANWIDTH / increment; x++)
         {
-            for (int y = 1; y < _oceanHeight / increment; y++)
+            for (int y = 1; y < _OCEANHEIGHT / increment; y++)
             {
-                _candidates.add(new Coordinates(x*increment, y*increment));
+                islandCandidateLocations.add(new Coordinates(x * increment, y * increment));
             }
         }
+
+        return islandCandidateLocations;
     }
 
     @Override
@@ -198,17 +184,17 @@ public class Ocean {
     }
 
     /**
-     * Generates a beautiful ascii representation of the galaxy.  Too cool for school
+     * Generates a beautiful ascii representation of the Ocean.  Too cool for school
      * @return String ascii awesomeness
      */
     public String ASCIIMap() {
         List<Island> islands = getIslands();
         ArrayList<Port> ports = new ArrayList<Port>();
-        char[][] out = new char[_oceanWidth][_oceanHeight];
+        char[][] out = new char[_OCEANWIDTH][_OCEANHEIGHT];
         String outstring = "";
         char marker = 'A';
 
-        for(int i = 0; i < _oceanWidth; i++) {
+        for(int i = 0; i < _OCEANWIDTH; i++) {
             Arrays.fill(out[i], '-');
         }
 
@@ -222,8 +208,8 @@ public class Ocean {
             marker++;
         }
 
-        for(int i = 0; i < _oceanWidth; i++) {
-            for(int j = 0; j < _oceanHeight; j++) {
+        for(int i = 0; i < _OCEANWIDTH; i++) {
+            for(int j = 0; j < _OCEANHEIGHT; j++) {
                 outstring += String.valueOf(out[i][j]);
             }
             outstring += String.valueOf('\n');
