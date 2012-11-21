@@ -1,10 +1,6 @@
 package com.TableFlip.SpaceTrader.Service;
 
-import com.TableFlip.SpaceTrader.Model.Good;
-import com.TableFlip.SpaceTrader.Model.Port;
 import com.TableFlip.SpaceTrader.Model.Ship;
-
-import java.util.HashMap;
 
 /**
  * Created with IntelliJ IDEA.

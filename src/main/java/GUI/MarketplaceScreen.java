@@ -1,11 +1,7 @@
 package GUI;
 
-import com.TableFlip.SpaceTrader.Bootstrap.Bootstrapper;
-import com.TableFlip.SpaceTrader.GameEntity.Player;
 import com.TableFlip.SpaceTrader.Model.Enums;
 import com.TableFlip.SpaceTrader.Model.Good;
-import com.TableFlip.SpaceTrader.Model.Port;
-import com.TableFlip.SpaceTrader.Service.GoodsRegistry;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
@@ -16,7 +12,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -100,7 +95,7 @@ public class MarketplaceScreen {
                     //we use its index to choose the corresponding Good in the goodsArrayList
                     if ((Integer) spinner.getValue() > 0) {
                         Boolean f = GuiArbiter.playerBuy(goodsArrayList.get(i), (Integer) spinner.getValue());
-                        if (f == false){
+                        if (!f){
                             buySpinnerPanel.removeAll();
                         }
                     }

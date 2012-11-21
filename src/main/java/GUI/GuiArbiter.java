@@ -10,8 +10,6 @@ import com.TableFlip.SpaceTrader.Service.SaveMaker;
 import com.TableFlip.SpaceTrader.Service.ShipFactory;
 
 import javax.swing.*;
-import java.util.HashMap;
-import java.util.Random;
 import java.util.*;
 
 /**
@@ -35,7 +33,23 @@ public class GuiArbiter {
      * Interpreter method to make new Character GUI things happen.
      * Game logic does not need to know how this is done.
      */
-
+    public static Port getClosestPort(int x, int y){
+        Coordinates coordinates=new Coordinates(x/5,y/5);
+        Port target=null;
+        for (Island island : Ocean.getInstance().getIslands()){
+            for (Port port : island.getPorts()){
+                if (target==null){
+                    target=port;
+                }
+                else{
+                    if (port.getCoordinates().getDistance(coordinates)<target.getCoordinates().getDistance(coordinates)){
+                        target=port;
+                    }
+                }
+            }
+        }
+        return target;
+    }
     public static void charGen(){
         CharGen.main(new String[3]);
     }

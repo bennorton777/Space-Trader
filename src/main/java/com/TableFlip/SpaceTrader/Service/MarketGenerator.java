@@ -27,7 +27,6 @@ public class MarketGenerator {
     }
 
 
-
     /**
      * The bulk of this class's logic is contained here.  Generates prices and quantities.
      * @param port

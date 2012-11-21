@@ -1,11 +1,11 @@
 package GUI;
 
 import com.TableFlip.SpaceTrader.Bootstrap.Bootstrapper;
-import com.TableFlip.SpaceTrader.Model.Coordinates;
+import com.TableFlip.SpaceTrader.GameEntity.Ocean;
+import com.TableFlip.SpaceTrader.Model.Port;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
-import com.TableFlip.SpaceTrader.Model.Port;
 
 import javax.swing.*;
 import java.awt.*;
@@ -86,6 +86,16 @@ public class SelectPortScreen {
             }
         });
         OceanMapP.addKeyListener(new KeyAdapter() {
+        });
+        OceanMapP.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+               /* super.mouseClicked(e);
+                Port close=GuiArbiter.getClosestPort(e.getX(), e.getY());
+                Ocean.getInstance().setHighlightedPort(close);
+                OceanMapP.repaint();
+                updateHighlightedPortInfo();*/
+            }
         });
     }
 

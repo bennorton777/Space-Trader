@@ -3,12 +3,9 @@ package com.TableFlip.SpaceTrader.Model;
 import GUI.GuiArbiter;
 import com.TableFlip.SpaceTrader.GameEntity.Player;
 import com.TableFlip.SpaceTrader.Service.GoodsRegistry;
-import com.TableFlip.SpaceTrader.Service.MarketGenerator;
 import com.TableFlip.SpaceTrader.Service.ShipFactory;
-import com.TableFlip.SpaceTrader.Service.ShipPrototype;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 
 import java.util.HashMap;
 import java.util.Random;
@@ -30,8 +27,6 @@ public class Ship {
     private Port _targetPort;
     private Port _highlightedPort;
 
-    private static GoodsRegistry _goodsRegistry;
-
     public Ship(String name, int suppliesMax, int cargoSpace, int weaponSlots, int armorSlots, int crewSlots, int toolSlots) {
         _suppliesRemaining = suppliesMax;
         _suppliesMax = suppliesMax;
@@ -43,10 +38,10 @@ public class Ship {
         _crewSlots = crewSlots;
         _toolSlots = toolSlots;
 
-        _goodsRegistry = GoodsRegistry.getInstance();
+        GoodsRegistry goodsRegistry = GoodsRegistry.getInstance();
 
 
-        for(Good g : _goodsRegistry.getGoods()){
+        for(Good g : goodsRegistry.getGoods()){
             _cargo.put(g, 0);
         }
     }

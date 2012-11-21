@@ -447,7 +447,7 @@ public class SparseArray<T> implements ISparseArray2D<T>{
                 // System.out.println(RowList);
             }
 
-            return (List<T>) RowList;
+            return RowList;
         }
     }
 
@@ -484,7 +484,7 @@ public class SparseArray<T> implements ISparseArray2D<T>{
                 //System.out.println(ColList);
             }
 
-            return (List<T>) ColList;
+            return ColList;
         }
     }
 

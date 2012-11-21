@@ -1,8 +1,5 @@
 package com.TableFlip.SpaceTrader.Service;
 
-import com.TableFlip.SpaceTrader.Model.Ship;
-
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**

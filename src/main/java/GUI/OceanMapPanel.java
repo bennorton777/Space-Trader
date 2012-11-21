@@ -7,13 +7,15 @@ package GUI;
  * Time: 7:36 PM
  * To change this template use File | Settings | File Templates.
  */
+
 import com.TableFlip.SpaceTrader.Model.Coordinates;
 import com.intellij.uiDesigner.core.GridLayoutManager;
-//import com.sun.javaws.util.GeneralUtil;
 
+import javax.swing.*;
 import java.awt.*;
 import java.util.List;
-import javax.swing.*;
+
+//import com.sun.javaws.util.GeneralUtil;
 
 public class OceanMapPanel extends JPanel {
 
